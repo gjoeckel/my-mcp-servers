@@ -1,0 +1,105 @@
+<html lang="en"><head>
+<meta charset="UTF-8">
+<!-- Added viewport meta for responsiveness -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accessibility Checklists</title>
+<link rel="stylesheet" href="/global.css">
+</head>
+<body>
+<!-- NoScript fallback to notify users that JavaScript is required -->
+<noscript>
+<p>This application requires JavaScript to function properly. Please enable JavaScript in your browser settings.</p>
+</noscript>
+
+<!-- Sticky Header -->
+<header class="sticky-header">
+    <div class="header-content">
+        <h1>Accessibility Checklists</h1>
+        <button id="adminButton" class="header-button">Admin</button>
+    </div>
+</header>
+
+<!-- Main Content -->
+<main>
+    <div class="landing-content checklist-groups-row">
+      <div class="checklist-groups-header-row">
+        <div class="checklist-group-col"><h2>Microsoft</h2></div>
+        <div class="checklist-group-col"><h2>Google</h2></div>
+        <div class="checklist-group-col"><h2>Other</h2></div>
+      </div>
+      <div class="checklist-groups-buttons-row">
+        <div class="checklist-group-col">
+          <div class="checklist-buttons-row">
+            <button class="checklist-button" data-checklist="word">Word</button>
+            <button class="checklist-button" data-checklist="powerpoint">PowerPoint</button>
+            <button class="checklist-button" data-checklist="excel">Excel</button>
+          </div>
+        </div>
+        <div class="checklist-group-col">
+          <div class="checklist-buttons-row">
+            <button class="checklist-button" data-checklist="google_docs">Docs</button>
+            <button class="checklist-button" data-checklist="google_slides">Slides</button>
+          </div>
+        </div>
+        <div class="checklist-group-col">
+          <div class="checklist-buttons-row">
+            <button class="checklist-button" data-checklist="camtasia">Camtasia</button>
+            <button class="checklist-button" data-checklist="dojo">Dojo</button>
+          </div>
+        </div>
+</div></div></main>
+
+<!-- Footer -->
+<footer>
+    <p>© 2025 NCADEMI. All rights reserved.</p>
+</footer>
+
+<!-- Scripts -->
+<script type="module" src="/js/path-utils.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Connect buttons to redirect to php/mychecklist.php
+    const buttons = document.querySelectorAll('.checklist-button');
+    buttons.forEach(button => {
+      button.addEventListener('click', function() {
+        const checklistType = this.getAttribute('data-checklist');
+        // Generate a 3-character session ID using numbers and capital letters
+        const sessionId = generateAlphanumericSessionId();
+        // Redirect to php/mychecklist.php with the session ID and checklist type
+        window.location.href = `mychecklist.php?session=${sessionId}&type=${checklistType}`;
+      });
+    });
+    
+    // Connect Admin button to redirect to php/admin.php
+    const adminButton = document.getElementById('adminButton');
+    if (adminButton) {
+      adminButton.addEventListener('click', function() {
+        window.location.href = 'admin.php';
+      });
+    }
+
+    // Connect Clear Data button
+    const clearDataButton = document.getElementById('clearDataButton');
+    if (clearDataButton) {
+      clearDataButton.addEventListener('click', function() {
+        if (confirm('Are you sure you want to clear all stored data? This action cannot be undone.')) {
+          localStorage.clear();
+          sessionStorage.clear();
+          alert('All stored data has been cleared.');
+        }
+      });
+    }
+    
+    // Function to generate a 3-character session ID using numbers and capital letters
+    function generateAlphanumericSessionId() {
+      const characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      let result = '';
+      for (let i = 0; i < 3; i++) {
+        result += characters.charAt(Math.floor(Math.random() * characters.length));
+      }
+      return result;
+    }
+  });
+</script>
+
+ </body></html>

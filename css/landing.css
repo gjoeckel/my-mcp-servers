@@ -1,0 +1,131 @@
+/* Landing Page Styles - Consolidated */
+
+.landing-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+    gap: 20px;
+}
+
+.checklist-buttons-row {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.checklist-button {
+    width: 100px;
+    padding: 6px;
+    font-size: 18px;
+    cursor: pointer;
+    background-color: transparent;
+    color: #333333;
+    border: 1px solid #333333;
+    border-radius: 4px;
+    transition: background-color 0.3s, box-shadow 0.2s, border-color 0.2s, color 0.2s;
+}
+
+button.checklist-button {
+    background: #ffffff;
+    border: #333 solid 2px;
+    color: #333;
+    font-weight: bold;
+}
+
+.clear-data-button {
+    width: 180px;
+    padding: 15px;
+    font-size: 18px;
+    cursor: pointer;
+    background-color: #bf1712; /* Apply button-red normal */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    margin-top: 25px;
+}
+
+.camtasia-button {
+    /* Positioned absolute in multiple.css block */
+    position: absolute;
+    top: 150px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.75rem 1.5rem; /* from multiple.css */
+    font-size: 1.1rem; /* from multiple.css */
+    background-color: var(--primary-color); /* from multiple.css */
+    /* background-color: #8B4513; /* Brown color from checklist.css */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    text-align: center; /* from checklist.css */
+}
+
+.heading-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* from multiple.css */
+    text-align: center; /* from multiple.css */
+}
+
+.heading-content img {
+    margin-right: 10px;
+}
+
+/* Removed focus/hover styles - Handled by focus.css */
+
+/* Responsive checklist group layout for index.php */
+.landing-content.checklist-groups-row {
+  width: 100%;
+  max-width: 1000px;
+  margin: 100px auto 2rem auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+.checklist-groups-header-row,
+.checklist-groups-buttons-row {
+  display: flex;
+  width: 100%;
+}
+.checklist-group-col {
+  flex: 1 1 33%;
+  max-width: 33.33%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+.checklist-groups-header-row .checklist-group-col h2 {
+  margin-bottom: 16px;
+  text-align: center;
+}
+.checklist-groups-buttons-row .checklist-group-col {
+  align-items: center;
+  justify-content: flex-start;
+}
+.checklist-buttons-row {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+@media (max-width: 900px) {
+  .checklist-groups-header-row,
+  .checklist-groups-buttons-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .checklist-group-col {
+    max-width: 100%;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+} 

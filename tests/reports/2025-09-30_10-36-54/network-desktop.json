@@ -1,0 +1,11 @@
+[
+  {"url":"http://localhost:8000/php/home.php","method":"GET","status":200},
+  {"url":"http://localhost:8000/global.css","method":"GET","status":200},
+  {"url":"http://localhost:8000/global.css","method":"GET","status":200},
+  {"url":"http://localhost:8000/js/path-utils.js","method":"GET","status":200},
+  {"url":"http://localhost:8000/js/path-utils.js","method":"GET","status":200},
+  {"url":"http://localhost:8000/favicon.ico","method":"GET","status":302},
+  {"url":"http://localhost:8000/favicon.ico","method":"GET","status":302},
+  {"url":"http://localhost:8000/php/home.php","method":"GET","status":200},
+  {"url":"http://localhost:8000/php/home.php","method":"GET","status":200}
+]

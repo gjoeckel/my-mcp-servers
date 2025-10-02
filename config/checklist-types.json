@@ -1,0 +1,18 @@
+{
+  "types": {
+    "word": { "displayName": "Word", "jsonFile": "word.json", "buttonId": "word", "category": "Microsoft" },
+    "powerpoint": { "displayName": "PowerPoint", "jsonFile": "powerpoint.json", "buttonId": "powerpoint", "category": "Microsoft" },
+    "excel": { "displayName": "Excel", "jsonFile": "excel.json", "buttonId": "excel", "category": "Microsoft" },
+    "docs": { "displayName": "Docs", "jsonFile": "docs.json", "buttonId": "docs", "category": "Google" },
+    "slides": { "displayName": "Slides", "jsonFile": "slides.json", "buttonId": "slides", "category": "Google" },
+    "camtasia": { "displayName": "Camtasia", "jsonFile": "camtasia.json", "buttonId": "camtasia", "category": "Other" },
+    "dojo": { "displayName": "Dojo", "jsonFile": "dojo.json", "buttonId": "dojo", "category": "Other" }
+  },
+  "defaultType": "camtasia",
+  "categories": {
+    "Microsoft": ["word", "powerpoint", "excel"],
+    "Google": ["docs", "slides"],
+    "Other": ["camtasia", "dojo"]
+  }
+}
+
