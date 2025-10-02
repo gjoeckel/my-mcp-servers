@@ -6,7 +6,7 @@ Comprehensive end-to-end testing suite for AccessiList using Playwright/Puppetee
 
 ### **Critical Path Tests** (`critical-path-tests.js`)
 - ✅ Home to Checklist Journey
-- ✅ Checklist Item Interactions  
+- ✅ Checklist Item Interactions
 - ✅ Save and Restore Functionality
 - ✅ Report Generation
 - ✅ Admin Management

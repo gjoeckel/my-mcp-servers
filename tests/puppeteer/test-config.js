@@ -23,7 +23,13 @@ const TEST_CONFIG = {
         viewport: {
             width: 1280,
             height: 720
-        }
+        },
+        // Additional options for better visibility
+        args: [
+            '--start-maximized',
+            '--disable-web-security',
+            '--disable-features=VizDisplayCompositor'
+        ]
     },
 
     // Test data
