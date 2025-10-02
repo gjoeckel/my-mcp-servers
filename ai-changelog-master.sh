@@ -25,6 +25,8 @@ show_usage() {
     echo ""
     echo -e "${GREEN}Commands:${NC}"
     echo "  start     - Load context for new AI session"
+    echo "  update    - Record progress mid-session (without ending)"
+    echo "  local     - Commit changes to local branch"
     echo "  end       - Generate changelog for completed session"
     echo "  compress  - Compress context into summary"
     echo "  status    - Show current context status"
@@ -34,6 +36,8 @@ show_usage() {
     echo ""
     echo -e "${YELLOW}Examples:${NC}"
     echo "  $0 start     # Start new AI session with context"
+    echo "  $0 update    # Record progress mid-session"
+    echo "  $0 local     # Commit changes to local branch"
     echo "  $0 end       # End current session and generate changelog"
     echo "  $0 compress  # Compress context for efficiency"
     echo "  $0 status    # Check current context status"
@@ -217,6 +221,14 @@ case "${1:-help}" in
     "start")
         echo -e "${BLUE}🚀 Starting AI session with context...${NC}"
         "$SCRIPT_DIR/session-start.sh"
+        ;;
+    "update")
+        echo -e "${BLUE}📝 Recording mid-session progress...${NC}"
+        "$SCRIPT_DIR/session-update.sh"
+        ;;
+    "local")
+        echo -e "${BLUE}💾 Committing changes to local branch...${NC}"
+        "$SCRIPT_DIR/session-local.sh"
         ;;
     "end")
         echo -e "${BLUE}📝 Ending AI session and generating changelog...${NC}"
