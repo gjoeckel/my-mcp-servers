@@ -1,0 +1,29 @@
+{
+  "mcpServers": {
+    "apple-mcp": {
+      "command": "npx",
+      "args": ["-y", "install-mcp", "apple-mcp", "--client", "cursor"]
+    },
+    "xcode-build-mcp": {
+      "command": "npx",
+      "args": ["-y", "install-mcp", "xcode-build-mcp", "--client", "cursor"]
+    },
+    "app-opener": {
+      "command": "npx",
+      "args": ["-y", "install-mcp", "app-opener", "--client", "cursor"]
+    },
+    "chrome-devtools": {
+      "command": "chrome-devtools-mcp"
+    },
+    "github": {
+      "command": "github-mcp-server"
+    },
+    "filesystem": {
+      "command": "@modelcontextprotocol/server-filesystem"
+    },
+    "memory": {
+      "command": "@modelcontextprotocol/server-memory"
+    }
+  }
+}
+
