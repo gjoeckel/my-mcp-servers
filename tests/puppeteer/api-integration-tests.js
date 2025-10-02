@@ -24,7 +24,7 @@ class ApiIntegrationTests {
         this.browser = await chromium.launch(TEST_CONFIG.browser);
         this.page = await this.browser.newPage();
         this.utils = new TestUtils(this.page);
-        
+
         await this.page.setViewportSize(TEST_CONFIG.browser.viewport);
         this.utils.logStep('Browser setup complete');
     }
@@ -43,24 +43,24 @@ class ApiIntegrationTests {
      */
     async testApiHealth() {
         this.utils.logStep('Testing API health endpoint');
-        
+
         try {
             const response = await this.utils.apiCall(TEST_CONFIG.api.health);
-            
+
             if (response.success) {
-                this.testResults.push({ 
-                    test: 'API Health Check', 
-                    status: 'PASSED' 
+                this.testResults.push({
+                    test: 'API Health Check',
+                    status: 'PASSED'
                 });
             } else {
                 throw new Error('Health check returned failure');
             }
-            
+
         } catch (error) {
-            this.testResults.push({ 
-                test: 'API Health Check', 
-                status: 'FAILED', 
-                error: error.message 
+            this.testResults.push({
+                test: 'API Health Check',
+                status: 'FAILED',
+                error: error.message
             });
         }
     }
@@ -70,25 +70,25 @@ class ApiIntegrationTests {
      */
     async testApiList() {
         this.utils.logStep('Testing API list endpoint');
-        
+
         try {
             const response = await this.utils.apiCall(TEST_CONFIG.api.list);
-            
+
             if (response.success && Array.isArray(response.data)) {
-                this.testResults.push({ 
-                    test: 'API List Endpoint', 
+                this.testResults.push({
+                    test: 'API List Endpoint',
                     status: 'PASSED',
                     note: `Found ${response.data.length} saved checklists`
                 });
             } else {
                 throw new Error('List endpoint returned invalid response');
             }
-            
+
         } catch (error) {
-            this.testResults.push({ 
-                test: 'API List Endpoint', 
-                status: 'FAILED', 
-                error: error.message 
+            this.testResults.push({
+                test: 'API List Endpoint',
+                status: 'FAILED',
+                error: error.message
             });
         }
     }
@@ -98,32 +98,32 @@ class ApiIntegrationTests {
      */
     async testApiInstantiate() {
         this.utils.logStep('Testing API instantiate endpoint');
-        
+
         const sessionKey = this.utils.generateSessionKey();
-        
+
         try {
             const testData = this.utils.createTestData(sessionKey, 'word');
-            
+
             const response = await this.utils.apiCall(
-                TEST_CONFIG.api.instantiate, 
-                'POST', 
+                TEST_CONFIG.api.instantiate,
+                'POST',
                 testData
             );
-            
+
             if (response.success) {
-                this.testResults.push({ 
-                    test: 'API Instantiate Endpoint', 
-                    status: 'PASSED' 
+                this.testResults.push({
+                    test: 'API Instantiate Endpoint',
+                    status: 'PASSED'
                 });
             } else {
                 throw new Error('Instantiate endpoint failed');
             }
-            
+
         } catch (error) {
-            this.testResults.push({ 
-                test: 'API Instantiate Endpoint', 
-                status: 'FAILED', 
-                error: error.message 
+            this.testResults.push({
+                test: 'API Instantiate Endpoint',
+                status: 'FAILED',
+                error: error.message
             });
         } finally {
             await this.utils.cleanupTestData(sessionKey);
@@ -135,14 +135,14 @@ class ApiIntegrationTests {
      */
     async testApiSave() {
         this.utils.logStep('Testing API save endpoint');
-        
+
         const sessionKey = this.utils.generateSessionKey();
-        
+
         try {
             // First instantiate
             const instantiateData = this.utils.createTestData(sessionKey, 'word');
             await this.utils.apiCall(TEST_CONFIG.api.instantiate, 'POST', instantiateData);
-            
+
             // Then save with additional data
             const saveData = {
                 ...instantiateData,
@@ -157,27 +157,27 @@ class ApiIntegrationTests {
                     }
                 }
             };
-            
+
             const response = await this.utils.apiCall(
-                TEST_CONFIG.api.save, 
-                'POST', 
+                TEST_CONFIG.api.save,
+                'POST',
                 saveData
             );
-            
+
             if (response.success) {
-                this.testResults.push({ 
-                    test: 'API Save Endpoint', 
-                    status: 'PASSED' 
+                this.testResults.push({
+                    test: 'API Save Endpoint',
+                    status: 'PASSED'
                 });
             } else {
                 throw new Error('Save endpoint failed');
             }
-            
+
         } catch (error) {
-            this.testResults.push({ 
-                test: 'API Save Endpoint', 
-                status: 'FAILED', 
-                error: error.message 
+            this.testResults.push({
+                test: 'API Save Endpoint',
+                status: 'FAILED',
+                error: error.message
             });
         } finally {
             await this.utils.cleanupTestData(sessionKey);
@@ -189,9 +189,9 @@ class ApiIntegrationTests {
      */
     async testApiRestore() {
         this.utils.logStep('Testing API restore endpoint');
-        
+
         const sessionKey = this.utils.generateSessionKey();
-        
+
         try {
             // First create and save data
             const testData = this.utils.createTestData(sessionKey, 'word');
@@ -199,29 +199,29 @@ class ApiIntegrationTests {
                 items: [{ id: 'restore-test', checked: true }],
                 notes: { 'restore-test': 'Restore test note' }
             };
-            
+
             await this.utils.apiCall(TEST_CONFIG.api.instantiate, 'POST', testData);
             await this.utils.apiCall(TEST_CONFIG.api.save, 'POST', testData);
-            
+
             // Then test restore
             const response = await this.utils.apiCall(
                 `${TEST_CONFIG.api.restore}?sessionKey=${sessionKey}`
             );
-            
+
             if (response.success && response.data.state) {
-                this.testResults.push({ 
-                    test: 'API Restore Endpoint', 
-                    status: 'PASSED' 
+                this.testResults.push({
+                    test: 'API Restore Endpoint',
+                    status: 'PASSED'
                 });
             } else {
                 throw new Error('Restore endpoint failed or returned invalid data');
             }
-            
+
         } catch (error) {
-            this.testResults.push({ 
-                test: 'API Restore Endpoint', 
-                status: 'FAILED', 
-                error: error.message 
+            this.testResults.push({
+                test: 'API Restore Endpoint',
+                status: 'FAILED',
+                error: error.message
             });
         } finally {
             await this.utils.cleanupTestData(sessionKey);
@@ -233,35 +233,35 @@ class ApiIntegrationTests {
      */
     async testApiDelete() {
         this.utils.logStep('Testing API delete endpoint');
-        
+
         const sessionKey = this.utils.generateSessionKey();
-        
+
         try {
             // First create data
             const testData = this.utils.createTestData(sessionKey, 'word');
             await this.utils.apiCall(TEST_CONFIG.api.instantiate, 'POST', testData);
-            
+
             // Then test delete
             const response = await this.utils.apiCall(
-                TEST_CONFIG.api.delete, 
-                'POST', 
+                TEST_CONFIG.api.delete,
+                'POST',
                 { sessionKey }
             );
-            
+
             if (response.success) {
-                this.testResults.push({ 
-                    test: 'API Delete Endpoint', 
-                    status: 'PASSED' 
+                this.testResults.push({
+                    test: 'API Delete Endpoint',
+                    status: 'PASSED'
                 });
             } else {
                 throw new Error('Delete endpoint failed');
             }
-            
+
         } catch (error) {
-            this.testResults.push({ 
-                test: 'API Delete Endpoint', 
-                status: 'FAILED', 
-                error: error.message 
+            this.testResults.push({
+                test: 'API Delete Endpoint',
+                status: 'FAILED',
+                error: error.message
             });
         }
     }
@@ -271,7 +271,7 @@ class ApiIntegrationTests {
      */
     async testApiErrorHandling() {
         this.utils.logStep('Testing API error handling');
-        
+
         const errorTests = [
             {
                 name: 'Invalid Session Key',
@@ -291,40 +291,40 @@ class ApiIntegrationTests {
                 expectedError: true
             }
         ];
-        
+
         for (const test of errorTests) {
             try {
                 const response = await this.utils.apiCall(
-                    test.endpoint, 
-                    test.method || 'GET', 
+                    test.endpoint,
+                    test.method || 'GET',
                     test.data
                 );
-                
+
                 if (test.expectedError && !response.success) {
-                    this.testResults.push({ 
-                        test: `API Error Handling - ${test.name}`, 
-                        status: 'PASSED' 
+                    this.testResults.push({
+                        test: `API Error Handling - ${test.name}`,
+                        status: 'PASSED'
                     });
                 } else if (!test.expectedError && response.success) {
-                    this.testResults.push({ 
-                        test: `API Error Handling - ${test.name}`, 
-                        status: 'PASSED' 
+                    this.testResults.push({
+                        test: `API Error Handling - ${test.name}`,
+                        status: 'PASSED'
                     });
                 } else {
                     throw new Error(`Unexpected response for ${test.name}`);
                 }
-                
+
             } catch (error) {
                 if (test.expectedError) {
-                    this.testResults.push({ 
-                        test: `API Error Handling - ${test.name}`, 
-                        status: 'PASSED' 
+                    this.testResults.push({
+                        test: `API Error Handling - ${test.name}`,
+                        status: 'PASSED'
                     });
                 } else {
-                    this.testResults.push({ 
-                        test: `API Error Handling - ${test.name}`, 
-                        status: 'FAILED', 
-                        error: error.message 
+                    this.testResults.push({
+                        test: `API Error Handling - ${test.name}`,
+                        status: 'FAILED',
+                        error: error.message
                     });
                 }
             }
@@ -336,7 +336,7 @@ class ApiIntegrationTests {
      */
     async testApiDataValidation() {
         this.utils.logStep('Testing API data validation');
-        
+
         const validationTests = [
             {
                 name: 'Invalid Checklist Type',
@@ -360,40 +360,40 @@ class ApiIntegrationTests {
                 shouldFail: false
             }
         ];
-        
+
         for (const test of validationTests) {
             try {
                 const response = await this.utils.apiCall(
-                    test.endpoint, 
-                    test.method, 
+                    test.endpoint,
+                    test.method,
                     test.data
                 );
-                
+
                 if (test.shouldFail && !response.success) {
-                    this.testResults.push({ 
-                        test: `API Data Validation - ${test.name}`, 
-                        status: 'PASSED' 
+                    this.testResults.push({
+                        test: `API Data Validation - ${test.name}`,
+                        status: 'PASSED'
                     });
                 } else if (!test.shouldFail && response.success) {
-                    this.testResults.push({ 
-                        test: `API Data Validation - ${test.name}`, 
-                        status: 'PASSED' 
+                    this.testResults.push({
+                        test: `API Data Validation - ${test.name}`,
+                        status: 'PASSED'
                     });
                 } else {
                     throw new Error(`Validation test failed for ${test.name}`);
                 }
-                
+
             } catch (error) {
                 if (test.shouldFail) {
-                    this.testResults.push({ 
-                        test: `API Data Validation - ${test.name}`, 
-                        status: 'PASSED' 
+                    this.testResults.push({
+                        test: `API Data Validation - ${test.name}`,
+                        status: 'PASSED'
                     });
                 } else {
-                    this.testResults.push({ 
-                        test: `API Data Validation - ${test.name}`, 
-                        status: 'FAILED', 
-                        error: error.message 
+                    this.testResults.push({
+                        test: `API Data Validation - ${test.name}`,
+                        status: 'FAILED',
+                        error: error.message
                     });
                 }
             }
@@ -405,7 +405,7 @@ class ApiIntegrationTests {
      */
     async testApiPerformance() {
         this.utils.logStep('Testing API performance');
-        
+
         const performanceTests = [
             {
                 name: 'Health Check Performance',
@@ -418,35 +418,35 @@ class ApiIntegrationTests {
                 maxTime: 2000
             }
         ];
-        
+
         for (const test of performanceTests) {
             try {
                 const startTime = Date.now();
                 const response = await this.utils.apiCall(test.endpoint);
                 const endTime = Date.now();
                 const duration = endTime - startTime;
-                
+
                 if (response.success && duration <= test.maxTime) {
-                    this.testResults.push({ 
-                        test: `API Performance - ${test.name}`, 
+                    this.testResults.push({
+                        test: `API Performance - ${test.name}`,
                         status: 'PASSED',
                         note: `Response time: ${duration}ms`
                     });
                 } else if (response.success) {
-                    this.testResults.push({ 
-                        test: `API Performance - ${test.name}`, 
+                    this.testResults.push({
+                        test: `API Performance - ${test.name}`,
                         status: 'FAILED',
                         error: `Response time too slow: ${duration}ms (max: ${test.maxTime}ms)`
                     });
                 } else {
                     throw new Error('API call failed');
                 }
-                
+
             } catch (error) {
-                this.testResults.push({ 
-                    test: `API Performance - ${test.name}`, 
-                    status: 'FAILED', 
-                    error: error.message 
+                this.testResults.push({
+                    test: `API Performance - ${test.name}`,
+                    status: 'FAILED',
+                    error: error.message
                 });
             }
         }
@@ -458,9 +458,9 @@ class ApiIntegrationTests {
     async runAllTests() {
         console.log('🔌 Starting API Integration Tests for AccessiList');
         console.log('=' .repeat(60));
-        
+
         await this.setup();
-        
+
         try {
             await this.testApiHealth();
             await this.testApiList();
@@ -471,14 +471,14 @@ class ApiIntegrationTests {
             await this.testApiErrorHandling();
             await this.testApiDataValidation();
             await this.testApiPerformance();
-            
+
         } finally {
             await this.cleanup();
         }
-        
+
         // Generate report
         const report = this.utils.generateTestReport('api-integration-tests', this.testResults);
-        
+
         // Display results
         console.log('\n' + '=' .repeat(60));
         console.log('📊 API INTEGRATION TEST RESULTS');
@@ -488,7 +488,7 @@ class ApiIntegrationTests {
         console.log(`Failed: ${report.summary.failed}`);
         console.log(`Success Rate: ${((report.summary.passed / report.summary.total) * 100).toFixed(2)}%`);
         console.log('=' .repeat(60));
-        
+
         return report;
     }
 }

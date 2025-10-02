@@ -36,16 +36,16 @@ class MasterTestRunner {
     async runTestSuite(suite) {
         console.log(`\n🧪 Running ${suite.name}...`);
         console.log('=' .repeat(50));
-        
+
         const startTime = Date.now();
-        
+
         try {
             const testRunner = new suite.runner();
             const result = await testRunner.runAllTests();
-            
+
             const endTime = Date.now();
             const duration = endTime - startTime;
-            
+
             this.results.push({
                 suite: suite.name,
                 status: result.summary.failed === 0 ? 'PASSED' : 'FAILED',
@@ -53,13 +53,13 @@ class MasterTestRunner {
                 summary: result.summary,
                 details: result.results
             });
-            
+
             console.log(`\n✅ ${suite.name} completed in ${duration}ms`);
-            
+
         } catch (error) {
             const endTime = Date.now();
             const duration = endTime - startTime;
-            
+
             this.results.push({
                 suite: suite.name,
                 status: 'ERROR',
@@ -67,7 +67,7 @@ class MasterTestRunner {
                 error: error.message,
                 summary: { total: 0, passed: 0, failed: 1 }
             });
-            
+
             console.log(`\n❌ ${suite.name} failed: ${error.message}`);
         }
     }
@@ -80,7 +80,7 @@ class MasterTestRunner {
         const totalPassed = this.results.reduce((sum, result) => sum + result.summary.passed, 0);
         const totalFailed = this.results.reduce((sum, result) => sum + result.summary.failed, 0);
         const totalDuration = this.endTime - this.startTime;
-        
+
         const masterReport = {
             timestamp: new Date().toISOString(),
             testRun: {
@@ -100,12 +100,12 @@ class MasterTestRunner {
             },
             suites: this.results
         };
-        
+
         // Save master report
         const reportPath = path.join(TEST_CONFIG.paths.reports, 'master-test-report.json');
         fs.mkdirSync(TEST_CONFIG.paths.reports, { recursive: true });
         fs.writeFileSync(reportPath, JSON.stringify(masterReport, null, 2));
-        
+
         return masterReport;
     }
 
@@ -126,16 +126,16 @@ class MasterTestRunner {
         console.log(`Failed Tests: ${report.summary.totalFailed}`);
         console.log(`Overall Success Rate: ${report.summary.successRate}`);
         console.log('=' .repeat(80));
-        
+
         // Display suite results
         console.log('\n📊 Test Suite Results:');
         this.results.forEach(result => {
-            const status = result.status === 'PASSED' ? '✅' : 
+            const status = result.status === 'PASSED' ? '✅' :
                           result.status === 'FAILED' ? '❌' : '💥';
             console.log(`   ${status} ${result.suite} (${result.duration}ms)`);
             console.log(`      Tests: ${result.summary.total}, Passed: ${result.summary.passed}, Failed: ${result.summary.failed}`);
         });
-        
+
         // Display failed tests
         const failedSuites = this.results.filter(r => r.status === 'FAILED' || r.status === 'ERROR');
         if (failedSuites.length > 0) {
@@ -144,7 +144,7 @@ class MasterTestRunner {
                 console.log(`   • ${suite.suite}: ${suite.error || 'Tests failed'}`);
             });
         }
-        
+
         console.log('\n' + '=' .repeat(80));
     }
 
@@ -158,20 +158,20 @@ class MasterTestRunner {
         console.log(`Base URL: ${TEST_CONFIG.baseUrl}`);
         console.log(`Browser: ${TEST_CONFIG.browser.headless ? 'Headless' : 'Headed'}`);
         console.log('=' .repeat(80));
-        
+
         this.startTime = Date.now();
-        
+
         // Run each test suite
         for (const suite of this.testSuites) {
             await this.runTestSuite(suite);
         }
-        
+
         this.endTime = Date.now();
-        
+
         // Generate and display results
         const masterReport = this.generateMasterReport();
         this.displayMasterResults(masterReport);
-        
+
         return masterReport;
     }
 }
