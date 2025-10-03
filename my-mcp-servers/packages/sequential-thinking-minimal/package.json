@@ -1,26 +1,44 @@
 {
   "name": "@gjoeckel/mcp-sequential-thinking-minimal",
   "version": "1.0.0",
-  "description": "Minimal Sequential Thinking MCP Server - Essential problem solving tools only",
   "type": "module",
+  "description": "Sequential Thinking MCP Server with minimal tool set (4 essential tools only)",
   "main": "build/index.js",
+  "types": "build/index.d.ts",
   "bin": {
-    "mcp-sequential-thinking-minimal": "build/index.js"
+    "mcp-sequential-thinking-minimal": "./build/index.js"
   },
+  "files": [
+    "build/**/*",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run clean && npm run build",
     "start": "node build/index.js",
-    "dev": "tsc --watch"
+    "clean": "rm -rf build node_modules"
   },
   "keywords": [
     "mcp",
+    "mcp-server",
+    "model-context-protocol",
     "sequential-thinking",
-    "problem-solving",
-    "reasoning",
-    "minimal"
+    "cursor",
+    "ai-tools"
   ],
   "author": "gjoeckel",
-  "license": "MIT",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gjoeckel/my-mcp-servers.git",
+    "directory": "packages/sequential-thinking-minimal"
+  },
+  "bugs": {
+    "url": "https://github.com/gjoeckel/my-mcp-servers/issues"
+  },
+  "homepage": "https://github.com/gjoeckel/my-mcp-servers/tree/main/packages/sequential-thinking-minimal#readme",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
     "zod": "^3.22.0"
@@ -29,8 +47,7 @@
     "@types/node": "^20.0.0",
     "typescript": "^5.0.0"
   },
-  "files": [
-    "build/**/*",
-    "README.md"
-  ]
+  "engines": {
+    "node": ">=18.0.0"
+  }
 }

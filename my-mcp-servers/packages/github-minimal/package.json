@@ -1,25 +1,44 @@
 {
   "name": "@gjoeckel/mcp-github-minimal",
   "version": "1.0.0",
+  "type": "module",
   "description": "GitHub MCP Server with minimal tool set (4 essential tools only)",
   "main": "build/index.js",
+  "types": "build/index.d.ts",
   "bin": {
     "mcp-github-minimal": "./build/index.js"
   },
+  "files": [
+    "build/**/*",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc",
     "prepare": "npm run build",
+    "prepublishOnly": "npm run clean && npm run build",
     "start": "node build/index.js",
-    "test": "echo \"No tests specified\" && exit 0"
+    "clean": "rm -rf build node_modules"
   },
   "keywords": [
     "mcp",
+    "mcp-server",
+    "model-context-protocol",
     "github",
-    "minimal",
-    "model-context-protocol"
+    "cursor",
+    "ai-tools"
   ],
   "author": "gjoeckel",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gjoeckel/my-mcp-servers.git",
+    "directory": "packages/github-minimal"
+  },
+  "bugs": {
+    "url": "https://github.com/gjoeckel/my-mcp-servers/issues"
+  },
+  "homepage": "https://github.com/gjoeckel/my-mcp-servers/tree/main/packages/github-minimal#readme",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
     "zod": "^3.22.0"
@@ -30,11 +49,5 @@
   },
   "engines": {
     "node": ">=18.0.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/gjoeckel/my-mcp-servers.git",
-    "directory": "packages/github-minimal"
   }
 }
-
