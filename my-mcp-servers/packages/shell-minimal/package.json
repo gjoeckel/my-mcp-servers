@@ -1,0 +1,39 @@
+{
+  "name": "@gjoeckel/mcp-shell-minimal",
+  "version": "1.0.0",
+  "description": "Shell MCP Server with minimal tool set (4 essential tools only)",
+  "main": "build/index.js",
+  "bin": {
+    "mcp-shell-minimal": "./build/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build",
+    "start": "node build/index.js",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "keywords": [
+    "mcp",
+    "shell",
+    "minimal",
+    "model-context-protocol"
+  ],
+  "author": "gjoeckel",
+  "license": "ISC",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gjoeckel/my-mcp-servers.git",
+    "directory": "packages/shell-minimal"
+  }
+}
