@@ -1,23 +1,27 @@
 {
   "mcpServers": {
     "github-minimal": {
-      "command": "npx",
-      "args": ["-y", "git+https://github.com/gjoeckel/my-mcp-servers.git#mcp-restart:packages/github-minimal"],
+      "command": "node",
+      "args": ["/Users/a00288946/Desktop/template/my-mcp-servers/packages/github-minimal/build/index.js"],
       "env": {
         "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
       }
     },
+    "shell-minimal": {
+      "command": "node",
+      "args": ["/Users/a00288946/Desktop/template/my-mcp-servers/packages/shell-minimal/build/index.js"],
+      "env": {
+        "WORKING_DIRECTORY": "/Users/a00288946/Desktop/template",
+        "ALLOWED_COMMANDS": "npm,git,node,php,composer,curl,wget,ls,cat,grep,find,chmod,chown,mkdir,rm,cp,mv"
+      }
+    },
     "puppeteer-minimal": {
-      "command": "npx",
-      "args": ["-y", "git+https://github.com/gjoeckel/my-mcp-servers.git#mcp-restart:packages/puppeteer-minimal"]
+      "command": "node",
+      "args": ["/Users/a00288946/Desktop/template/my-mcp-servers/packages/puppeteer-minimal/build/index.js"]
     },
     "sequential-thinking-minimal": {
-      "command": "npx",
-      "args": ["-y", "git+https://github.com/gjoeckel/my-mcp-servers.git#mcp-restart:packages/sequential-thinking-minimal"]
-    },
-    "everything-minimal": {
-      "command": "npx",
-      "args": ["-y", "git+https://github.com/gjoeckel/my-mcp-servers.git#mcp-restart:packages/everything-minimal"]
+      "command": "node",
+      "args": ["/Users/a00288946/Desktop/template/my-mcp-servers/packages/sequential-thinking-minimal/build/index.js"]
     },
     "filesystem": {
       "command": "npx",
