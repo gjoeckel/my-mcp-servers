@@ -127,7 +127,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
         const allowedCommands = getAllowedCommands();
         const baseCommand = command.split(' ')[0];
-        
+
         if (!allowedCommands.includes(baseCommand)) {
           throw new Error(`Command '${baseCommand}' is not in the allowed commands list: ${allowedCommands.join(', ')}`);
         }
@@ -135,7 +135,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         const fullCommand = commandArgs.length > 0 ? `${command} ${commandArgs.join(' ')}` : command;
         const cwd = workingDirectory || getWorkingDirectory();
 
-        const { stdout, stderr } = await execAsync(fullCommand, { 
+        const { stdout, stderr } = await execAsync(fullCommand, {
           cwd,
           timeout: 30000, // 30 second timeout
         });
@@ -152,14 +152,14 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
       case 'list_processes': {
         const { filter } = args as { filter?: string };
-        
+
         let psCommand = 'ps aux';
         if (filter) {
           psCommand += ` | grep "${filter}"`;
         }
 
         const { stdout } = await execAsync(psCommand);
-        
+
         return {
           content: [
             {
@@ -172,7 +172,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
       case 'kill_process': {
         const { pid, signal = 'SIGTERM' } = args as { pid: number; signal?: string };
-        
+
         if (typeof pid !== 'number' || pid <= 0) {
           throw new Error('Invalid PID: must be a positive number');
         }
@@ -185,7 +185,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         }
 
         await execAsync(`kill -${signal} ${pid}`);
-        
+
         return {
           content: [
             {
@@ -198,7 +198,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
       case 'get_environment': {
         const { variable } = args as { variable?: string };
-        
+
         if (variable) {
           const value = process.env[variable];
           return {
@@ -261,3 +261,4 @@ main().catch((error) => {
   console.error('Fatal error:', error);
   process.exit(1);
 });
+
