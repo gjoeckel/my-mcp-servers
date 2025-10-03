@@ -1,0 +1,37 @@
+{
+  "name": "@gjoeckel/mcp-everything-minimal",
+  "version": "1.0.0",
+  "description": "Minimal Everything MCP Server - Essential protocol validation and testing tools only",
+  "type": "module",
+  "main": "build/index.js",
+  "bin": {
+    "mcp-everything-minimal": "build/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node build/index.js",
+    "dev": "tsc --watch"
+  },
+  "keywords": [
+    "mcp",
+    "everything",
+    "protocol",
+    "validation",
+    "testing",
+    "minimal"
+  ],
+  "author": "gjoeckel",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "files": [
+    "build/**/*",
+    "README.md"
+  ]
+}

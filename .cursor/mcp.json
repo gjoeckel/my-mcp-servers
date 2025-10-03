@@ -1,5 +1,24 @@
 {
   "mcpServers": {
+    "github-minimal": {
+      "command": "node",
+      "args": ["/Users/a00288946/Desktop/template/my-mcp-servers/packages/github-minimal/build/index.js"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
+      }
+    },
+    "puppeteer-minimal": {
+      "command": "node",
+      "args": ["/Users/a00288946/Desktop/template/my-mcp-servers/packages/puppeteer-minimal/build/index.js"]
+    },
+    "sequential-thinking-minimal": {
+      "command": "node",
+      "args": ["/Users/a00288946/Desktop/template/my-mcp-servers/packages/sequential-thinking-minimal/build/index.js"]
+    },
+    "everything-minimal": {
+      "command": "node",
+      "args": ["/Users/a00288946/Desktop/template/my-mcp-servers/packages/everything-minimal/build/index.js"]
+    },
     "filesystem": {
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/a00288946/Desktop/template"],
@@ -8,36 +27,9 @@
         "READ_ONLY": "false"
       }
     },
-    "shell": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-shell"],
-      "env": {
-        "ALLOWED_COMMANDS": "npm,git,node,php,composer,curl,wget,ls,cat,grep,find,chmod,chown,mkdir,rm,cp,mv",
-        "WORKING_DIRECTORY": "/Users/a00288946/Desktop/template"
-      }
-    },
     "memory": {
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-memory"]
-    },
-    "sequential-thinking": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
-    },
-    "everything": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-everything"]
-    },
-    "puppeteer": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-puppeteer"]
-    },
-    "github": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-github"],
-      "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
-      }
     }
   }
 }
