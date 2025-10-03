@@ -1,12 +1,14 @@
 #!/bin/bash
 # Start Optimized MCP Servers for Autonomous Operation
 # This script starts only essential servers to stay under 40-tool limit
-# Tool count: GitHub Minimal(4) + Filesystem(15) + Memory(8) = 27 tools
+# Tool count: GitHub Minimal(4) + Puppeteer Minimal(4) + Sequential Thinking Minimal(4) + Everything Minimal(4) + Filesystem(15) + Memory(8) = 39 tools
+# Uses remote repository: https://github.com/gjoeckel/my-mcp-servers
 
 set -euo pipefail
 
-echo "🚀 STARTING OPTIMIZED MCP SERVERS (27 TOOLS TOTAL)"
+echo "🚀 STARTING OPTIMIZED MCP SERVERS (39 TOOLS TOTAL)"
 echo "=================================================="
+echo "📦 Using remote repository: https://github.com/gjoeckel/my-mcp-servers"
 
 # Set environment variables
 export PROJECT_ROOT="/Users/a00288946/Desktop/template"
@@ -67,8 +69,8 @@ echo "🚀 Starting optimized MCP servers..."
 # GitHub Minimal MCP (4 tools - essential GitHub operations only)
 if [ -n "${GITHUB_TOKEN:-}" ]; then
     start_mcp_server "github-minimal" \
-        "node" \
-        "$PROJECT_ROOT/my-mcp-servers/packages/github-minimal/build/index.js" \
+        "npx" \
+        "-y git+https://github.com/gjoeckel/my-mcp-servers.git#mcp-restart:packages/github-minimal" \
         "GITHUB_PERSONAL_ACCESS_TOKEN=${GITHUB_TOKEN}"
 else
     echo "⚠️  GitHub Minimal MCP skipped - no GITHUB_TOKEN available"
@@ -76,18 +78,18 @@ fi
 
 # Puppeteer Minimal MCP (4 tools - essential browser automation)
 start_mcp_server "puppeteer-minimal" \
-    "node" \
-    "$PROJECT_ROOT/my-mcp-servers/packages/puppeteer-minimal/build/index.js"
+    "npx" \
+    "-y git+https://github.com/gjoeckel/my-mcp-servers.git#mcp-restart:packages/puppeteer-minimal"
 
 # Sequential Thinking Minimal MCP (4 tools - essential problem solving)
 start_mcp_server "sequential-thinking-minimal" \
-    "node" \
-    "$PROJECT_ROOT/my-mcp-servers/packages/sequential-thinking-minimal/build/index.js"
+    "npx" \
+    "-y git+https://github.com/gjoeckel/my-mcp-servers.git#mcp-restart:packages/sequential-thinking-minimal"
 
 # Everything Minimal MCP (4 tools - essential protocol validation)
 start_mcp_server "everything-minimal" \
-    "node" \
-    "$PROJECT_ROOT/my-mcp-servers/packages/everything-minimal/build/index.js"
+    "npx" \
+    "-y git+https://github.com/gjoeckel/my-mcp-servers.git#mcp-restart:packages/everything-minimal"
 
 # Filesystem MCP (15 tools - file operations, directory navigation)
 start_mcp_server "filesystem" \
