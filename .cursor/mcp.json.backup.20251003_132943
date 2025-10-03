@@ -8,25 +8,9 @@
         "READ_ONLY": "false"
       }
     },
-    "shell": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-shell"],
-      "env": {
-        "ALLOWED_COMMANDS": "npm,git,node,php,composer,curl,wget,ls,cat,grep,find,chmod,chown,mkdir,rm,cp,mv",
-        "WORKING_DIRECTORY": "/Users/a00288946/Desktop/template"
-      }
-    },
     "memory": {
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-memory"]
-    },
-    "sequential-thinking": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
-    },
-    "everything": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-everything"]
     },
     "puppeteer": {
       "command": "npx",
@@ -38,6 +22,14 @@
       "env": {
         "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
       }
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+    },
+    "everything": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-everything"]
     }
   }
 }
