@@ -1,15 +1,15 @@
 /**
  * State Events - Centralized event delegation
- * 
+ *
  * REPLACES:
  * - Event listeners scattered in buildPrinciples.js
  * - Event listeners scattered in main.js
  * - Event listeners scattered in addRow.js
- * 
+ *
  * RESPONSIBILITIES:
  * - Global event delegation for all interactions
  * - Status button click handling
- * - Reset button click handling  
+ * - Reset button click handling
  * - Delete button click handling
  * - Textarea input handling
  * - Side panel interactions
@@ -33,9 +33,12 @@ class StateEvents {
 
     // Single event delegation for ALL click interactions
     document.addEventListener('click', (e) => {
+      console.log('StateEvents: Click event detected on:', e.target);
+
       // Status button (Principles table)
       const statusButton = e.target.closest('.status-button');
       if (statusButton) {
+        console.log('StateEvents: Status button click detected');
         this.handleStatusChange(statusButton);
         return;
       }
@@ -45,6 +48,7 @@ class StateEvents {
       // Reset button
       const resetButton = e.target.closest('.restart-button');
       if (resetButton) {
+        console.log('StateEvents: Reset button click detected');
         this.handleReset(resetButton);
         return;
       }
@@ -54,6 +58,7 @@ class StateEvents {
       // Side panel navigation
       const sidePanelLink = e.target.closest('.side-panel a');
       if (sidePanelLink) {
+        console.log('StateEvents: Side panel link click detected');
         this.handleSidePanelNavigation(sidePanelLink, e);
         return;
       }
@@ -61,7 +66,16 @@ class StateEvents {
       // Side panel toggle
       const toggleStrip = e.target.closest('.toggle-strip');
       if (toggleStrip) {
+        console.log('StateEvents: Side panel toggle click detected');
         this.handleSidePanelToggle(e);
+        return;
+      }
+
+      // Checklist caption click - focus the heading
+      const checklistCaption = e.target.closest('.checklist-caption');
+      if (checklistCaption) {
+        console.log('StateEvents: Checklist caption click detected');
+        this.handleChecklistCaptionClick(checklistCaption, e);
         return;
       }
     });
@@ -70,6 +84,7 @@ class StateEvents {
     document.addEventListener('input', (e) => {
       const textarea = e.target.closest('textarea');
       if (textarea) {
+        console.log('StateEvents: Textarea input detected:', textarea.className, 'value length:', textarea.value.length);
         this.handleTextChange(textarea, e);
         return;
       }
@@ -83,32 +98,41 @@ class StateEvents {
    * Handle status button click (Principles table)
    */
   handleStatusChange(statusButton) {
+    console.log('StateEvents: Status button clicked');
     const row = statusButton.closest('tr');
-    if (!row) return;
+    if (!row) {
+      console.warn('StateEvents: No row found for status button');
+      return;
+    }
 
     const currentState = statusButton.getAttribute('data-state');
     const textarea = row.querySelector('.notes-textarea');
     const restartButton = row.querySelector('.restart-button');
     const taskId = statusButton.getAttribute('data-id');
-    
+
+    console.log(`StateEvents: Current state: ${currentState}, task ID: ${taskId}`);
+
     let newState, newIcon, newLabel;
-    
+
     // State transitions
     if (currentState === 'pending') {
       newState = 'in-progress';
       newIcon = window.getImagePath('in-progress.svg');
       newLabel = 'Task status: In Progress';
+      console.log('StateEvents: Transitioning from pending to in-progress');
     } else if (currentState === 'in-progress') {
       newState = 'completed';
       newIcon = window.getImagePath('completed.svg');
       newLabel = 'Task status: Completed';
-      
+      console.log('StateEvents: Transitioning from in-progress to completed');
+
       // Show and enable restart button when status is completed
       if (restartButton) {
         restartButton.style.display = 'flex';
         restartButton.disabled = false;
+        console.log('StateEvents: Restart button shown and enabled');
       }
-      
+
       // Create report row when completed - use StateManager
       // TEMPORARILY COMMENTED OUT - Report functionality is interfering with principle rows
       // if (textarea) {
@@ -116,7 +140,7 @@ class StateEvents {
       //   const taskCell = row.querySelector('.task-cell');
       //   if (taskCell) {
       //     const taskText = taskCell.textContent || '';
-      //     
+      //
       //     // Use StateManager to add report row (replaces event-based coupling)
       //     const rowData = this.stateManager.createReportRowData({
       //       task: taskText,
@@ -129,64 +153,59 @@ class StateEvents {
       //     console.log('StateEvents: Completed task added to Report via StateManager');
       //   }
       // }
-      
+
       // Apply completed textarea state
       if (textarea) {
         this.applyCompletedTextareaState(textarea, row);
+        console.log('StateEvents: Applied completed state to notes textarea');
       }
-      
+
       // Also apply completed state to Task textarea for manual rows
       const taskTextarea = row.querySelector('.task-input');
       if (taskTextarea) {
         this.applyCompletedTextareaState(taskTextarea, row);
+        console.log('StateEvents: Applied completed state to task textarea');
       }
-      
+
     } else if (currentState === 'completed') {
       // Cycle back to pending
       newState = 'pending';
       newIcon = window.getImagePath('pending.svg');
       newLabel = 'Task status: Pending';
-      
+      console.log('StateEvents: Transitioning from completed to pending');
+
       // Hide restart button
       if (restartButton) {
         restartButton.style.display = 'none';
+        console.log('StateEvents: Restart button hidden');
       }
-      
+
       // Restore textarea to editable state
       if (textarea) {
         this.restoreTextareaState(textarea, row);
+        console.log('StateEvents: Restored notes textarea to editable state');
       }
-      
+
       // Also restore Task textarea for manual rows
       const taskTextarea = row.querySelector('.task-input');
       if (taskTextarea) {
         this.restoreTextareaState(taskTextarea, row);
+        console.log('StateEvents: Restored task textarea to editable state');
       }
     }
-    
+
     // Update status button
     if (newState) {
-      statusButton.setAttribute('data-state', newState);
-      statusButton.setAttribute('aria-label', newLabel);
-      const statusImg = statusButton.querySelector('img');
-      if (statusImg) {
-        statusImg.src = newIcon;
-      }
+      this._updateStatusButton(statusButton, newState, newLabel, newIcon);
+      console.log(`StateEvents: Status button updated to ${newState}`);
     }
 
     // Update state in window.principleTableState for manual rows
-    const rowId = statusButton.getAttribute('data-id');
-    const principleId = row.closest('section')?.id;
-    if (rowId && principleId && window.principleTableState && window.principleTableState[principleId]) {
-      const rowData = window.principleTableState[principleId].find(r => r.id === rowId);
-      if (rowData && rowData.isManual) {
-        rowData.status = newState || currentState;
-        console.log(`StateEvents: Updated manual row ${rowId} status:`, rowData.status);
-      }
-    }
+    this._updateManualRowState(row, { status: newState || currentState });
 
     // Mark dirty for auto-save
     this.stateManager.markDirty();
+    console.log('StateEvents: Marked state as dirty for auto-save');
   }
 
   // handleReportStatusChange method removed - reports now on separate page
@@ -236,6 +255,35 @@ class StateEvents {
   }
 
   /**
+   * Update status button appearance and state
+   * @private
+   */
+  _updateStatusButton(statusButton, newState, newLabel, newIcon) {
+    statusButton.setAttribute('data-state', newState);
+    statusButton.setAttribute('aria-label', newLabel);
+    const statusImg = statusButton.querySelector('img');
+    if (statusImg) {
+      statusImg.src = newIcon;
+    }
+  }
+
+  /**
+   * Update manual row state in principleTableState
+   * @private
+   */
+  _updateManualRowState(row, updates) {
+    const rowId = row.getAttribute('data-id');
+    const principleId = row.closest('section')?.id;
+    if (rowId && principleId && window.principleTableState && window.principleTableState[principleId]) {
+      const rowData = window.principleTableState[principleId].find(r => r.id === rowId);
+      if (rowData && rowData.isManual) {
+        Object.assign(rowData, updates);
+        console.log(`StateEvents: Updated manual row ${rowId} state:`, rowData);
+      }
+    }
+  }
+
+  /**
    * Handle textarea input changes
    */
   handleTextChange(textarea, event) {
@@ -248,44 +296,32 @@ class StateEvents {
       if (statusButton) {
         const currentState = statusButton.getAttribute('data-state');
         const hasText = textarea.value.trim().length > 0;
-        
+
+        console.log(`StateEvents: Textarea change detected - current state: ${currentState}, has text: ${hasText}`);
+
         if (currentState === 'pending' && hasText) {
           // Has text: pending → in-progress
-          statusButton.setAttribute('data-state', 'in-progress');
-          statusButton.setAttribute('aria-label', 'Task status: In Progress');
-          statusButton.querySelector('img').src = window.getImagePath('in-progress.svg');
+          this._updateStatusButton(statusButton, 'in-progress', 'Task status: In Progress', window.getImagePath('in-progress.svg'));
+          console.log(`StateEvents: Status changed from pending to in-progress for row ${row.getAttribute('data-id')}`);
         } else if (currentState === 'in-progress' && !hasText) {
           // No text: in-progress → pending
-          statusButton.setAttribute('data-state', 'pending');
-          statusButton.setAttribute('aria-label', 'Task status: Pending');
-          statusButton.querySelector('img').src = window.getImagePath('pending.svg');
+          this._updateStatusButton(statusButton, 'pending', 'Task status: Pending', window.getImagePath('pending.svg'));
+          console.log(`StateEvents: Status changed from in-progress to pending for row ${row.getAttribute('data-id')}`);
         }
-        
+
         // Update state in window.principleTableState for manual rows
-        const rowId = row.getAttribute('data-id');
-        const principleId = row.closest('section')?.id;
-        if (rowId && principleId && window.principleTableState && window.principleTableState[principleId]) {
-          const rowData = window.principleTableState[principleId].find(r => r.id === rowId);
-          if (rowData && rowData.isManual) {
-            rowData.notes = textarea.value;
-            rowData.status = statusButton.getAttribute('data-state');
-            console.log(`StateEvents: Updated manual row ${rowId} state:`, rowData);
-          }
-        }
+        this._updateManualRowState(row, {
+          notes: textarea.value,
+          status: statusButton.getAttribute('data-state')
+        });
+      } else {
+        console.warn(`StateEvents: No status button found for textarea in row ${row.getAttribute('data-id')}`);
       }
     }
 
     // Handle Principles table task textarea (manual rows only)
     if (textarea.classList.contains('task-input')) {
-      const rowId = row.getAttribute('data-id');
-      const principleId = row.closest('section')?.id;
-      if (rowId && principleId && window.principleTableState && window.principleTableState[principleId]) {
-        const rowData = window.principleTableState[principleId].find(r => r.id === rowId);
-        if (rowData && rowData.isManual) {
-          rowData.task = textarea.value;
-          console.log(`StateEvents: Updated manual row ${rowId} task:`, rowData.task);
-        }
-      }
+      this._updateManualRowState(row, { task: textarea.value });
     }
 
     // Report table textarea handling removed - reports now on separate page
@@ -299,11 +335,14 @@ class StateEvents {
    */
   handleSidePanelNavigation(link, event) {
     event.preventDefault();
-    
+
     const targetId = link.getAttribute('href').substring(1);
     const targetSection = document.getElementById(targetId);
-    if (!targetSection) return;
-    
+    if (!targetSection) {
+      console.warn(`StateEvents: Target section ${targetId} not found`);
+      return;
+    }
+
     // Remove infocus class from all links
     const allLinks = document.querySelectorAll('.side-panel a');
     allLinks.forEach(l => {
@@ -313,29 +352,32 @@ class StateEvents {
       if (activeImg) activeImg.style.display = 'none';
       if (inactiveImg) inactiveImg.style.display = 'block';
     });
-    
+
     // Add infocus class to clicked link
     link.classList.add('infocus');
     const activeImg = link.querySelector('.active-state');
     const inactiveImg = link.querySelector('.inactive-state');
     if (activeImg) activeImg.style.display = 'block';
     if (inactiveImg) inactiveImg.style.display = 'none';
-    
+
     // Scroll to target section
     window.scrollTo({ top: targetSection.offsetTop, behavior: 'smooth' });
-    
-    // Focus the section heading
-    const headingSpan = targetSection.querySelector('.heading-content span');
-    const heading = targetSection.querySelector('h2');
-    const focusTarget = headingSpan || heading || targetSection;
-    if (focusTarget) {
-      const hadTabindex = focusTarget.hasAttribute('tabindex');
-      if (!hadTabindex) focusTarget.setAttribute('tabindex', '-1');
-      focusTarget.focus({ preventScroll: true });
-      if (!hadTabindex && !(focusTarget.tagName === 'SPAN' || focusTarget.tagName === 'H2')) {
-        focusTarget.removeAttribute('tabindex');
+
+    // Focus the section heading with a small delay to ensure DOM is ready
+    setTimeout(() => {
+      const heading = targetSection.querySelector('h2.checklist-caption');
+      if (heading) {
+        // Ensure the heading is focusable
+        if (!heading.hasAttribute('tabindex')) {
+          heading.setAttribute('tabindex', '0');
+        }
+        // Focus the heading
+        heading.focus();
+        console.log(`StateEvents: Focused heading for ${targetId}`);
+      } else {
+        console.warn(`StateEvents: No checklist-caption heading found for ${targetId}`);
       }
-    }
+    }, 100); // Small delay to ensure scroll and DOM updates are complete
 
     // Mark dirty for auto-save
     this.stateManager.markDirty();
@@ -359,11 +401,25 @@ class StateEvents {
   }
 
   /**
+   * Handle checklist caption click - focus the heading
+   */
+  handleChecklistCaptionClick(caption, event) {
+    event.preventDefault();
+
+    // Focus the caption element
+    caption.focus({ preventScroll: true });
+    console.log(`StateEvents: Focused checklist caption via mouse click`);
+
+    // Mark dirty for auto-save
+    this.stateManager.markDirty();
+  }
+
+  /**
    * Apply completed state to textarea
    */
   applyCompletedTextareaState(textarea, row) {
     const notesText = textarea.value;
-    
+
     // Make textarea non-interactive but keep it visible
     textarea.style.border = 'none';
     textarea.style.backgroundColor = 'transparent';
@@ -373,7 +429,7 @@ class StateEvents {
     textarea.disabled = true;
     textarea.setAttribute('tabindex', '-1');
     textarea.setAttribute('aria-hidden', 'true');
-    
+
     // Legacy overlay code removed - textareas now handle completed state directly
   }
 
@@ -389,7 +445,7 @@ class StateEvents {
     textarea.disabled = false;
     textarea.setAttribute('tabindex', '0');
     textarea.setAttribute('aria-hidden', 'false');
-    
+
     // Legacy overlay restoration code removed - textareas now handle state directly
   }
 

@@ -10,9 +10,9 @@
 /* Side Panel Navigation */
 .side-panel {
     position: fixed;
-    top: 155px; /* Align top of table in focus */
+    top: 225px;
     left: 0;
-    height: 50vh;
+    height: 400px;
     width: var(--side-panel-collapsed-width);
     background-color: white;
     padding: 1rem;
@@ -43,13 +43,19 @@ body.loaded .side-panel {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0.5rem;
+    width: 32px;
+    height: 32px;
+    padding: 0;
     color: inherit;
     text-decoration: none;
-    border-radius: 4px;
+    border-radius: 50%; /* Make circular like add row buttons */
 }
-/* Removed .side-panel a:hover, .side-panel a:focus */
-/* Removed .side-panel a.active rule (was commented out, standardizing on .infocus) */
+/* DRY Golden ring focus and hover styles for side panel links */
+.side-panel a:focus,
+.side-panel a:hover {
+    outline: none;
+    box-shadow: var(--golden-ring) !important;
+}
 
 .side-panel img {
     width: 36px;
@@ -58,9 +64,9 @@ body.loaded .side-panel {
 /* Side Panel Toggle */
 .toggle-strip {
     position: absolute;
-    right: -20px;
+    right: -21px;
     top: 0;
-    width: 20px;
+    width: 21px;
     height: 100%;
     background-color: #ccc;
     border: none;
@@ -74,7 +80,12 @@ body.loaded .side-panel {
     z-index: 91;
     transition: transform 0.3s ease; /* Note: The original transform was on the arrow, keeping transition here for potential future use */
 }
-/* Removed .toggle-strip:hover, .toggle-strip:focus */
+/* DRY Golden ring focus and hover styles for toggle strip */
+.toggle-strip:focus,
+.toggle-strip:hover {
+    outline: none;
+    box-shadow: var(--golden-ring) !important;
+}
 
 .toggle-arrow {
     transition: transform 0.45s ease;
@@ -119,4 +130,4 @@ body.loaded .side-panel {
 /* Removed debug ::after rules */
 
 /* --- Removed duplicated styles from multiple.css --- */
-/* Lines 143-266 (original file) deleted */ 
+/* Lines 143-266 (original file) deleted */

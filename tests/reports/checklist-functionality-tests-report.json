@@ -1,0 +1,81 @@
+{
+  "testName": "checklist-functionality-tests",
+  "timestamp": "2025-10-02T22:02:21.153Z",
+  "results": [
+    {
+      "test": "Checklist Type Loading - word",
+      "status": "PASSED"
+    },
+    {
+      "test": "Checklist Type Loading - excel",
+      "status": "PASSED"
+    },
+    {
+      "test": "Checklist Type Loading - powerpoint",
+      "status": "PASSED"
+    },
+    {
+      "test": "Checklist Type Loading - slides",
+      "status": "PASSED"
+    },
+    {
+      "test": "Checklist Type Loading - docs",
+      "status": "PASSED"
+    },
+    {
+      "test": "Checklist Type Loading - camtasia",
+      "status": "PASSED"
+    },
+    {
+      "test": "Checklist Type Loading - dojo",
+      "status": "PASSED"
+    },
+    {
+      "test": "Checklist Item Interactions",
+      "status": "FAILED",
+      "error": "page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n  - waiting for locator('.checklist-item') to be visible\n"
+    },
+    {
+      "test": "Notes Functionality",
+      "status": "PASSED",
+      "note": "No notes inputs found (may be expected for this checklist type)"
+    },
+    {
+      "test": "Add Row Functionality",
+      "status": "PASSED",
+      "note": "No add row button found (may be expected for this checklist type)"
+    },
+    {
+      "test": "Save Functionality",
+      "status": "FAILED",
+      "error": "Save API call failed"
+    },
+    {
+      "test": "Restore Functionality",
+      "status": "FAILED",
+      "error": "Restore API call failed"
+    },
+    {
+      "test": "Home Button Navigation",
+      "status": "PASSED"
+    }
+  ],
+  "screenshots": [
+    "/Users/a00288946/Desktop/template/tests/screenshots/checklist-word-loaded_2025-10-02T21-57-59-702Z.png",
+    "/Users/a00288946/Desktop/template/tests/screenshots/checklist-excel-loaded_2025-10-02T21-58-19-817Z.png",
+    "/Users/a00288946/Desktop/template/tests/screenshots/checklist-powerpoint-loaded_2025-10-02T21-58-39-915Z.png",
+    "/Users/a00288946/Desktop/template/tests/screenshots/checklist-slides-loaded_2025-10-02T21-59-00-023Z.png",
+    "/Users/a00288946/Desktop/template/tests/screenshots/checklist-docs-loaded_2025-10-02T21-59-20-126Z.png",
+    "/Users/a00288946/Desktop/template/tests/screenshots/checklist-camtasia-loaded_2025-10-02T21-59-40-232Z.png",
+    "/Users/a00288946/Desktop/template/tests/screenshots/checklist-dojo-loaded_2025-10-02T22-00-00-344Z.png",
+    "/Users/a00288946/Desktop/template/tests/screenshots/status-button-0-clicked_2025-10-02T22-00-50-549Z.png",
+    "/Users/a00288946/Desktop/template/tests/screenshots/status-button-1-clicked_2025-10-02T22-00-50-670Z.png",
+    "/Users/a00288946/Desktop/template/tests/screenshots/status-button-2-clicked_2025-10-02T22-00-50-788Z.png",
+    "/Users/a00288946/Desktop/template/tests/screenshots/navigated-to-home_2025-10-02T22-02-21-060Z.png"
+  ],
+  "summary": {
+    "total": 13,
+    "passed": 10,
+    "failed": 3
+  }
+}

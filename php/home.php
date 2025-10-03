@@ -1,6 +1,6 @@
 <?php
 // Determine base path for assets
-$isLocal = $_SERVER['HTTP_HOST'] === 'localhost' || 
+$isLocal = $_SERVER['HTTP_HOST'] === 'localhost' ||
            $_SERVER['HTTP_HOST'] === '127.0.0.1' ||
            strpos($_SERVER['HTTP_HOST'], 'local') !== false;
 $basePath = $isLocal ? '' : '/training/online/accessilist';
@@ -12,7 +12,17 @@ $basePath = $isLocal ? '' : '/training/online/accessilist';
 <!-- Added viewport meta for responsiveness -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Accessibility Checklists</title>
-<link rel="stylesheet" href="<?php echo $basePath; ?>/global.css">
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/simple-modal.css?v=<?php echo time(); ?>">
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/focus.css?v=<?php echo time(); ?>">
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/landing.css?v=<?php echo time(); ?>">
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/admin.css?v=<?php echo time(); ?>">
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/form-elements.css?v=<?php echo time(); ?>">
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/table.css?v=<?php echo time(); ?>">
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/section.css?v=<?php echo time(); ?>">
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/status.css?v=<?php echo time(); ?>">
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/side-panel.css?v=<?php echo time(); ?>">
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/header.css?v=<?php echo time(); ?>">
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/base.css?v=<?php echo time(); ?>">
 </head>
 <body>
 <!-- NoScript fallback to notify users that JavaScript is required -->
@@ -30,32 +40,30 @@ $basePath = $isLocal ? '' : '/training/online/accessilist';
 
 <!-- Main Content -->
 <main>
-    <div class="landing-content checklist-groups-row">
-      <div class="checklist-groups-header-row">
-        <div class="checklist-group-col"><h2>Microsoft</h2></div>
-        <div class="checklist-group-col"><h2>Google</h2></div>
-        <div class="checklist-group-col"><h2>Other</h2></div>
+    <div class="landing-content checklist-groups-container">
+      <div class="checklist-group">
+        <h2>Microsoft</h2>
+        <div class="checklist-buttons-row">
+          <button id="word" class="checklist-button">Word</button>
+          <button id="powerpoint" class="checklist-button">PowerPoint</button>
+          <button id="excel" class="checklist-button">Excel</button>
+        </div>
       </div>
-      <div class="checklist-groups-buttons-row">
-        <div class="checklist-group-col">
-          <div class="checklist-buttons-row">
-            <button id="word" class="checklist-button">Word</button>
-            <button id="powerpoint" class="checklist-button">PowerPoint</button>
-            <button id="excel" class="checklist-button">Excel</button>
-          </div>
+      <div class="checklist-group">
+        <h2>Google</h2>
+        <div class="checklist-buttons-row">
+          <button id="docs" class="checklist-button">Docs</button>
+          <button id="slides" class="checklist-button">Slides</button>
         </div>
-        <div class="checklist-group-col">
-          <div class="checklist-buttons-row">
-            <button id="docs" class="checklist-button">Docs</button>
-            <button id="slides" class="checklist-button">Slides</button>
-          </div>
+      </div>
+      <div class="checklist-group">
+        <h2>Other</h2>
+        <div class="checklist-buttons-row">
+          <button id="camtasia" class="checklist-button">Camtasia</button>
+          <button id="dojo" class="checklist-button">Dojo</button>
         </div>
-        <div class="checklist-group-col">
-          <div class="checklist-buttons-row">
-            <button id="camtasia" class="checklist-button">Camtasia</button>
-            <button id="dojo" class="checklist-button">Dojo</button>
-          </div>
-        </div>
+      </div>
+    </div>
 </main>
 
 <!-- Footer -->
@@ -64,8 +72,8 @@ $basePath = $isLocal ? '' : '/training/online/accessilist';
 </footer>
 
 <!-- Scripts -->
-<script type="module" src="<?php echo $basePath; ?>/js/path-utils.js"></script>
-<script src="<?php echo $basePath; ?>/js/type-manager.js"></script>
+<script type="module" src="<?php echo $basePath; ?>/js/path-utils.js?v=<?php echo time(); ?>"></script>
+<script src="<?php echo $basePath; ?>/js/type-manager.js?v=<?php echo time(); ?>"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     // Connect buttons to redirect to php/mychecklist.php
@@ -75,7 +83,7 @@ $basePath = $isLocal ? '' : '/training/online/accessilist';
         const checklistType = this.id;
         // Generate a 3-character session ID using numbers and capital letters
         const sessionId = generateAlphanumericSessionId();
-        
+
         try {
           // First, create the session with the correct checklist type
           const response = await fetch('api/instantiate.php', {
@@ -86,7 +94,7 @@ $basePath = $isLocal ? '' : '/training/online/accessilist';
               typeSlug: checklistType
             })
           });
-          
+
           if (response.ok) {
             // Then redirect to minimal URL format (?=EDF)
             window.location.href = `/?=${sessionId}`;
@@ -102,7 +110,7 @@ $basePath = $isLocal ? '' : '/training/online/accessilist';
         }
       });
     });
-    
+
     // Connect Admin button to redirect to php/admin.php
     const adminButton = document.getElementById('adminButton');
     if (adminButton) {
@@ -122,7 +130,7 @@ $basePath = $isLocal ? '' : '/training/online/accessilist';
         }
       });
     }
-    
+
     // Function to generate a 3-character session ID using numbers and capital letters
     function generateAlphanumericSessionId() {
       const characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -135,4 +143,4 @@ $basePath = $isLocal ? '' : '/training/online/accessilist';
   });
 </script>
 </body>
-</html> 
+</html>

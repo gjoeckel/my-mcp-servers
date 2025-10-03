@@ -28,6 +28,9 @@ show_usage() {
     echo "  update    - Record progress mid-session (without ending)"
     echo "  local     - Commit changes to local branch"
     echo "  end       - Generate changelog for completed session"
+    echo "  repeat           - AI returns VERY CONCISE understanding, critical questions only, wait for proceed"
+    echo "  repeat-full      - AI returns DETAILED understanding, critical questions only, wait for proceed"
+    echo "  repeat-questions - AI returns DETAILED understanding, SRD scope questions, wait for proceed"
     echo "  compress  - Compress context into summary"
     echo "  status    - Show current context status"
     echo "  clean     - Clean old context files"
@@ -39,6 +42,7 @@ show_usage() {
     echo "  $0 update    # Record progress mid-session"
     echo "  $0 local     # Commit changes to local branch"
     echo "  $0 end       # End current session and generate changelog"
+    echo "  $0 repeat    # AI repeats understanding of preceding content"
     echo "  $0 compress  # Compress context for efficiency"
     echo "  $0 status    # Check current context status"
 }
@@ -118,6 +122,9 @@ EOF
 # AI Changelog Aliases
 alias ai-start='$SCRIPT_DIR/ai-changelog-master.sh start'
 alias ai-end='$SCRIPT_DIR/ai-changelog-master.sh end'
+alias ai-repeat='$SCRIPT_DIR/ai-changelog-master.sh repeat'
+alias ai-repeat-full='$SCRIPT_DIR/ai-changelog-master.sh repeat-full'
+alias ai-repeat-questions='$SCRIPT_DIR/ai-changelog-master.sh repeat-questions'
 alias ai-compress='$SCRIPT_DIR/ai-changelog-master.sh compress'
 alias ai-status='$SCRIPT_DIR/ai-changelog-master.sh status'
 alias ai-clean='$SCRIPT_DIR/ai-changelog-master.sh clean'
@@ -233,6 +240,62 @@ case "${1:-help}" in
     "end")
         echo -e "${BLUE}📝 Ending AI session and generating changelog...${NC}"
         "$SCRIPT_DIR/session-end.sh"
+        ;;
+    "repeat")
+        echo -e "${BLUE}🔄 AI Repeat Mode - VERY CONCISE${NC}"
+        echo -e "${BLUE}===============================${NC}"
+        echo ""
+        echo -e "${YELLOW}📋 MANDATORY WORKFLOW FOR AI AGENT:${NC}"
+        echo -e "${YELLOW}1. Return VERY CONCISE understanding of developer's request${NC}"
+        echo -e "${YELLOW}2. Ask ONLY questions to avoid CRITICAL failure or gaps${NC}"
+        echo -e "${YELLOW}3. WAIT - Do not take any actions${NC}"
+        echo -e "${YELLOW}4. Proceed only when token 'proceed' is returned by developer${NC}"
+        echo ""
+        echo -e "${RED}⚠️  CRITICAL ENFORCEMENT:${NC}"
+        echo -e "${RED}• DO NOT take any actions until 'proceed' token is received${NC}"
+        echo -e "${RED}• BE VERY CONCISE - minimal detail, essential points only${NC}"
+        echo -e "${RED}• WAIT for developer to type 'proceed' in chat${NC}"
+        echo ""
+        echo -e "${BLUE}🤖 AI AGENT: Start with VERY CONCISE understanding...${NC}"
+        ;;
+    "repeat-full")
+        echo -e "${BLUE}🔄 AI Repeat Mode - DETAILED${NC}"
+        echo -e "${BLUE}===========================${NC}"
+        echo ""
+        echo -e "${YELLOW}📋 MANDATORY WORKFLOW FOR AI AGENT:${NC}"
+        echo -e "${YELLOW}1. Return DETAILED understanding of developer's request${NC}"
+        echo -e "${YELLOW}2. Ask ONLY questions to avoid CRITICAL failure or gaps${NC}"
+        echo -e "${YELLOW}3. WAIT - Do not take any actions${NC}"
+        echo -e "${YELLOW}4. Proceed only when token 'proceed' is returned by developer${NC}"
+        echo ""
+        echo -e "${RED}⚠️  CRITICAL ENFORCEMENT:${NC}"
+        echo -e "${RED}• DO NOT take any actions until 'proceed' token is received${NC}"
+        echo -e "${RED}• PROVIDE DETAILED understanding - comprehensive analysis${NC}"
+        echo -e "${RED}• WAIT for developer to type 'proceed' in chat${NC}"
+        echo ""
+        echo -e "${BLUE}🤖 AI AGENT: Start with DETAILED understanding...${NC}"
+        ;;
+    "repeat-questions")
+        echo -e "${BLUE}🔄 AI Repeat Mode - DETAILED WITH SRD QUESTIONS${NC}"
+        echo -e "${BLUE}============================================${NC}"
+        echo ""
+        echo -e "${YELLOW}📋 MANDATORY WORKFLOW FOR AI AGENT:${NC}"
+        echo -e "${YELLOW}1. Return DETAILED understanding of developer's request${NC}"
+        echo -e "${YELLOW}2. Ask ANY questions within SRD scope related to request${NC}"
+        echo -e "${YELLOW}3. WAIT - Do not take any actions${NC}"
+        echo -e "${YELLOW}4. Proceed only when token 'proceed' is returned by developer${NC}"
+        echo ""
+        echo -e "${GREEN}📚 SRD SCOPE: Simple, Reliable, DRY principles${NC}"
+        echo -e "${GREEN}• Simple: Clear, straightforward implementations${NC}"
+        echo -e "${GREEN}• Reliable: Robust, error-free, well-tested${NC}"
+        echo -e "${GREEN}• DRY: Don't Repeat Yourself - efficient, maintainable${NC}"
+        echo ""
+        echo -e "${RED}⚠️  CRITICAL ENFORCEMENT:${NC}"
+        echo -e "${RED}• DO NOT take any actions until 'proceed' token is received${NC}"
+        echo -e "${RED}• PROVIDE DETAILED understanding with SRD-focused questions${NC}"
+        echo -e "${RED}• WAIT for developer to type 'proceed' in chat${NC}"
+        echo ""
+        echo -e "${BLUE}🤖 AI AGENT: Start with DETAILED understanding and SRD questions...${NC}"
         ;;
     "compress")
         echo -e "${BLUE}🗜️  Compressing context...${NC}"

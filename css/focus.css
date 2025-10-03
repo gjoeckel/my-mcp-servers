@@ -117,45 +117,11 @@ select:focus-visible {
 
 /* --- Side Panel Focus/Hover Indicator (Circular Border) --- */
 /* Unchanged from original focus.css */
-.side-panel a {
-  position: relative;
-}
-
-.side-panel a::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  border: 2px solid transparent;
-  transition: border-color 0.2s ease;
-  pointer-events: none;
-}
-
-.side-panel a[href="#checklist-1"]:is(:focus-visible, :hover)::after {
-  border-color: #005192;
-}
-.side-panel a[href="#checklist-2"]:is(:focus-visible, :hover)::after {
-  border-color: #5E850F;
-}
-.side-panel a[href="#checklist-3"]:is(:focus-visible, :hover)::after {
-  border-color: #AC6628;
-}
-.side-panel a[href="#checklist-4"]:is(:focus-visible, :hover)::after {
-  border-color: #0C2336;
-}
-
-/* Report tab hover/focus indicator uses report theme color */
-.side-panel a[href="#report"]:is(:focus-visible, :hover)::after {
-  border-color: #666666;
-}
+/* Custom circle styles removed - now using DRY golden ring */
 
 /* Side panel toggle button hover/focus - match Save ring */
 .toggle-strip:is(:hover, :focus-visible) {
-  box-shadow: 0 0 0 1px white, 0 0 0 2px #333, 0 0 0 4px #FFD700 !important;
+  box-shadow: var(--golden-ring) !important;
 }
 
 .side-panel a:focus-visible img {
@@ -187,7 +153,7 @@ button.info-link:focus {
 .clear-data-button:focus-visible, .clear-data-button:hover,
 #adminButton:focus-visible, #adminButton:hover,
 #cancelButton:focus-visible, #cancelButton:hover {
-  box-shadow: 0 0 0 2px #005192 !important;
+  box-shadow: var(--golden-ring) !important;
 }
 
 /* Apply Home-like ring (white gap, #333 border, gold outer) to interactive elements */
@@ -197,13 +163,13 @@ button.info-link:focus {
 :is(button, input, select, textarea):is(:hover, :focus-visible),
 .instance-link:is(:hover, :focus-visible),
 .admin-delete-button:is(:hover, :focus-visible) {
-  box-shadow: 0 0 0 1px white, 0 0 0 2px #333, 0 0 0 4px #FFD700 !important;
+  box-shadow: var(--golden-ring) !important;
 }
 
 /* Checklist Info column: rounded hover/focus shape */
 .principles-table .info-link:is(:hover, :focus-visible) {
   border-radius: 6px !important;
-  box-shadow: 0 0 0 1px white, 0 0 0 2px #333, 0 0 0 4px #FFD700 !important;
+  box-shadow: var(--golden-ring) !important;
 }
 
 /* Admin Instance column: match Checklist Info rounded style */
@@ -214,13 +180,11 @@ button.info-link:focus {
   display: block !important;
 }
 
-/* Focused section headings (span) use the same golden ring with rounded corners */
-.heading-content span:is(:hover, :focus-visible) {
+/* Focused section headings ring wraps the inner .heading-content for stable layout */
+h2:is(:hover, :focus-visible) .heading-content,
+.heading-content:is(:hover, :focus-visible) {
   border-radius: 6px !important;
-  box-shadow: 0 0 0 1px white, 0 0 0 2px #333, 0 0 0 4px #FFD700 !important;
-  padding: 4px !important;
-  margin-left: -4px !important; /* compensate padding so adjacent img doesn't shift */
-  display: inline-block; /* ensure padding applies without line-height shifts */
+  box-shadow: var(--golden-ring) !important;
 }
 
 /* Admin Delete column: match Checklist Restart shape (rounded corners) */
@@ -233,7 +197,7 @@ button.info-link:focus {
 
 /* Home button hover/focus ring matches Save button's hover ring */
 #homeButton:is(:hover, :focus-visible) {
-  box-shadow: 0 0 0 1px white, 0 0 0 2px #333, 0 0 0 4px #FFD700 !important;
+  box-shadow: var(--golden-ring) !important;
 }
 
 /* Unified gray hover/focus background for neutral header buttons */

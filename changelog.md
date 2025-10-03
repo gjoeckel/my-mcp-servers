@@ -8,6 +8,18 @@
 
 ## Entries
 
+### 2025-01-27 - CSS Architecture Refactor
+
+- **BREAKING**: Removed global.css build process and replaced with individual CSS files
+- **Removed**: CSS build scripts from package.json (concat:css, build:css)
+- **Removed**: css-consolidation.sh script (backed up to .backup)
+- **Removed**: tests/config/build-order.json (backed up to .backup)
+- **Updated**: All PHP files now include individual CSS files in correct order
+- **Updated**: README.md to reflect new CSS architecture
+- **Updated**: DEPLOYMENT.md to remove CSS build requirements
+- **Backed up**: global.css to global.css.backup
+- **Result**: No build process required, immediate CSS changes, better maintainability
+
 ### 2025-10-02 12:04:51 UTC - Admin Interface Consistency Updates + Best Practice Modal Implementation
 
 **Summary:**

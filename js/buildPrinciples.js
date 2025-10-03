@@ -1,6 +1,6 @@
 /**
  * buildPrinciples.js
- * 
+ *
  * This script is responsible for:
  * 1. Fetching the JSON data
  * 2. Generating principle sections dynamically
@@ -9,7 +9,7 @@
 
 // buildReportsSection import removed - reports now handled on separate page
 
-// Old modal HTML removed - now using DRY modal-manager.js
+// Old modal HTML removed - now using SimpleModal system
 
 // Table configuration
 const TABLE_CONFIG = {
@@ -39,10 +39,11 @@ function createPrincipleSection(principleId, data) {
     section.id = principleId;
     section.className = `principle-section ${principleId}`;
 
-    // Create heading with number icon
+    // Create simplified heading with number icon
     const heading = document.createElement('h2');
     heading.id = `${principleId}-caption`;
-    
+    heading.className = 'checklist-caption';
+
     // Set aria-label to combine table number and caption
     let tableNumber;
     if (principleId === 'checklist-1') {
@@ -58,36 +59,31 @@ function createPrincipleSection(principleId, data) {
         tableNumber = '';
         console.warn(`Unknown principle ID: ${principleId}`);
     }
-    
+
     // Only set aria-label if we have a valid table number
     if (tableNumber) {
         heading.setAttribute('aria-label', `Table ${tableNumber}: ${data.caption}`);
     } else {
         heading.setAttribute('aria-label', data.caption);
     }
-    
-    // Create container for heading content
-    const headingContent = document.createElement('div');
-    headingContent.className = 'heading-content';
-    
+
+    // Make the heading focusable for keyboard users
+    heading.setAttribute('tabindex', '0');
+
     // Add number icon based on principle, but only if we have a valid table number
     if (tableNumber) {
         const numberIcon = document.createElement('img');
-        numberIcon.alt = `table ${tableNumber}`;
+        numberIcon.alt = tableNumber;
         numberIcon.src = window.getImagePath(`number-${tableNumber}-1.svg`);
         numberIcon.width = 36;
         numberIcon.height = 36;
-        headingContent.appendChild(numberIcon);
+        heading.appendChild(numberIcon);
     }
-    
-    // Add caption text
-    const captionText = document.createElement('span');
-    captionText.textContent = data.caption;
-  captionText.setAttribute('tabindex', '-1');
-    
-    // Assemble heading
-    headingContent.appendChild(captionText);
-    heading.appendChild(headingContent);
+
+    // Add caption text directly to heading
+    const captionText = document.createTextNode(` ${data.caption}`);
+    heading.appendChild(captionText);
+
     section.appendChild(heading);
 
     // Create container
@@ -104,23 +100,25 @@ function buildTable(rows, principleId) {
     table.className = 'principles-table';
     table.setAttribute('role', 'table');
     table.setAttribute('aria-label', 'Principles Checklist');
+    // Associate table with its heading as a pseudo-caption
+    table.setAttribute('aria-labelledby', `${principleId}-caption`);
 
     // Create table header
     const thead = document.createElement('thead');
     const headerRow = document.createElement('tr');
-    
+
     const taskHeader = document.createElement('th');
     taskHeader.className = 'task-cell';
     taskHeader.textContent = 'Tasks';
-    
+
     const infoHeader = document.createElement('th');
     infoHeader.className = 'info-cell';
     infoHeader.textContent = 'Info';
-    
+
     const notesHeader = document.createElement('th');
     notesHeader.className = 'notes-cell';
     notesHeader.textContent = 'Notes';
-    
+
     const statusHeader = document.createElement('th');
     statusHeader.className = 'status-cell';
     statusHeader.textContent = 'Status';
@@ -128,7 +126,7 @@ function buildTable(rows, principleId) {
     const restartHeader = document.createElement('th');
     restartHeader.className = 'restart-cell';
     restartHeader.textContent = 'Reset';
-    
+
     headerRow.appendChild(taskHeader);
     headerRow.appendChild(infoHeader);
     headerRow.appendChild(notesHeader);
@@ -174,44 +172,36 @@ function buildTable(rows, principleId) {
         const infoButton = document.createElement('button');
         infoButton.className = 'info-link';
         infoButton.setAttribute('aria-label', `Show example for ${row.task}`);
-        
+
         const infoImg = document.createElement('img');
         infoImg.src = window.getImagePath('info0.svg');
         infoImg.alt = '';
         infoButton.appendChild(infoImg);
-        
+
         // Add hover and focus event listeners
         infoButton.addEventListener('mouseenter', () => {
             infoImg.src = window.getImagePath('info1.svg');
         });
-        
+
         infoButton.addEventListener('mouseleave', () => {
             infoImg.src = window.getImagePath('info0.svg');
         });
-        
+
         infoButton.addEventListener('focus', () => {
             infoImg.src = window.getImagePath('info1.svg');
         });
-        
+
         infoButton.addEventListener('blur', () => {
             infoImg.src = window.getImagePath('info0.svg');
         });
 
-        // Add click handler for modal
+        // Add click handler for modal using SimpleModal
         infoButton.addEventListener('click', () => {
-            // --- Modal Retrieval ---
-            const modal = document.getElementById('infoModal');
-            const overlay = document.getElementById('modalOverlay');
-            const modalTitle = document.getElementById('modalTitle');
-            const closeButton = modal.querySelector('.close-modal');
-            const modalContent = modal.querySelector('.modal-content');
-            // --- End Modal Retrieval ---
-
             // Truncate title at last complete word within character limit
             const maxLength = 50; // Adjust this value as needed
             const words = row.task.split(' ');
             let truncatedTitle = '';
-            
+
             for (const word of words) {
                 if ((truncatedTitle + ' ' + word).length <= maxLength) {
                     truncatedTitle += (truncatedTitle ? ' ' : '') + word;
@@ -219,78 +209,19 @@ function buildTable(rows, principleId) {
                     break;
                 }
             }
-            
-            // Update modal content
-            modalTitle.textContent = truncatedTitle;
-            modalTitle.classList.add('visible');
 
-            // Set ARIA attributes
-            modal.setAttribute('role', 'dialog');
-            modal.setAttribute('aria-modal', 'true');
-            modal.setAttribute('aria-labelledby', 'modalTitle');
-            modal.setAttribute('aria-describedby', 'modalContent');
-            modal.setAttribute('aria-hidden', 'false');
-            
-            // Set overlay attributes
-            overlay.setAttribute('aria-hidden', 'false');
-            overlay.setAttribute('role', 'presentation');
-
-            // Show modal and overlay
-            modal.style.display = 'block';
-            overlay.style.display = 'block';
-
-            // Focus management
-            const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-            const firstFocusableElement = focusableElements[0];
-            const lastFocusableElement = focusableElements[focusableElements.length - 1];
-
-            // Focus close button
-            closeButton.focus();
-
-            // Handle close button click
-            const closeModal = () => {
-                modal.setAttribute('aria-hidden', 'true');
-                overlay.setAttribute('aria-hidden', 'true');
-                modal.style.display = 'none';
-                overlay.style.display = 'none';
-                infoButton.focus(); // Return focus to the button that opened the modal
-            };
-
-            closeButton.onclick = closeModal;
-            overlay.onclick = closeModal;
-
-            // Handle keyboard navigation
-            const handleKeyDown = (event) => {
-                if (event.key === 'Escape') {
-                    closeModal();
-                } else if (event.key === 'Tab') {
-                    if (event.shiftKey) {
-                        if (document.activeElement === firstFocusableElement) {
-                            event.preventDefault();
-                            lastFocusableElement.focus();
-                        }
-                    } else {
-                        if (document.activeElement === lastFocusableElement) {
-                            event.preventDefault();
-                            firstFocusableElement.focus();
-                        }
-                    }
-                }
-            };
-
-            document.addEventListener('keydown', handleKeyDown);
-
-            // Clean up event listeners when modal is closed
-            const cleanup = () => {
-                document.removeEventListener('keydown', handleKeyDown);
-                closeButton.removeEventListener('click', cleanup);
-                overlay.removeEventListener('click', cleanup);
-            };
-
-            closeButton.addEventListener('click', cleanup, { once: true });
-            overlay.addEventListener('click', cleanup, { once: true });
+            // Use SimpleModal for info display
+            if (window.simpleModal) {
+                window.simpleModal.info(
+                    truncatedTitle,
+                    row.example || 'No example available.',
+                    () => console.log('Info modal closed')
+                );
+            } else {
+                console.error('SimpleModal not available');
+            }
         });
-        
+
         infoCell.appendChild(infoButton);
 
         // Add notes textarea
@@ -331,18 +262,18 @@ function buildTable(rows, principleId) {
     });
 
     table.appendChild(tbody);
-    
+
     // Create Add Row button container
     const buttonContainer = document.createElement('div');
     buttonContainer.className = 'principles-buttons';
-    
+
     // Create Add Row button
     const addButton = document.createElement('button');
     addButton.className = 'principles-button';
     addButton.id = `addRow-${principleId}`;
     addButton.setAttribute('data-principle', principleId);
     addButton.setAttribute('aria-label', `Add new task to ${principleId}`);
-    
+
     // Create image element with color-coded icon for each checklist
     const img = document.createElement('img');
     const iconMap = {
@@ -351,24 +282,24 @@ function buildTable(rows, principleId) {
         'checklist-3': 'add-3.svg', // Orange
         'checklist-4': 'add-4.svg'  // Dark Blue/Purple
     };
-    
+
     const iconName = iconMap[principleId] || 'add0.svg';
     img.src = window.getImagePath ? window.getImagePath(iconName) : `/images/${iconName}`;
     img.alt = 'Add Row';
     addButton.appendChild(img);
-    
+
     // Add button to container
     buttonContainer.appendChild(addButton);
-    
+
     // Event listener will be attached by initializePrincipleAddRowButtons() in addRow.js
     // This ensures proper initialization timing and prevents duplicate event listeners
-    
+
     // Create wrapper div to contain both table and button
     const wrapper = document.createElement('div');
     wrapper.className = 'principles-table-wrapper';
     wrapper.appendChild(table);
     wrapper.appendChild(buttonContainer);
-    
+
     return wrapper;
 }
 
@@ -378,12 +309,12 @@ function buildTable(rows, principleId) {
  */
 function handleAddPrincipleRow(principleId) {
     console.log(`Adding new row to ${principleId}`);
-    
+
     if (!window.unifiedStateManager) {
         console.error('StateManager not available - cannot add principle row');
         return;
     }
-    
+
     // Use StateManager method for consistent data creation
     const newRowData = window.unifiedStateManager.createPrincipleRowData({
         principleId: principleId,
@@ -392,11 +323,11 @@ function handleAddPrincipleRow(principleId) {
         status: 'pending',
         isManual: true
     });
-    
+
     // Add using StateManager method
     window.unifiedStateManager.addPrincipleRow(newRowData, true);
-    
-    // Set focus on the task textarea for manual rows
+
+    // Set focus on the task textarea for manual rows - reduced timeout to prevent race conditions
     setTimeout(() => {
         const currentTable = document.querySelector(`#${principleId} .principles-table tbody`);
         if (currentTable) {
@@ -408,7 +339,7 @@ function handleAddPrincipleRow(principleId) {
                 }
             }
         }
-    }, 100);
+    }, 50); // Reduced from 100ms to 50ms
 }
 
 // Make function globally available
@@ -423,13 +354,13 @@ async function buildContent(data) {
     console.log('Starting to build content');
     try {
         console.log('Building content with data:', data);
-        
+
         const main = document.querySelector('main');
         if (!main) {
             throw new Error('Main element not found');
         }
         console.log('Found main element:', main);
-        
+
         // Clear existing content
         console.log('Clearing existing content');
         main.innerHTML = '';
@@ -470,4 +401,4 @@ async function buildContent(data) {
 }
 
 // Export the function
-export { buildContent }; 
+export { buildContent };

@@ -1,36 +1,36 @@
 {
   "testName": "api-integration-tests",
-  "timestamp": "2025-10-02T20:37:51.097Z",
+  "timestamp": "2025-10-02T22:02:21.627Z",
   "results": [
     {
       "test": "API Health Check",
       "status": "FAILED",
-      "error": "apiRequestContext.fetch: connect ECONNREFUSED 127.0.0.1:8000\nCall log:\n  - → GET http://localhost:8000/php/api/health.php\n    - user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/140.0.7339.186 Safari/537.36\n    - accept: */*\n    - accept-encoding: gzip,deflate,br\n    - Content-Type: application/json\n"
+      "error": "Health check returned failure"
     },
     {
       "test": "API List Endpoint",
-      "status": "FAILED",
-      "error": "apiRequestContext.fetch: connect ECONNREFUSED 127.0.0.1:8000\nCall log:\n  - → GET http://localhost:8000/php/api/list.php\n    - user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/140.0.7339.186 Safari/537.36\n    - accept: */*\n    - accept-encoding: gzip,deflate,br\n    - Content-Type: application/json\n"
+      "status": "PASSED",
+      "note": "Found 22 saved checklists"
     },
     {
       "test": "API Instantiate Endpoint",
       "status": "FAILED",
-      "error": "apiRequestContext.fetch: connect ECONNREFUSED 127.0.0.1:8000\nCall log:\n  - → POST http://localhost:8000/php/api/instantiate.php\n    - user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/140.0.7339.186 Safari/537.36\n    - accept: */*\n    - accept-encoding: gzip,deflate,br\n    - Content-Type: application/json\n"
+      "error": "Instantiate endpoint failed"
     },
     {
       "test": "API Save Endpoint",
       "status": "FAILED",
-      "error": "apiRequestContext.fetch: connect ECONNREFUSED 127.0.0.1:8000\nCall log:\n  - → POST http://localhost:8000/php/api/instantiate.php\n    - user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/140.0.7339.186 Safari/537.36\n    - accept: */*\n    - accept-encoding: gzip,deflate,br\n    - Content-Type: application/json\n"
+      "error": "Save endpoint failed"
     },
     {
       "test": "API Restore Endpoint",
       "status": "FAILED",
-      "error": "apiRequestContext.fetch: connect ECONNREFUSED 127.0.0.1:8000\nCall log:\n  - → POST http://localhost:8000/php/api/instantiate.php\n    - user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/140.0.7339.186 Safari/537.36\n    - accept: */*\n    - accept-encoding: gzip,deflate,br\n    - Content-Type: application/json\n"
+      "error": "Restore endpoint failed or returned invalid data"
     },
     {
       "test": "API Delete Endpoint",
       "status": "FAILED",
-      "error": "apiRequestContext.fetch: connect ECONNREFUSED 127.0.0.1:8000\nCall log:\n  - → POST http://localhost:8000/php/api/instantiate.php\n    - user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/140.0.7339.186 Safari/537.36\n    - accept: */*\n    - accept-encoding: gzip,deflate,br\n    - Content-Type: application/json\n"
+      "error": "Delete endpoint failed"
     },
     {
       "test": "API Error Handling - Invalid Session Key",
@@ -55,23 +55,23 @@
     {
       "test": "API Data Validation - Valid Data",
       "status": "FAILED",
-      "error": "apiRequestContext.fetch: connect ECONNREFUSED 127.0.0.1:8000\nCall log:\n  - → POST http://localhost:8000/php/api/instantiate.php\n    - user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/140.0.7339.186 Safari/537.36\n    - accept: */*\n    - accept-encoding: gzip,deflate,br\n    - Content-Type: application/json\n"
+      "error": "Validation test failed for Valid Data"
     },
     {
       "test": "API Performance - Health Check Performance",
       "status": "FAILED",
-      "error": "apiRequestContext.fetch: connect ECONNREFUSED 127.0.0.1:8000\nCall log:\n  - → GET http://localhost:8000/php/api/health.php\n    - user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/140.0.7339.186 Safari/537.36\n    - accept: */*\n    - accept-encoding: gzip,deflate,br\n    - Content-Type: application/json\n"
+      "error": "API call failed"
     },
     {
       "test": "API Performance - List Performance",
-      "status": "FAILED",
-      "error": "apiRequestContext.fetch: connect ECONNREFUSED 127.0.0.1:8000\nCall log:\n  - → GET http://localhost:8000/php/api/list.php\n    - user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/140.0.7339.186 Safari/537.36\n    - accept: */*\n    - accept-encoding: gzip,deflate,br\n    - Content-Type: application/json\n"
+      "status": "PASSED",
+      "note": "Response time: 4ms"
     }
   ],
   "screenshots": [],
   "summary": {
     "total": 14,
-    "passed": 5,
-    "failed": 9
+    "passed": 7,
+    "failed": 7
   }
 }

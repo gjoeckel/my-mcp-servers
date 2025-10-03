@@ -1,0 +1,4 @@
+# Documentation-specific ignores
+*.tmp
+*.bak
+.DS_Store

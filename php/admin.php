@@ -1,6 +1,6 @@
 <?php
 // Determine base path for assets
-$isLocal = $_SERVER['HTTP_HOST'] === 'localhost' || 
+$isLocal = $_SERVER['HTTP_HOST'] === 'localhost' ||
            $_SERVER['HTTP_HOST'] === '127.0.0.1' ||
            strpos($_SERVER['HTTP_HOST'], 'local') !== false;
 $basePath = $isLocal ? '' : '/training/online/accessilist';
@@ -11,7 +11,17 @@ $basePath = $isLocal ? '' : '/training/online/accessilist';
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin</title>
-<link rel="stylesheet" href="<?php echo $basePath; ?>/global.css">
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/simple-modal.css">
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/focus.css">
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/landing.css">
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/admin.css">
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/form-elements.css">
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/table.css">
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/section.css">
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/status.css">
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/side-panel.css">
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/header.css">
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/base.css">
 </head>
 <body>
 <!-- NoScript fallback -->
@@ -60,13 +70,14 @@ $basePath = $isLocal ? '' : '/training/online/accessilist';
     <p>© 2025 NCADEMI. All rights reserved.</p>
 </footer>
 
-<!-- Old modal HTML removed - now using DRY modal-manager.js -->
+<!-- Old modal HTML removed - now using SimpleModal system -->
 
 <!-- Path Configuration -->
-<script src="<?php echo $basePath; ?>/js/path-utils.js"></script>
-<script src="<?php echo $basePath; ?>/js/type-manager.js"></script>
-<script type="module" src="<?php echo $basePath; ?>/js/ui-components.js"></script>
-<script type="module" src="<?php echo $basePath; ?>/js/modal-manager.js"></script>
+<script src="<?php echo $basePath; ?>/js/path-utils.js?v=<?php echo time(); ?>"></script>
+<script src="<?php echo $basePath; ?>/js/type-manager.js?v=<?php echo time(); ?>"></script>
+<script type="module" src="<?php echo $basePath; ?>/js/ui-components.js?v=<?php echo time(); ?>"></script>
+<script src="<?php echo $basePath; ?>/js/simple-modal.js?v=<?php echo time(); ?>"></script>
+<script src="<?php echo $basePath; ?>/js/ModalActions.js?v=<?php echo time(); ?>"></script>
 <script>
 // Error monitoring for debugging
 window.addEventListener('error', function(e) {
@@ -81,7 +92,7 @@ window.addEventListener('error', function(e) {
 </script>
 
 <!-- Date utilities (shared) -->
-<script type="module" src="<?php echo $basePath; ?>/js/date-utils.js"></script>
+<script type="module" src="<?php echo $basePath; ?>/js/date-utils.js?v=<?php echo time(); ?>"></script>
 
 <!-- Core Admin Functionality (Embedded) -->
 <script>
@@ -109,12 +120,12 @@ function createInstanceLink(instanceId, typeSlug) {
     link.href = `/?=${instanceId}`;
     link.textContent = instanceId;
     link.className = 'instance-link';
-    
+
     // WCAG compliant: Open in new window with proper accessibility attributes
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
     link.setAttribute('aria-label', `Open checklist ${instanceId} in new window`);
-    
+
     return link;
 }
 
@@ -122,28 +133,24 @@ function createDeleteButton(instanceId) {
     const button = document.createElement('button');
     button.className = 'admin-delete-button';
     button.setAttribute('aria-label', `Delete checklist ${instanceId}`);
-    
+
     const img = document.createElement('img');
     img.src = window.getImagePath('delete.svg');
     img.alt = 'Delete';
     button.appendChild(img);
-    
+
     button.onclick = () => showDeleteModal(instanceId);
     return button;
 }
 
 function showDeleteModal(instanceId) {
-    // Show DRY confirmation modal
-    window.modalManager.showConfirmation({
-        title: 'Delete Checklist',
-        message: `Are you sure you want to delete checklist ${instanceId}?`,
-        confirmText: 'Delete',
-        confirmColor: 'red',
-        cancelText: 'Cancel',
-        onConfirm: () => {
-            deleteInstance(instanceId);
-        }
-    });
+    // Show SimpleModal confirmation
+    window.simpleModal.delete(
+        'Delete Checklist',
+        `Are you sure you want to delete checklist ${instanceId}?`,
+        () => deleteInstance(instanceId),
+        () => console.log('Delete cancelled')
+    );
 }
 
 async function deleteInstance(instanceId) {
@@ -152,55 +159,55 @@ async function deleteInstance(instanceId) {
         const response = await fetch(apiPath + '?session=' + instanceId, {
             method: 'DELETE'
         });
-        
+
         if (response.ok) {
             loadInstances();
         } else {
             // Use DRY modal for error messages too
-            window.modalManager.showInfo({
-                title: 'Delete Failed',
-                message: 'Failed to delete checklist. Please try again.',
-                confirmText: 'OK'
-            });
+            window.simpleModal.error(
+                'Delete Failed',
+                'Failed to delete checklist. Please try again.',
+                () => console.log('Error modal closed')
+            );
         }
     } catch (error) {
         console.error('Error deleting instance:', error);
-        window.modalManager.showInfo({
-            title: 'Delete Error',
-            message: 'An error occurred while deleting the checklist.',
-            confirmText: 'OK'
-        });
+        window.simpleModal.error(
+            'Delete Error',
+            'An error occurred while deleting the checklist.',
+            () => console.log('Error modal closed')
+        );
     }
 }
 
 async function loadInstances() {
     console.log('Loading instances...');
-    
+
     try {
         const apiPath = window.getAPIPath('list.php');
         console.log('Fetching from:', apiPath);
-        
+
         const response = await fetch(apiPath);
         console.log('Response status:', response.status);
-        
+
         if (!response.ok) {
             throw new Error(`API responded with status: ${response.status}`);
         }
-        
+
         const responseData = await response.json();
         console.log('Instances loaded:', responseData);
-        
+
         // Extract instances from standardized API response shape
         const instances = Array.isArray(responseData && responseData.data)
             ? responseData.data
             : [];
-        
+
         console.log('Extracted instances array:', instances);
-        
+
         const tbody = document.querySelector('.admin-table tbody');
         if (tbody) {
             tbody.innerHTML = '';
-            
+
             if (instances.length === 0) {
                 const row = document.createElement('tr');
                 const cell = document.createElement('td');
@@ -213,18 +220,18 @@ async function loadInstances() {
                 for (const instance of instances) {
                 // Use creation date if available, otherwise fall back to timestamp
                 const createdDate = instance.created || instance.metadata?.created || instance.timestamp;
-                
+
                 // Only show updated timestamp if it exists (after first save)
-                const updatedText = instance.metadata?.lastModified 
+                const updatedText = instance.metadata?.lastModified
                     ? formatDate(instance.metadata.lastModified)
                     : '—'; // Em dash for "not yet saved"
-                
+
                 const row = document.createElement('tr');
-                
+
                 // Format type using TypeManager
                 const typeText = instance.type || 'Unknown';
                 const formattedType = await TypeManager.formatDisplayName(typeText);
-                
+
                 row.innerHTML = `
                     <td>${formattedType}</td>
                     <td>${formatDate(createdDate)}</td>
@@ -232,11 +239,11 @@ async function loadInstances() {
                     <td>${updatedText}</td>
                     <td class="admin-delete-cell"></td>
                 `;
-                
+
                 const actionsCell = row.querySelector('.admin-delete-cell');
                 const deleteButton = createDeleteButton(instance.sessionKey);
                 actionsCell.appendChild(deleteButton);
-                
+
                 tbody.appendChild(row);
                 }
             }
@@ -267,7 +274,7 @@ function initializeAdmin() {
         window.location.href = target;
       });
     }
-    
+
     // Set up Refresh button
     const refreshButton = document.getElementById('refreshButton');
     if (refreshButton) {
@@ -275,7 +282,7 @@ function initializeAdmin() {
         refreshData();
       });
     }
-    
+
     // Initialize admin functionality
     if (typeof initializeAdmin === 'function') {
       console.log('Initializing admin functionality');
@@ -292,7 +299,7 @@ function initializeAdmin() {
 
     // Indicate refresh in progress
     refreshButton.setAttribute('aria-busy', 'true');
-    
+
     // Reload the table data
     if (typeof loadInstances === 'function') {
       loadInstances().then(() => {
@@ -302,7 +309,7 @@ function initializeAdmin() {
         console.error('Error refreshing data:', error);
         refreshButton.setAttribute('aria-busy', 'false');
         statusContent.textContent = 'Error';
-        
+
         // Clear error message after 5 seconds
         setTimeout(() => {
           statusContent.textContent = '';
@@ -312,7 +319,7 @@ function initializeAdmin() {
       console.error('loadInstances function not found');
       refreshButton.setAttribute('aria-busy', 'false');
       statusContent.textContent = 'Error';
-      
+
       // Clear error message after 5 seconds
       setTimeout(() => {
         statusContent.textContent = '';
@@ -327,4 +334,4 @@ function initializeAdmin() {
 </div>
 
 </body>
-</html> 
+</html>

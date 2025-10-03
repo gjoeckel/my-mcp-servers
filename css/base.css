@@ -36,6 +36,8 @@
     --font-size-xl: 1.5rem;
     --font-size-2xl: 1.6rem;
     --font-size-3xl: 2em;
+    /* Interactive Elements */
+    --golden-ring: 0 0 0 1px white, 0 0 0 2px #333, 0 0 0 4px #FFD700;
 }
 /* Reset & Base Styles */
 * {

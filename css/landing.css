@@ -17,7 +17,7 @@
 }
 
 .checklist-button {
-    width: 100px;
+    width: 8rem;
     padding: 6px;
     font-size: 18px;
     cursor: pointer;
@@ -70,62 +70,123 @@ button.checklist-button {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px; /* from multiple.css */
+    gap: 0; /* controlled by zones */
     text-align: center; /* from multiple.css */
+    padding: 0; /* remove direct padding; use zones instead */
 }
 
-.heading-content img {
+.heading-left-zone,
+.heading-right-zone {
+    display: flex;
+    align-items: center;
+}
+
+.heading-left-zone {
+    padding-left: 30px; /* 30px from the left of the image */
+}
+
+.heading-right-zone {
+    padding-right: 30px; /* 30px from the right of the text */
+}
+
+.heading-left-zone img {
     margin-right: 10px;
 }
 
 /* Removed focus/hover styles - Handled by focus.css */
 
-/* Responsive checklist group layout for index.php */
-.landing-content.checklist-groups-row {
+/* Responsive checklist group layout - NEW STRUCTURE */
+.landing-content.checklist-groups-container {
   width: 100%;
   max-width: 1000px;
   margin: 100px auto 2rem auto;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: flex-start;
+  gap: 20px;
+  flex-wrap: wrap;
 }
-.checklist-groups-header-row,
-.checklist-groups-buttons-row {
-  display: flex;
-  width: 100%;
-}
-.checklist-group-col {
-  flex: 1 1 33%;
-  max-width: 33.33%;
+
+.checklist-group {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  flex: 1 1 300px;
+  min-width: 250px;
+  margin-bottom: 30px;
 }
-.checklist-groups-header-row .checklist-group-col h2 {
+
+.checklist-group h2 {
   margin-bottom: 16px;
   text-align: center;
+  font-size: 1.3rem;
 }
-.checklist-groups-buttons-row .checklist-group-col {
-  align-items: center;
-  justify-content: flex-start;
-}
+
 .checklist-buttons-row {
   display: flex;
   gap: 12px;
   justify-content: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  width: 100%;
+  align-items: center;
 }
+
+/* Responsive breakpoints to keep buttons under headings */
 @media (max-width: 900px) {
-  .checklist-groups-header-row,
-  .checklist-groups-buttons-row {
+  .landing-content.checklist-groups-container {
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
+    gap: 30px;
   }
-  .checklist-group-col {
-    max-width: 100%;
+
+  .checklist-group {
+    flex: none;
     width: 100%;
-    margin-bottom: 20px;
+    max-width: 500px;
+    margin-bottom: 0;
   }
-} 
+
+  .checklist-group h2 {
+    margin-bottom: 12px;
+  }
+}
+
+/* Breakpoint for when buttons need to wrap due to insufficient space */
+@media (max-width: 600px) {
+  .checklist-buttons-row {
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .checklist-button {
+    width: 7rem;
+    font-size: 16px;
+    padding: 8px 4px;
+  }
+
+  .checklist-group {
+    margin-bottom: 25px;
+  }
+
+  .checklist-group h2 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+}
+
+/* Even smaller screens - force vertical stacking */
+@media (max-width: 480px) {
+  .checklist-buttons-row {
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .checklist-button {
+    width: 6rem;
+    font-size: 14px;
+  }
+}
+

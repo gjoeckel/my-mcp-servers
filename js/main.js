@@ -1,6 +1,6 @@
 /**
  * main.js
- * 
+ *
  * This script is responsible for:
  * 1. Initializing the application
  * 2. Setting up event listeners for principle selection buttons
@@ -12,53 +12,10 @@ import { buildContent } from './buildPrinciples.js';
 // buildReportsSection import removed - reports now handled on separate page
 import { initializePrincipleAddRowButtons } from './addRow.js';
 
-// --- Focus Management Helpers ---
-window.triggerElement = null; // Store the element that triggered the modal
-
-window.trapFocus = function(modalElement) {
-    const focusableElementsString = 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex="0"], [contenteditable]';
-    const focusableElements = modalElement.querySelectorAll(focusableElementsString);
-    const firstElement = focusableElements[0];
-    const lastElement = focusableElements[focusableElements.length - 1];
-
-    const keydownHandler = (e) => {
-        if (e.key !== 'Tab') return;
-
-        if (e.shiftKey) { // Shift + Tab
-            if (document.activeElement === firstElement) {
-                e.preventDefault();
-                lastElement.focus();
-            }
-        } else { // Tab
-            if (document.activeElement === lastElement) {
-                e.preventDefault();
-                firstElement.focus();
-            }
-        }
-    };
-    modalElement.addEventListener('keydown', keydownHandler);
-    // Return the handler so it can be removed later
-    return keydownHandler; 
-}
-
-window.setInitialFocus = function(modalElement) {
-    const focusableElementsString = 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex="0"], [contenteditable]';
-    const focusableElements = modalElement.querySelectorAll(focusableElementsString);
-    // Focus the first focusable element, or the modal itself if none found
-    (focusableElements[0] || modalElement).focus();
-}
-
-window.returnFocus = function() {
-    if (window.triggerElement) {
-        window.triggerElement.focus();
-        window.triggerElement = null; // Clear after use
-    }
-}
-
-window.setModalOpenState = function(isOpen) {
-    document.body.classList.toggle('modal-open', isOpen);
-}
-// --- End Focus Management Helpers ---
+// --- Legacy Focus Management Helpers - DEPRECATED ---
+// These functions are deprecated in favor of SimpleModal
+// Keeping for backward compatibility but they should not be used
+// Legacy focus management functions removed - using SimpleModal system
 
 // Side panel functions removed - now handled by StateEvents.js
 // Legacy functions kept for backward compatibility
@@ -96,7 +53,7 @@ function handleDeleteRow(event) {
     if (manualRows.length > 0) {
         // Remove the last manual row
         manualRows[manualRows.length - 1].remove();
-        
+
         // Set focus to the Report link in the side panel
         const reportLink = document.querySelector('.side-panel a[href="#report"]');
         if (reportLink) {
@@ -178,7 +135,7 @@ async function initializeApp() {
             const isVisible = data.showRobust;
             checklist4Section.style.display = isVisible ? 'block' : 'none';
             checklist4Section.setAttribute('aria-hidden', (!isVisible).toString());
-            
+
             // Announce visibility change to screen readers
             if (isVisible) {
                 const announcement = document.createElement('div');

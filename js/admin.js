@@ -45,17 +45,13 @@ function createDeleteButton(keyId) {
 
 // Function to show delete confirmation modal (using DRY modal manager)
 function showDeleteModal(keyId) {
-    // Show DRY confirmation modal
-    window.modalManager.showConfirmation({
-        title: 'Delete Checklist',
-        message: 'Do you want to delete this list?',
-        confirmText: 'Delete',
-        confirmColor: 'green',
-        cancelText: 'Cancel',
-        onConfirm: () => {
-            deleteKey(keyId);
-        }
-    });
+    // Show SimpleModal confirmation
+    window.simpleModal.delete(
+        'Delete Checklist',
+        'Do you want to delete this list?',
+        () => deleteKey(keyId),
+        () => console.log('Delete cancelled')
+    );
 }
 
 // Function to delete key
@@ -94,34 +90,34 @@ async function loadKeys() {
                     isLocal: window.pathConfig.isLocal
                 });
             }
-            
+
             const apiPath = window.getAPIPath('list');
             console.log('Attempting to fetch from:', apiPath);
-            
+
             const response = await fetch(apiPath);
             console.log('API response status:', response.status, response.statusText);
-            
+
             if (!response.ok) {
                 throw new Error(`API responded with status: ${response.status}`);
             }
-            
+
             const responseData = await response.json();
             console.log('Instances loaded:', responseData);
-            
+
             const tbody = document.querySelector('.admin-table tbody');
             if (!tbody) {
                 console.error('Could not find tbody element');
                 reject(new Error('Could not find tbody element'));
                 return;
             }
-            
+
             tbody.innerHTML = ''; // Clear existing rows
-            
+
             // Extract instances from standardized API response shape
             const instances = Array.isArray(responseData && responseData.data)
                 ? responseData.data
                 : [];
-            
+
             if (instances.length === 0) {
                 console.log('No instances found');
                 const row = document.createElement('tr');
@@ -134,19 +130,19 @@ async function loadKeys() {
                 resolve();
                 return;
             }
-            
+
             // Sort instances by lastModified timestamp (newest first)
             instances.sort((a, b) => {
                 const aTime = a.metadata?.lastModified || a.timestamp;
                 const bTime = b.metadata?.lastModified || b.timestamp;
                 return bTime - aTime;
             });
-            
+
             for (const instance of instances) {
                 console.log('Processing instance:', instance);
                 const row = document.createElement('tr');
                 row.setAttribute('data-instance', instance.sessionKey);
-                
+
                 // Type cell
                 const typeCell = document.createElement('td');
                 typeCell.className = 'admin-type-cell';
@@ -154,12 +150,12 @@ async function loadKeys() {
                 // Use TypeManager for consistent formatting
                 const formattedType = await TypeManager.formatDisplayName(typeText);
                 typeCell.textContent = formattedType;
-                
+
                 // Created date cell
                 const createdCell = document.createElement('td');
                 createdCell.className = 'admin-date-cell';
                 createdCell.textContent = formatDate(instance.timestamp);
-                
+
                 // Instance ID cell
                 const instanceCell = document.createElement('td');
                 instanceCell.className = 'admin-instance-cell';
@@ -167,7 +163,7 @@ async function loadKeys() {
                   ? instance.metadata.typeSlug
                   : ((instance.metadata && instance.metadata.type) ? instance.metadata.type.toLowerCase().replace(/\s+/g, '_') : '');
                 instanceCell.appendChild(createInstanceLink(instance.sessionKey, typeSlug));
-                
+
                 // Updated date cell
                 const updatedCell = document.createElement('td');
                 updatedCell.className = 'admin-date-cell';
@@ -177,23 +173,23 @@ async function loadKeys() {
                 } else {
                     updatedCell.textContent = '—'; // Em dash for "not yet saved"
                 }
-                
+
                 // Delete button cell
                 const actionCell = document.createElement('td');
                 actionCell.className = 'admin-action-cell';
                 actionCell.appendChild(createDeleteButton(instance.sessionKey));
-                
+
                 // Append cells to row
                 row.appendChild(typeCell);
                 row.appendChild(createdCell);
                 row.appendChild(instanceCell);
                 row.appendChild(updatedCell);
                 row.appendChild(actionCell);
-                
+
                 // Append row to table
                 tbody.appendChild(row);
             }
-            
+
             resolve();
         } catch (error) {
             console.error('Error loading instances:', error);
@@ -205,10 +201,10 @@ async function loadKeys() {
 // Function to initialize admin functionality
 function initializeAdmin() {
     console.log('Initializing admin functionality');
-    
+
     // Load instances when page loads
     loadInstances();
-    
+
     // Refresh instances every 30 seconds
     setInterval(loadInstances, 30000);
 }
@@ -221,36 +217,36 @@ document.addEventListener('DOMContentLoaded', function() {
 function createTableRow(instance) {
     const row = document.createElement('tr');
     row.className = 'admin-row';
-    
+
     // Session Key cell
     const sessionCell = document.createElement('td');
     sessionCell.className = 'admin-session-cell';
     sessionCell.textContent = instance.sessionKey;
     row.appendChild(sessionCell);
-    
+
     // Type cell
     const typeCell = document.createElement('td');
     typeCell.className = 'admin-type-cell';
     // Capitalize the first letter of the type
     typeCell.textContent = instance.metadata.type.charAt(0).toUpperCase() + instance.metadata.type.slice(1);
     row.appendChild(typeCell);
-    
+
     // Version cell
     const versionCell = document.createElement('td');
     versionCell.className = 'admin-version-cell';
     versionCell.textContent = instance.metadata.version;
     row.appendChild(versionCell);
-    
+
     // Last Modified cell
     const lastModifiedCell = document.createElement('td');
     lastModifiedCell.className = 'admin-last-modified-cell';
     lastModifiedCell.textContent = formatDate(instance.metadata.lastModified);
     row.appendChild(lastModifiedCell);
-    
+
     // Actions cell
     const actionsCell = document.createElement('td');
     actionsCell.className = 'admin-actions-cell';
-    
+
     // View button
     const viewButton = document.createElement('button');
     viewButton.className = 'admin-view-button';
@@ -264,7 +260,7 @@ function createTableRow(instance) {
         window.location.href = `${phpPath}?session=${instance.sessionKey}`;
     };
     actionsCell.appendChild(viewButton);
-    
+
     // Delete button
     const deleteButton = document.createElement('button');
     deleteButton.className = 'admin-delete-button';
@@ -273,8 +269,8 @@ function createTableRow(instance) {
     deleteButton.innerHTML = `<img src="${deleteImgPath}" alt="">`;
     deleteButton.onclick = () => deleteChecklist(instance.sessionKey);
     actionsCell.appendChild(deleteButton);
-    
+
     row.appendChild(actionsCell);
-    
+
     return row;
-} 
+}

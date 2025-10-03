@@ -22,7 +22,7 @@ detect_environment() {
     else
         ENVIRONMENT="development"
     fi
-    
+
     echo "📍 Detected Environment: $ENVIRONMENT"
     echo ""
 }
@@ -30,12 +30,12 @@ detect_environment() {
 # Function to check PHP environment
 check_php_environment() {
     echo "🐘 Checking PHP Environment..."
-    
+
     # Check if PHP is available
     if command -v php &> /dev/null; then
         local php_version=$(php -r "echo PHP_VERSION;")
         echo "  ✅ PHP is available (Version: $php_version)"
-        
+
         # Check PHP version compatibility
         if php -r "exit(version_compare(PHP_VERSION, '7.4.0', '>=') ? 0 : 1);"; then
             echo "  ✅ PHP version is compatible (>= 7.4.0)"
@@ -47,7 +47,7 @@ check_php_environment() {
         echo "  ❌ PHP is not available"
         TOTAL_ISSUES=$((TOTAL_ISSUES + 1))
     fi
-    
+
     # Check PHP extensions
     local required_extensions=("json" "mbstring" "fileinfo")
     for ext in "${required_extensions[@]}"; do
@@ -62,7 +62,7 @@ check_php_environment() {
 # Function to check file permissions
 check_file_permissions() {
     echo "📁 Checking File Permissions..."
-    
+
     # Check if saves directory is writable
     if [ -d "saves" ] && [ -w "saves" ]; then
         echo "  ✅ saves/ directory is writable"
@@ -70,7 +70,7 @@ check_file_permissions() {
         echo "  ❌ saves/ directory is not writable"
         TOTAL_ISSUES=$((TOTAL_ISSUES + 1))
     fi
-    
+
     # Check if php/saves directory is writable
     if [ -d "php/saves" ] && [ -w "php/saves" ]; then
         echo "  ✅ php/saves/ directory is writable"
@@ -78,7 +78,7 @@ check_file_permissions() {
         echo "  ❌ php/saves/ directory is not writable"
         TOTAL_ISSUES=$((TOTAL_ISSUES + 1))
     fi
-    
+
     # Check if tests/screenshots directory is writable
     if [ -d "tests/screenshots" ] && [ -w "tests/screenshots" ]; then
         echo "  ✅ tests/screenshots/ directory is writable"
@@ -91,7 +91,7 @@ check_file_permissions() {
 # Function to check required files
 check_required_files() {
     echo "📄 Checking Required Files..."
-    
+
     local required_files=(
         "index.php"
         "php/home.php"
@@ -102,7 +102,7 @@ check_required_files() {
         "tests/run_comprehensive_tests.php"
         "tests/start_server.sh"
     )
-    
+
     for file in "${required_files[@]}"; do
         if [ -f "$file" ]; then
             echo "  ✅ $file exists"
@@ -116,9 +116,9 @@ check_required_files() {
 # Function to check API endpoints
 check_api_endpoints() {
     echo "🔌 Checking API Endpoints..."
-    
+
     local api_endpoints=("save.php" "restore.php" "delete.php" "list.php")
-    
+
     for endpoint in "${api_endpoints[@]}"; do
         local file="php/api/$endpoint"
         if [ -f "$file" ]; then
@@ -133,11 +133,11 @@ check_api_endpoints() {
 # Function to check path configuration
 check_path_configuration() {
     echo "🛤️  Checking Path Configuration..."
-    
+
     # Check if path-utils.js exists and is readable
     if [ -f "js/path-utils.js" ] && [ -r "js/path-utils.js" ]; then
         echo "  ✅ path-utils.js exists and is readable"
-        
+
         # Check for required path functions
         local required_functions=("getImagePath" "getJSONPath" "getCSSPath" "getPHPPath" "getAPIPath")
         for func in "${required_functions[@]}"; do
@@ -157,13 +157,13 @@ check_path_configuration() {
 # Function to check testing infrastructure
 check_testing_infrastructure() {
     echo "🧪 Checking Testing Infrastructure..."
-    
+
     # Check if tests directory exists
     if [ -d "tests" ]; then
         echo "  ✅ tests/ directory exists"
-        
+
         # Check for test subdirectories
-        local test_dirs=("unit" "integration" "performance" "e2e" "accessibility" "chrome-mcp")
+        local test_dirs=("unit" "integration" "performance" "e2e" "accessibility" "puppeteer")
         for dir in "${test_dirs[@]}"; do
             if [ -d "tests/$dir" ]; then
                 echo "  ✅ tests/$dir/ directory exists"
@@ -172,7 +172,7 @@ check_testing_infrastructure() {
                 TOTAL_ISSUES=$((TOTAL_ISSUES + 1))
             fi
         done
-        
+
         # Check for test files
         local test_files=("run_comprehensive_tests.php" "start_server.sh")
         for file in "${test_files[@]}"; do
@@ -192,10 +192,10 @@ check_testing_infrastructure() {
 # Function to check environment-specific settings
 check_environment_settings() {
     echo "⚙️  Checking Environment-Specific Settings..."
-    
+
     if [ "$ENVIRONMENT" = "production" ]; then
         echo "  🔍 Production Environment Checks:"
-        
+
         # Check for production path configuration
         if grep -q "/training/online/accessilist" "js/path-utils.js"; then
             echo "    ✅ Production path configuration found"
@@ -203,17 +203,17 @@ check_environment_settings() {
             echo "    ❌ Production path configuration missing"
             TOTAL_ISSUES=$((TOTAL_ISSUES + 1))
         fi
-        
+
         # Check for security settings
         if [ -f ".htaccess" ]; then
             echo "    ✅ .htaccess file exists"
         else
             echo "    ⚠️  .htaccess file missing (may be intentional)"
         fi
-        
+
     elif [ "$ENVIRONMENT" = "local" ]; then
         echo "  🔍 Local Environment Checks:"
-        
+
         # Check for local development setup
         if [ -f "local-dev.php" ] || [ -f "local-index.php" ]; then
             echo "    ✅ Local development files found"
@@ -221,7 +221,7 @@ check_environment_settings() {
             echo "    ⚠️  Local development files missing (may be intentional)"
         fi
     fi
-    
+
     # Check MCP integration (common to all environments)
     echo "  🔧 MCP Integration Checks:"
     if [ -d ".cursor/rules" ]; then
@@ -234,7 +234,7 @@ check_environment_settings() {
     else
         echo "    ⚠️  Cursor rules directory not found"
     fi
-    
+
     # Check for MCP-specific scripts
     local mcp_scripts=("check-mcp-health.sh" "start-chrome-debug.sh" "restart-mcp-servers.sh" "emergency-reset.sh")
     for script in "${mcp_scripts[@]}"; do
@@ -253,7 +253,7 @@ generate_summary() {
     echo "================================"
     echo "Environment: $ENVIRONMENT"
     echo "Total Issues Found: $TOTAL_ISSUES"
-    
+
     if [ "$TOTAL_ISSUES" -eq 0 ]; then
         echo "✅ Status: EXCELLENT - Environment is properly configured!"
         echo "🎯 All required components are available and working"
@@ -264,7 +264,7 @@ generate_summary() {
         echo "⚠️  Status: NEEDS ATTENTION - Multiple environment issues detected"
         echo "🔧 Consider fixing issues before proceeding with development"
     fi
-    
+
     echo ""
     echo "💡 Recommendations:"
     echo "  - Ensure all required files and directories exist"
@@ -285,7 +285,7 @@ main() {
     check_testing_infrastructure
     check_environment_settings
     generate_summary
-    
+
     # Exit with appropriate code
     if [ "$TOTAL_ISSUES" -gt 3 ]; then
         exit 1

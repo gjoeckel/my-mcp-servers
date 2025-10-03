@@ -34,7 +34,7 @@ check_mcp_server_health() {
     local server="$1"
     local status="unknown"
     local details=""
-    
+
     case "$server" in
         "chrome-devtools")
             if command -v google-chrome &> /dev/null || command -v chromium &> /dev/null; then
@@ -84,7 +84,7 @@ check_mcp_server_health() {
             fi
             ;;
     esac
-    
+
     echo "$status|$details"
 }
 
@@ -92,15 +92,15 @@ check_mcp_server_health() {
 generate_mcp_status_report() {
     echo "🔧 MCP Server Status Report"
     echo "=========================="
-    
+
     local total_issues=0
     local servers=("chrome-devtools" "filesystem" "memory" "github")
-    
+
     for server in "${servers[@]}"; do
         local health_info=$(check_mcp_server_health "$server")
         local status=$(echo "$health_info" | cut -d'|' -f1)
         local details=$(echo "$health_info" | cut -d'|' -f2)
-        
+
         case "$status" in
             "healthy")
                 echo "  ✅ $server: $details"
@@ -118,11 +118,11 @@ generate_mcp_status_report() {
                 total_issues=$((total_issues + 1))
                 ;;
         esac
-        
+
         # Log the status
         log_message "MCP Server $server: $status - $details"
     done
-    
+
     echo ""
     echo "📊 Overall MCP Health:"
     if [ "$total_issues" -eq 0 ]; then
@@ -135,7 +135,7 @@ generate_mcp_status_report() {
         echo "  ⚠️  NEEDS ATTENTION - Multiple issues detected"
         log_message "MCP Health: NEEDS ATTENTION - $total_issues issues detected"
     fi
-    
+
     return $total_issues
 }
 
@@ -144,9 +144,9 @@ check_mcp_integration_status() {
     echo ""
     echo "🔗 MCP Integration Status"
     echo "========================"
-    
+
     local integration_issues=0
-    
+
     # Check Cursor rules
     if [ -d ".cursor/rules" ]; then
         if grep -r "mcp\|MCP" ".cursor/rules" >/dev/null 2>&1; then
@@ -159,7 +159,7 @@ check_mcp_integration_status() {
         echo "  ❌ Cursor rules directory not found"
         integration_issues=$((integration_issues + 2))
     fi
-    
+
     # Check MCP scripts
     local mcp_scripts=("check-mcp-health.sh" "start-chrome-debug.sh" "restart-mcp-servers.sh" "emergency-reset.sh")
     for script in "${mcp_scripts[@]}"; do
@@ -170,15 +170,15 @@ check_mcp_integration_status() {
             integration_issues=$((integration_issues + 1))
         fi
     done
-    
+
     # Check test infrastructure
-    if [ -f "tests/chrome-mcp/run_chrome_mcp_tests.php" ]; then
-        echo "  ✅ Chrome MCP test infrastructure found"
+    if [ -f "tests/puppeteer/run-all-tests.js" ]; then
+        echo "  ✅ Puppeteer MCP test infrastructure found"
     else
-        echo "  ❌ Chrome MCP test infrastructure missing"
+        echo "  ❌ Puppeteer MCP test infrastructure missing"
         integration_issues=$((integration_issues + 2))
     fi
-    
+
     log_message "MCP Integration Status: $integration_issues issues detected"
     return $integration_issues
 }
@@ -188,16 +188,16 @@ generate_performance_metrics() {
     echo ""
     echo "📈 Performance Metrics"
     echo "===================="
-    
+
     # Check available memory
     if command -v free &> /dev/null; then
         local total_memory=$(free -m | awk 'NR==2{printf "%.0f", $2}')
         local available_memory=$(free -m | awk 'NR==2{printf "%.0f", $7}')
         local memory_usage=$((total_memory - available_memory))
         local memory_percent=$((memory_usage * 100 / total_memory))
-        
+
         echo "  💾 Memory Usage: ${memory_usage}MB / ${total_memory}MB (${memory_percent}%)"
-        
+
         if [ "$memory_percent" -gt 80 ]; then
             echo "    ⚠️  High memory usage detected"
             log_message "Performance: High memory usage - ${memory_percent}%"
@@ -205,12 +205,12 @@ generate_performance_metrics() {
             echo "    ✅ Memory usage is normal"
         fi
     fi
-    
+
     # Check disk space
     if command -v df &> /dev/null; then
         local disk_usage=$(df -h . | awk 'NR==2{print $5}' | sed 's/%//')
         echo "  💿 Disk Usage: ${disk_usage}%"
-        
+
         if [ "$disk_usage" -gt 90 ]; then
             echo "    ⚠️  High disk usage detected"
             log_message "Performance: High disk usage - ${disk_usage}%"
@@ -223,11 +223,11 @@ generate_performance_metrics() {
 # Function to generate alerts
 generate_alerts() {
     local total_issues="$1"
-    
+
     echo ""
     echo "🚨 Alert Status"
     echo "=============="
-    
+
     if [ "$total_issues" -ge "$ALERT_THRESHOLD_ISSUES" ]; then
         echo "  🔴 HIGH PRIORITY - $total_issues issues require immediate attention"
         echo ""
@@ -236,7 +236,7 @@ generate_alerts() {
         echo "    2. Run: ./scripts/restart-mcp-servers.sh"
         echo "    3. Check logs: tail -f $LOG_FILE"
         echo "    4. Run comprehensive tests: php tests/run_comprehensive_tests.php"
-        
+
         log_message "ALERT: High priority - $total_issues issues detected" "ALERT"
     elif [ "$total_issues" -gt 0 ]; then
         echo "  🟡 MEDIUM PRIORITY - $total_issues issues detected"
@@ -245,7 +245,7 @@ generate_alerts() {
         echo "    1. Monitor MCP server status"
         echo "    2. Check for any error logs"
         echo "    3. Run health check: ./scripts/check-mcp-health.sh"
-        
+
         log_message "ALERT: Medium priority - $total_issues issues detected" "WARNING"
     else
         echo "  🟢 ALL SYSTEMS NORMAL - No issues detected"
@@ -274,7 +274,7 @@ show_usage() {
 show_recent_logs() {
     echo "📋 Recent MCP Monitoring Logs"
     echo "============================="
-    
+
     if [ -f "$LOG_FILE" ]; then
         tail -20 "$LOG_FILE"
     else
@@ -285,34 +285,34 @@ show_recent_logs() {
 # Function to run continuous monitoring
 run_continuous_monitoring() {
     local interval="${1:-$DASHBOARD_REFRESH_INTERVAL}"
-    
+
     echo "🔄 Starting Continuous MCP Monitoring"
     echo "Refresh Interval: ${interval} seconds"
     echo "Press Ctrl+C to stop"
     echo ""
-    
+
     while true; do
         clear
         echo "📊 AccessiList MCP Monitoring Dashboard (Continuous Mode)"
         echo "========================================================"
         echo "Last Updated: $(date)"
         echo ""
-        
+
         # Run monitoring checks
         local server_issues=0
         local integration_issues=0
-        
+
         generate_mcp_status_report
         server_issues=$?
-        
+
         check_mcp_integration_status
         integration_issues=$?
-        
+
         generate_performance_metrics
-        
+
         local total_issues=$((server_issues + integration_issues))
         generate_alerts $total_issues
-        
+
         echo ""
         echo "⏰ Next refresh in ${interval} seconds..."
         sleep "$interval"
@@ -324,7 +324,7 @@ main() {
     local continuous_mode=false
     local interval="$DASHBOARD_REFRESH_INTERVAL"
     local show_logs=false
-    
+
     # Parse command line arguments
     while [[ $# -gt 0 ]]; do
         case $1 in
@@ -351,38 +351,38 @@ main() {
                 ;;
         esac
     done
-    
+
     # Setup logging
     setup_logging
-    
+
     # Handle different modes
     if [ "$show_logs" = true ]; then
         show_recent_logs
         exit 0
     fi
-    
+
     if [ "$continuous_mode" = true ]; then
         run_continuous_monitoring "$interval"
     else
         # Single monitoring check
         local server_issues=0
         local integration_issues=0
-        
+
         generate_mcp_status_report
         server_issues=$?
-        
+
         check_mcp_integration_status
         integration_issues=$?
-        
+
         generate_performance_metrics
-        
+
         local total_issues=$((server_issues + integration_issues))
         generate_alerts $total_issues
-        
+
         echo ""
         echo "💡 For continuous monitoring, run: $0 -c"
         echo "📋 For recent logs, run: $0 -l"
-        
+
         # Exit with appropriate code
         if [ "$total_issues" -ge "$ALERT_THRESHOLD_ISSUES" ]; then
             exit 2

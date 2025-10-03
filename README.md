@@ -1,11 +1,10 @@
 ### AccessiList
 
-An accessibility checklist app built with PHP and vanilla JavaScript (ES modules), with CSS built via a simple PostCSS pipeline. The project emphasizes MCP-first workflows and SRD principles: Simple, Reliable, DRY.
+An accessibility checklist app built with PHP and vanilla JavaScript (ES modules), using individual CSS files for maintainability. The project emphasizes MCP-first workflows and SRD principles: Simple, Reliable, DRY.
 
 ### Requirements
 
 - PHP 8.x CLI
-- Node.js 16+ (for CSS build scripts)
 - Google Chrome (for Chrome MCP)
 - Git Bash on Windows (mandatory for scripts)
 
@@ -66,44 +65,23 @@ import { initializeAddRowButton } from './addRow.js';
 
 Path utilities and configuration live in `js/path-utils.js` and `js/simple-path-config.js`.
 
-### CSS Build
+### CSS Architecture
 
-CSS is concatenated then minified with PostCSS cssnano. Use:
+CSS is organized into individual files for maintainability and follows the Single Responsibility Principle:
 
-```5:11:package.json
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "concat:css": "concat -o global.css css/modal.css css/focus.css css/landing.css css/admin.css css/form-elements.css css/table.css css/section.css css/status.css css/side-panel.css css/header.css css/base.css",
-    "minify:css": "npx postcss global.css -o global.css",
-    "build:css": "npm-run-all concat:css minify:css",
-    "generate:user-stories": "node scripts/generate-user-stories.js"
-  },
-```
+- `css/modal.css` - Modal dialog styles
+- `css/focus.css` - Focus and hover states
+- `css/landing.css` - Home page and button styles
+- `css/admin.css` - Admin interface styles
+- `css/form-elements.css` - Form input and textarea styles
+- `css/table.css` - Table and interactive element styles
+- `css/section.css` - Section layout and theming
+- `css/status.css` - Status messages and footer
+- `css/side-panel.css` - Navigation panel styles
+- `css/header.css` - Header and navigation buttons
+- `css/base.css` - Base styles and CSS variables
 
-Canonical build order is tracked in `tests/config/build-order.json`:
-
-```4:15:tests/config/build-order.json
-  "order": [
-    "css/modal.css",
-    "css/focus.css",
-    "css/landing.css",
-    "css/admin.css",
-    "css/form-elements.css",
-    "css/table.css",
-    "css/section.css",
-    "css/status.css",
-    "css/side-panel.css",
-    "css/header.css",
-    "css/base.css"
-  ]
-```
-
-Build commands:
-
-```bash
-npm install
-npm run build:css
-```
+All PHP files include these CSS files individually in the correct order for proper cascading.
 
 ### Testing (MCP-first)
 

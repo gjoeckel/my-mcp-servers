@@ -1,0 +1,239 @@
+{
+  "timestamp": "2025-10-02T22:02:21.633Z",
+  "testRun": {
+    "startTime": "2025-10-02T21:55:58.279Z",
+    "endTime": "2025-10-02T22:02:21.632Z",
+    "duration": 383353
+  },
+  "summary": {
+    "totalSuites": 6,
+    "passedSuites": 0,
+    "failedSuites": 3,
+    "errorSuites": 3,
+    "totalTests": 33,
+    "totalPassed": 19,
+    "totalFailed": 17,
+    "successRate": "57.58%"
+  },
+  "suites": [
+    {
+      "suite": "Critical Path Tests",
+      "status": "FAILED",
+      "duration": 101013,
+      "summary": {
+        "total": 6,
+        "passed": 2,
+        "failed": 4
+      },
+      "details": [
+        {
+          "test": "API Health Check",
+          "status": "FAILED",
+          "error": "Health check failed"
+        },
+        {
+          "test": "Home to Checklist Journey",
+          "status": "FAILED",
+          "error": "Word checklist link not found"
+        },
+        {
+          "test": "Checklist Interaction",
+          "status": "FAILED",
+          "error": "page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n  - waiting for locator('.checklist-item') to be visible\n"
+        },
+        {
+          "test": "Save and Restore",
+          "status": "FAILED",
+          "error": "Instantiate failed"
+        },
+        {
+          "test": "Report Generation",
+          "status": "PASSED"
+        },
+        {
+          "test": "Admin Management",
+          "status": "PASSED"
+        }
+      ]
+    },
+    {
+      "suite": "Checklist Functionality Tests",
+      "status": "FAILED",
+      "duration": 281862,
+      "summary": {
+        "total": 13,
+        "passed": 10,
+        "failed": 3
+      },
+      "details": [
+        {
+          "test": "Checklist Type Loading - word",
+          "status": "PASSED"
+        },
+        {
+          "test": "Checklist Type Loading - excel",
+          "status": "PASSED"
+        },
+        {
+          "test": "Checklist Type Loading - powerpoint",
+          "status": "PASSED"
+        },
+        {
+          "test": "Checklist Type Loading - slides",
+          "status": "PASSED"
+        },
+        {
+          "test": "Checklist Type Loading - docs",
+          "status": "PASSED"
+        },
+        {
+          "test": "Checklist Type Loading - camtasia",
+          "status": "PASSED"
+        },
+        {
+          "test": "Checklist Type Loading - dojo",
+          "status": "PASSED"
+        },
+        {
+          "test": "Checklist Item Interactions",
+          "status": "FAILED",
+          "error": "page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n  - waiting for locator('.checklist-item') to be visible\n"
+        },
+        {
+          "test": "Notes Functionality",
+          "status": "PASSED",
+          "note": "No notes inputs found (may be expected for this checklist type)"
+        },
+        {
+          "test": "Add Row Functionality",
+          "status": "PASSED",
+          "note": "No add row button found (may be expected for this checklist type)"
+        },
+        {
+          "test": "Save Functionality",
+          "status": "FAILED",
+          "error": "Save API call failed"
+        },
+        {
+          "test": "Restore Functionality",
+          "status": "FAILED",
+          "error": "Restore API call failed"
+        },
+        {
+          "test": "Home Button Navigation",
+          "status": "PASSED"
+        }
+      ]
+    },
+    {
+      "suite": "API Integration Tests",
+      "status": "FAILED",
+      "duration": 473,
+      "summary": {
+        "total": 14,
+        "passed": 7,
+        "failed": 7
+      },
+      "details": [
+        {
+          "test": "API Health Check",
+          "status": "FAILED",
+          "error": "Health check returned failure"
+        },
+        {
+          "test": "API List Endpoint",
+          "status": "PASSED",
+          "note": "Found 22 saved checklists"
+        },
+        {
+          "test": "API Instantiate Endpoint",
+          "status": "FAILED",
+          "error": "Instantiate endpoint failed"
+        },
+        {
+          "test": "API Save Endpoint",
+          "status": "FAILED",
+          "error": "Save endpoint failed"
+        },
+        {
+          "test": "API Restore Endpoint",
+          "status": "FAILED",
+          "error": "Restore endpoint failed or returned invalid data"
+        },
+        {
+          "test": "API Delete Endpoint",
+          "status": "FAILED",
+          "error": "Delete endpoint failed"
+        },
+        {
+          "test": "API Error Handling - Invalid Session Key",
+          "status": "PASSED"
+        },
+        {
+          "test": "API Error Handling - Missing Session Key",
+          "status": "PASSED"
+        },
+        {
+          "test": "API Error Handling - Invalid Save Data",
+          "status": "PASSED"
+        },
+        {
+          "test": "API Data Validation - Invalid Checklist Type",
+          "status": "PASSED"
+        },
+        {
+          "test": "API Data Validation - Missing Required Fields",
+          "status": "PASSED"
+        },
+        {
+          "test": "API Data Validation - Valid Data",
+          "status": "FAILED",
+          "error": "Validation test failed for Valid Data"
+        },
+        {
+          "test": "API Performance - Health Check Performance",
+          "status": "FAILED",
+          "error": "API call failed"
+        },
+        {
+          "test": "API Performance - List Performance",
+          "status": "PASSED",
+          "note": "Response time: 4ms"
+        }
+      ]
+    },
+    {
+      "suite": "Frontend Tests",
+      "status": "ERROR",
+      "duration": 2,
+      "error": "Cannot read properties of undefined (reading 'summary')",
+      "summary": {
+        "total": 0,
+        "passed": 0,
+        "failed": 1
+      }
+    },
+    {
+      "suite": "Accessibility Tests",
+      "status": "ERROR",
+      "duration": 2,
+      "error": "Cannot read properties of undefined (reading 'summary')",
+      "summary": {
+        "total": 0,
+        "passed": 0,
+        "failed": 1
+      }
+    },
+    {
+      "suite": "Performance Tests",
+      "status": "ERROR",
+      "duration": 1,
+      "error": "Cannot read properties of undefined (reading 'summary')",
+      "summary": {
+        "total": 0,
+        "passed": 0,
+        "failed": 1
+      }
+    }
+  ]
+}

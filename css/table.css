@@ -310,21 +310,10 @@ th.task-cell { /* Ensure header alignment matches base th */
     object-fit: contain; /* Scale icon nicely */
 }
 
-/* Color-coded hover/focus effects for each principle */
-.principles-button[data-principle="checklist-1"]:is(:hover, :focus-visible) {
-    box-shadow: 0 0 0 3px rgba(0, 81, 146, 0.8); /* Blue circular ring */
-}
-
-.principles-button[data-principle="checklist-2"]:is(:hover, :focus-visible) {
-    box-shadow: 0 0 0 3px rgba(94, 133, 15, 0.8); /* Green circular ring */
-}
-
-.principles-button[data-principle="checklist-3"]:is(:hover, :focus-visible) {
-    box-shadow: 0 0 0 3px rgba(172, 102, 40, 0.8); /* Orange circular ring */
-}
-
-.principles-button[data-principle="checklist-4"]:is(:hover, :focus-visible) {
-    box-shadow: 0 0 0 3px rgba(12, 35, 54, 0.8); /* Dark Blue/Purple circular ring */
+/* DRY Golden ring focus and hover styles for add row buttons */
+.principles-button:is(:hover, :focus-visible) {
+    outline: none;
+    box-shadow: var(--golden-ring) !important;
 }
 
 /* === Report Table and Cell Structure Styles === */
@@ -469,4 +458,4 @@ th.report-task-cell {
     border: 1px solid transparent !important;
     background: #fff !important;
     cursor: default;
-} 
+}

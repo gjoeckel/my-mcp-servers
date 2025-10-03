@@ -1,0 +1,9 @@
+{
+  "timestamp": "20251002_171759",
+  "backup_type": "cursor_configuration",
+  "project": "autonomous-development-assistant",
+  "files": [
+    "mcp.json",
+    "settings.json"
+  ]
+}

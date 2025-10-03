@@ -1,6 +1,6 @@
 <?php
 // Determine base path for assets
-$isLocal = $_SERVER['HTTP_HOST'] === 'localhost' || 
+$isLocal = $_SERVER['HTTP_HOST'] === 'localhost' ||
            $_SERVER['HTTP_HOST'] === '127.0.0.1' ||
            strpos($_SERVER['HTTP_HOST'], 'local') !== false;
 $basePath = $isLocal ? '' : '/training/online/accessilist';
@@ -12,7 +12,17 @@ $basePath = $isLocal ? '' : '/training/online/accessilist';
 <!-- Added viewport meta for responsiveness -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Accessibility Checklist</title>
-<link rel="stylesheet" href="<?php echo $basePath; ?>/global.css">
+    <link rel="stylesheet" href="<?php echo $basePath; ?>/css/simple-modal.css?v=<?php echo time(); ?>">
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/focus.css?v=<?php echo time(); ?>">
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/landing.css?v=<?php echo time(); ?>">
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/admin.css?v=<?php echo time(); ?>">
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/form-elements.css?v=<?php echo time(); ?>">
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/table.css?v=<?php echo time(); ?>">
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/section.css?v=<?php echo time(); ?>">
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/status.css?v=<?php echo time(); ?>">
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/side-panel.css?v=<?php echo time(); ?>">
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/header.css?v=<?php echo time(); ?>">
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/base.css?v=<?php echo time(); ?>">
 <style>
   /* Loading overlay styles */
   #loadingOverlay {
@@ -28,7 +38,7 @@ $basePath = $isLocal ? '' : '/training/online/accessilist';
     align-items: center;
     z-index: 9999;
   }
-  
+
   #loadingSpinner {
     width: 50px;
     height: 50px;
@@ -37,7 +47,7 @@ $basePath = $isLocal ? '' : '/training/online/accessilist';
     border-radius: 50%;
     margin-bottom: 20px;
   }
-  
+
   #loadingText {
     font-size: 18px;
     color: #333;
@@ -109,18 +119,7 @@ $basePath = $isLocal ? '' : '/training/online/accessilist';
     </div>
 </main>
 
-<div id="infoModal" class="modal" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2 id="modalTitle">Example Information</h2>
-            <button class="close-modal" aria-label="Close modal"><span aria-hidden="true">×</span></button>
-        </div>
-        <div class="modal-body">
-            <p>This feature is being updated. Example content will be available soon.</p>
-        </div>
-    </div>
-</div>
-<div id="modalOverlay" class="modal-overlay" aria-hidden="true" role="presentation"></div>
+<!-- Legacy modal HTML removed - now handled by SimpleModal -->
 
 <!-- Footer -->
 <!-- <footer role="contentinfo">
@@ -135,22 +134,22 @@ $basePath = $isLocal ? '' : '/training/online/accessilist';
 
 <!-- Scripts -->
 <!-- Path configuration handled by path-utils.js -->
-<script type="module" src="<?php echo $basePath; ?>/js/path-utils.js"></script>
-<script src="<?php echo $basePath; ?>/js/type-manager.js"></script>
-<script type="module" src="<?php echo $basePath; ?>/js/StatusManager.js"></script>
-<script type="module" src="<?php echo $basePath; ?>/js/modal-manager.js"></script>
-<script type="module" src="<?php echo $basePath; ?>/js/ui-components.js"></script>
+<script type="module" src="<?php echo $basePath; ?>/js/path-utils.js?v=<?php echo time(); ?>"></script>
+<script src="<?php echo $basePath; ?>/js/type-manager.js?v=<?php echo time(); ?>"></script>
+<script type="module" src="<?php echo $basePath; ?>/js/StatusManager.js?v=<?php echo time(); ?>"></script>
+<script src="<?php echo $basePath; ?>/js/simple-modal.js?v=<?php echo time(); ?>"></script>
+<script src="<?php echo $basePath; ?>/js/ModalActions.js?v=<?php echo time(); ?>"></script>
+<script type="module" src="<?php echo $basePath; ?>/js/ui-components.js?v=<?php echo time(); ?>"></script>
 
 <!-- Utilities (shared across modules) -->
-<script type="module" src="<?php echo $basePath; ?>/js/date-utils.js"></script>
+<script type="module" src="<?php echo $basePath; ?>/js/date-utils.js?v=<?php echo time(); ?>"></script>
 
 <!-- Unified Save/Restore System (NEW - replaces 7 legacy modules) -->
-<script type="module" src="<?php echo $basePath; ?>/js/StateManager.js"></script>
-<script type="module" src="<?php echo $basePath; ?>/js/ModalActions.js"></script>
-<script type="module" src="<?php echo $basePath; ?>/js/StateEvents.js"></script>
+<script type="module" src="<?php echo $basePath; ?>/js/StateManager.js?v=<?php echo time(); ?>"></script>
+<script type="module" src="<?php echo $basePath; ?>/js/StateEvents.js?v=<?php echo time(); ?>"></script>
 
 <!-- Main application (refactored to use unified system) -->
-<script type="module" src="<?php echo $basePath; ?>/js/main.js"></script>
+<script type="module" src="<?php echo $basePath; ?>/js/main.js?v=<?php echo time(); ?>"></script>
 <script>
   // Make checklist type and session key available to JavaScript (supports minimal URL include)
   window.checklistTypeFromPHP = '<?php echo isset($_GET['type']) ? htmlspecialchars($_GET['type'], ENT_QUOTES, 'UTF-8') : ''; ?>';
@@ -163,7 +162,7 @@ $basePath = $isLocal ? '' : '/training/online/accessilist';
       if (typeof initializeUIComponents === 'function') {
         initializeUIComponents();
       }
-      
+
       // Setup unified state events after modules are loaded
       setTimeout(() => {
         if (window.stateEvents) {
@@ -173,7 +172,7 @@ $basePath = $isLocal ? '' : '/training/online/accessilist';
           console.warn('StateEvents not yet available');
         }
       }, 500);
-      
+
       // Initialize the app - now handled by unified StateManager
       if (typeof window.initializeApp === 'function') {
         window.initializeApp();
@@ -189,4 +188,4 @@ $basePath = $isLocal ? '' : '/training/online/accessilist';
 </script>
 
 </body>
-</html> 
+</html>

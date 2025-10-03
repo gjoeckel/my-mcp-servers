@@ -1,0 +1,113 @@
+{
+  "timestamp": "2025-10-02T22:02:21.632Z",
+  "testSuite": "Performance Tests",
+  "thresholds": {
+    "LCP": 2500,
+    "FID": 100,
+    "CLS": 0.1,
+    "FCP": 1800,
+    "TTFB": 600,
+    "TTI": 3800
+  },
+  "summary": {
+    "total": 15,
+    "passed": 14,
+    "failed": 1,
+    "performanceScore": "93.33%"
+  },
+  "results": [
+    {
+      "test": "Largest Contentful Paint (LCP)",
+      "status": "PASSED",
+      "value": 2406,
+      "threshold": 2500,
+      "unit": "ms",
+      "description": "Loading performance - largest content element"
+    },
+    {
+      "test": "First Input Delay (FID)",
+      "status": "FAILED",
+      "value": 125,
+      "threshold": 100,
+      "unit": "ms",
+      "description": "Interactivity - time to first user interaction"
+    },
+    {
+      "test": "Cumulative Layout Shift (CLS)",
+      "status": "PASSED",
+      "value": 0,
+      "threshold": 0.1,
+      "unit": "score",
+      "description": "Visual stability - unexpected layout shifts"
+    },
+    {
+      "test": "First Contentful Paint (FCP)",
+      "status": "PASSED",
+      "value": 1576,
+      "threshold": 1800,
+      "unit": "ms",
+      "description": "Time to first content render"
+    },
+    {
+      "test": "Time to First Byte (TTFB)",
+      "status": "PASSED",
+      "value": 551,
+      "threshold": 600,
+      "unit": "ms",
+      "description": "Server response time"
+    },
+    {
+      "test": "Time to Interactive (TTI)",
+      "status": "PASSED",
+      "value": 2685,
+      "threshold": 3800,
+      "unit": "ms",
+      "description": "Time until page is fully interactive"
+    },
+    {
+      "test": "Image Optimization",
+      "status": "PASSED",
+      "description": "Images are properly compressed and optimized"
+    },
+    {
+      "test": "CSS Minification",
+      "status": "PASSED",
+      "description": "CSS files are minified and optimized"
+    },
+    {
+      "test": "JavaScript Minification",
+      "status": "PASSED",
+      "description": "JavaScript files are minified and optimized"
+    },
+    {
+      "test": "Resource Caching",
+      "status": "PASSED",
+      "description": "Proper cache headers are set for static resources"
+    },
+    {
+      "test": "Bundle Size",
+      "status": "PASSED",
+      "description": "JavaScript bundles are within size limits"
+    },
+    {
+      "test": "Mobile LCP",
+      "status": "PASSED",
+      "description": "Largest Contentful Paint on mobile devices"
+    },
+    {
+      "test": "Mobile FID",
+      "status": "PASSED",
+      "description": "First Input Delay on mobile devices"
+    },
+    {
+      "test": "Mobile CLS",
+      "status": "PASSED",
+      "description": "Cumulative Layout Shift on mobile devices"
+    },
+    {
+      "test": "Touch Response",
+      "status": "PASSED",
+      "description": "Touch interactions are responsive"
+    }
+  ]
+}

@@ -59,7 +59,33 @@ section {
     margin-bottom: 2rem;
     z-index: 1;
     background-color: transparent;
-    padding: 0;
+    padding: 4px;
+}
+
+/* Simplified Checklist Caption Styles */
+.checklist-caption {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    border-radius: 6px;
+    padding: calc(0.5rem + 4px) calc(1rem + 4px);
+    transition: box-shadow 0.2s ease;
+    max-width: fit-content;
+    white-space: nowrap;
+    margin: 0 auto; /* Center the heading above the table */
+}
+
+.checklist-caption img {
+    flex-shrink: 0;
+}
+
+/* DRY Golden ring focus and hover styles - uses CSS custom property */
+.checklist-caption:focus,
+.checklist-caption:hover {
+    outline: none;
+    box-shadow: var(--golden-ring) !important;
 }
 
 /* Screen Reader Only Class (Included as it was in section blocks) */

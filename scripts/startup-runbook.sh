@@ -127,7 +127,7 @@ new_start() {
   echo "🚀 NEW START" | tee -a "$LOG_FILE"
   ensure_git_bash
   [[ -x ./scripts/validate-environment.sh ]] && ./scripts/validate-environment.sh >>"$LOG_FILE" 2>&1 || true
-  [[ -x ./scripts/check-mcp-health.sh ]] && ./scripts/check-mcp-health.sh >>"$LOG_FILE" 2>&1 || true
+  [[ -x ./scripts/check-mcp-simple.sh ]] && ./scripts/check-mcp-simple.sh >>"$LOG_FILE" 2>&1 || true
   if [[ "$NO_CHROME" -ne 1 ]]; then
     [[ -x ./scripts/start-chrome-debug.sh ]] && ./scripts/start-chrome-debug.sh >>"$LOG_FILE" 2>&1 || true
   else
@@ -139,10 +139,10 @@ new_start() {
   curl_health || true
   # Optional MCP verification (navigate + evaluate health) if required
   if [[ "$REQUIRE_MCP" -eq 1 ]]; then
-    if php tests/chrome-mcp/health_check.php >>"$LOG_FILE" 2>&1; then
-      echo "✅ Chrome MCP health verified" | tee -a "$LOG_FILE"
+    if node tests/puppeteer/run-all-tests.js >>"$LOG_FILE" 2>&1; then
+      echo "✅ Puppeteer MCP health verified" | tee -a "$LOG_FILE"
     else
-      echo "❌ Chrome MCP health verification failed" | tee -a "$LOG_FILE"
+      echo "❌ Puppeteer MCP health verification failed" | tee -a "$LOG_FILE"
       exit 1
     fi
   fi
@@ -153,7 +153,7 @@ full_start() {
   echo "🚀 FULL START" | tee -a "$LOG_FILE"
   ensure_git_bash
   [[ -x ./scripts/validate-environment.sh ]] && ./scripts/validate-environment.sh >>"$LOG_FILE" 2>&1 || true
-  [[ -x ./scripts/check-mcp-health.sh ]] && ./scripts/check-mcp-health.sh >>"$LOG_FILE" 2>&1 || true
+  [[ -x ./scripts/check-mcp-simple.sh ]] && ./scripts/check-mcp-simple.sh >>"$LOG_FILE" 2>&1 || true
   if [[ "$NO_CHROME" -ne 1 ]]; then
     [[ -x ./scripts/start-chrome-debug.sh ]] && ./scripts/start-chrome-debug.sh >>"$LOG_FILE" 2>&1 || true
   else
@@ -165,10 +165,10 @@ full_start() {
   curl_health || true
   # Optional MCP verification (navigate + evaluate health) if required
   if [[ "$REQUIRE_MCP" -eq 1 ]]; then
-    if php tests/chrome-mcp/health_check.php >>"$LOG_FILE" 2>&1; then
-      echo "✅ Chrome MCP health verified" | tee -a "$LOG_FILE"
+    if node tests/puppeteer/run-all-tests.js >>"$LOG_FILE" 2>&1; then
+      echo "✅ Puppeteer MCP health verified" | tee -a "$LOG_FILE"
     else
-      echo "❌ Chrome MCP health verification failed" | tee -a "$LOG_FILE"
+      echo "❌ Puppeteer MCP health verification failed" | tee -a "$LOG_FILE"
       exit 1
     fi
   fi

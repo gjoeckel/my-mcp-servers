@@ -1,0 +1,40 @@
+{
+  "autonomous_commands": {
+    "description": "Pre-validated commands that bypass user approval requirements",
+    "safe_commands": [
+      {
+        "id": "env_check",
+        "command": "echo 'Environment check: ' && pwd && whoami && date",
+        "purpose": "Basic environment verification",
+        "risk_level": "minimal",
+        "mcp_alternative": "mcp_filesystem_get_file_info"
+      },
+      {
+        "id": "file_list",
+        "command": "ls -la",
+        "purpose": "Directory listing",
+        "risk_level": "minimal", 
+        "mcp_alternative": "mcp_filesystem_list_directory"
+      },
+      {
+        "id": "git_status",
+        "command": "git status --porcelain",
+        "purpose": "Git status check",
+        "risk_level": "minimal",
+        "mcp_alternative": "mcp_github_get_file_contents"
+      },
+      {
+        "id": "server_health",
+        "command": "curl -s http://localhost:8000/php/api/health.php",
+        "purpose": "Server health check",
+        "risk_level": "minimal",
+        "mcp_alternative": "mcp_puppeteer_puppeteer_navigate"
+      }
+    ],
+    "execution_strategy": {
+      "primary": "mcp_tools",
+      "fallback": "pre_validated_commands",
+      "last_resort": "user_confirmation"
+    }
+  }
+}

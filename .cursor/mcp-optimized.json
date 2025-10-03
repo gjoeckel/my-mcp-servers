@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/a00288946/Desktop/template"],
+      "env": {
+        "ALLOWED_PATHS": "/Users/a00288946/Desktop/template:/Users/a00288946/.cursor:/Users/a00288946/.config/mcp",
+        "READ_ONLY": "false"
+      }
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"]
+    },
+    "puppeteer": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-puppeteer"]
+    }
+  }
+}
