@@ -14,14 +14,15 @@ This repository contains custom forks of official MCP servers, reduced to only e
 ```
 ✅ CUSTOM SERVERS (Forked & Reduced):
 ├── github-minimal: 4 tools (reduced from 20+ tools)
-├── shell-minimal: 4 tools (reduced from 10+ tools)
-└── puppeteer-minimal: 4 tools (reduced from 12+ tools)
+├── shell-minimal: 4 tools (custom implementation)
+├── puppeteer-minimal: 4 tools (reduced from 12+ tools)
+└── sequential-thinking-minimal: 4 tools (reduced from original)
 
 ✅ OFFICIAL SERVERS (Unchanged):
 ├── filesystem: 15 tools (all essential)
 └── memory: 8 tools (all essential)
 
-TOTAL: 4 + 4 + 4 + 15 + 8 = 35 tools ✅
+TOTAL: 4 + 4 + 4 + 4 + 15 + 8 = 35 tools ✅
 ```
 
 ---
@@ -97,7 +98,64 @@ npm run link-all
 ```
 
 ### **Usage in Cursor IDE**
+
+#### **Option 1: Local Development (Recommended)**
+Clone the repository and use local builds:
+```bash
+# Clone the repository
+git clone https://github.com/gjoeckel/my-mcp-servers.git
+cd my-mcp-servers
+
+# Install dependencies and build
+npm run install-all
+npm run build-all
+```
+
 Update your `.cursor/mcp.json`:
+```json
+{
+  "mcpServers": {
+    "github-minimal": {
+      "command": "node",
+      "args": ["/path/to/my-mcp-servers/packages/github-minimal/build/index.js"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
+      }
+    },
+    "shell-minimal": {
+      "command": "node",
+      "args": ["/path/to/my-mcp-servers/packages/shell-minimal/build/index.js"],
+      "env": {
+        "WORKING_DIRECTORY": "/path/to/your/project",
+        "ALLOWED_COMMANDS": "npm,git,node,php,composer,curl,wget,ls,cat,grep,find,chmod,chown,mkdir,rm,cp,mv"
+      }
+    },
+    "puppeteer-minimal": {
+      "command": "node",
+      "args": ["/path/to/my-mcp-servers/packages/puppeteer-minimal/build/index.js"]
+    },
+    "sequential-thinking-minimal": {
+      "command": "node",
+      "args": ["/path/to/my-mcp-servers/packages/sequential-thinking-minimal/build/index.js"]
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/your/project"],
+      "env": {
+        "ALLOWED_PATHS": "/path/to/your/project:/Users/yourusername/.cursor",
+        "READ_ONLY": "false"
+      }
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"]
+    }
+  }
+}
+```
+
+#### **Option 2: Published Packages (Future)**
+When packages are published to npm:
 ```json
 {
   "mcpServers": {
@@ -119,6 +177,10 @@ Update your `.cursor/mcp.json`:
     "puppeteer-minimal": {
       "command": "npx",
       "args": ["-y", "@gjoeckel/mcp-puppeteer-minimal"]
+    },
+    "sequential-thinking-minimal": {
+      "command": "npx",
+      "args": ["-y", "@gjoeckel/mcp-sequential-thinking-minimal"]
     },
     "filesystem": {
       "command": "npx",
@@ -191,11 +253,12 @@ git merge upstream/main
 | Server | Original Tools | Custom Tools | Reduction | Status |
 |--------|----------------|--------------|-----------|---------|
 | GitHub | 20+ | 4 | 80% | ✅ Complete |
-| Shell | 10+ | 4 | 60% | ✅ Complete |
+| Shell | Custom | 4 | N/A | ✅ Complete |
 | Puppeteer | 12+ | 4 | 67% | ✅ Complete |
+| Sequential Thinking | 8+ | 4 | 50% | ✅ Complete |
 | Filesystem | 15 | 15 | 0% | ✅ Official |
 | Memory | 8 | 8 | 0% | ✅ Official |
-| **TOTAL** | **65+** | **35** | **46%** | ✅ **PERFECT** |
+| **TOTAL** | **63+** | **35** | **44%** | ✅ **PERFECT** |
 
 ### **Verification Commands**
 ```bash
