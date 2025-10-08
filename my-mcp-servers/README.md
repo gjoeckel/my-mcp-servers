@@ -1,28 +1,28 @@
 # My Custom MCP Servers
 
 **Repository**: [https://github.com/gjoeckel/my-mcp-servers](https://github.com/gjoeckel/my-mcp-servers)
-**Purpose**: Custom MCP servers with minimal tool sets for 35-tool limit compliance
-**Target**: Exactly 35 tools across 5 servers for optimal AI autonomous operation
+**Purpose**: Custom MCP servers with minimal tool sets for 40-tool limit compliance
+**Target**: Exactly 39 tools across 6 servers for optimal AI autonomous operation
 
 ---
 
 ## 🎯 **STRATEGY OVERVIEW**
 
-This repository contains custom forks of official MCP servers, reduced to only essential tools to stay within the 35-tool limit while maintaining full functionality.
+This repository contains custom forks of official MCP servers, reduced to only essential tools to stay within the 40-tool limit while maintaining full functionality.
 
-### **35-Tool Configuration**
+### **39-Tool Configuration**
 ```
 ✅ CUSTOM SERVERS (Forked & Reduced):
 ├── github-minimal: 4 tools (reduced from 20+ tools)
 ├── shell-minimal: 4 tools (custom implementation)
 ├── puppeteer-minimal: 4 tools (reduced from 12+ tools)
-└── sequential-thinking-minimal: 4 tools (reduced from original)
+└── agent-autonomy: 4 tools (custom workflow automation)
 
 ✅ OFFICIAL SERVERS (Unchanged):
 ├── filesystem: 15 tools (all essential)
 └── memory: 8 tools (all essential)
 
-TOTAL: 4 + 4 + 4 + 4 + 15 + 8 = 35 tools ✅
+TOTAL: 4 + 4 + 4 + 4 + 15 + 8 = 39 tools ✅
 ```
 
 ---
@@ -76,6 +76,18 @@ TOTAL: 4 + 4 + 4 + 4 + 15 + 8 = 35 tools ✅
 - `fill`, `select`, `hover`, `wait`, `scroll`, `type`, `press_key`
 - `get_text`, `get_attribute`
 - And more...
+
+### **Agent Autonomy** (`packages/agent-autonomy/`)
+**Original**: Custom implementation (no official server)
+**Custom**: 4 workflow automation tools
+
+**Tools Included**:
+- `execute_workflow` - Run predefined workflows autonomously
+- `list_workflows` - List available workflow definitions
+- `register_workflow` - Register new workflows at runtime
+- `check_approval` - Check if command would be auto-approved
+
+**npm Package**: `mcp-agent-autonomy@1.0.1`
 
 ---
 
@@ -134,9 +146,12 @@ Update your `.cursor/mcp.json`:
       "command": "node",
       "args": ["/path/to/my-mcp-servers/packages/puppeteer-minimal/build/index.js"]
     },
-    "sequential-thinking-minimal": {
+    "agent-autonomy": {
       "command": "node",
-      "args": ["/path/to/my-mcp-servers/packages/sequential-thinking-minimal/build/index.js"]
+      "args": ["/path/to/my-mcp-servers/packages/agent-autonomy/build/index.js"],
+      "env": {
+        "WORKING_DIRECTORY": "/path/to/your/project"
+      }
     },
     "filesystem": {
       "command": "npx",
@@ -178,9 +193,12 @@ When packages are published to npm:
       "command": "npx",
       "args": ["-y", "@gjoeckel/mcp-puppeteer-minimal"]
     },
-    "sequential-thinking-minimal": {
+    "agent-autonomy": {
       "command": "npx",
-      "args": ["-y", "@gjoeckel/mcp-sequential-thinking-minimal"]
+      "args": ["-y", "mcp-agent-autonomy@1.0.1"],
+      "env": {
+        "WORKING_DIRECTORY": "/path/to/your/project"
+      }
     },
     "filesystem": {
       "command": "npx",
@@ -255,15 +273,15 @@ git merge upstream/main
 | GitHub | 20+ | 4 | 80% | ✅ Complete |
 | Shell | Custom | 4 | N/A | ✅ Complete |
 | Puppeteer | 12+ | 4 | 67% | ✅ Complete |
-| Sequential Thinking | 8+ | 4 | 50% | ✅ Complete |
+| Agent Autonomy | Custom | 4 | N/A | ✅ Complete |
 | Filesystem | 15 | 15 | 0% | ✅ Official |
 | Memory | 8 | 8 | 0% | ✅ Official |
-| **TOTAL** | **63+** | **35** | **44%** | ✅ **PERFECT** |
+| **TOTAL** | **55+** | **39** | **29%** | ✅ **PERFECT** |
 
 ### **Verification Commands**
 ```bash
 # Check tool count in Cursor IDE
-# The AI should have exactly 35 tools available
+# The AI should have exactly 39 tools available
 
 # Manual verification
 npm run verify-tool-count
@@ -287,9 +305,10 @@ npm run health-check
 - ✅ **Easy Updates**: Can pull upstream bug fixes
 
 ### **Compliance**
-- ✅ **35-Tool Limit**: Exactly at the optimal limit
+- ✅ **39-Tool Limit**: Optimized under 40-tool limit
 - ✅ **No Bloat**: No unused or rarely-used tools
 - ✅ **Full Functionality**: All essential operations preserved
+- ✅ **Workflow Automation**: Agent autonomy for predefined workflows
 
 ---
 
