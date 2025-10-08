@@ -1,5 +1,5 @@
 {
-  "name": "@gjoeckel/mcp-agent-autonomy",
+  "name": "mcp-agent-autonomy",
   "version": "1.0.1",
   "description": "Agent Autonomy Workflow Server - Execute predefined workflows without approval",
   "main": "build/index.js",
