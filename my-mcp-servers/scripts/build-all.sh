@@ -58,21 +58,19 @@ build_package() {
 echo -e "${BLUE}📋 Building packages in dependency order...${NC}"
 echo ""
 
-# Build shell-minimal first (no dependencies)
-build_package "shell-minimal"
-
-# Build puppeteer-minimal (may depend on shell)
-build_package "puppeteer-minimal"
-
-# Build github-minimal last (may depend on others)
+# Build packages in order
+build_package "everything-minimal"
 build_package "github-minimal"
+build_package "puppeteer-minimal"
+build_package "sequential-thinking-minimal"
 
 echo -e "${GREEN}🎉 ALL PACKAGES BUILT SUCCESSFULLY!${NC}"
 echo ""
 echo -e "${BLUE}📊 Build Summary:${NC}"
-echo "✅ shell-minimal"
-echo "✅ puppeteer-minimal"
+echo "✅ everything-minimal"
 echo "✅ github-minimal"
+echo "✅ puppeteer-minimal"
+echo "✅ sequential-thinking-minimal"
 echo ""
 echo -e "${YELLOW}💡 Next steps:${NC}"
 echo "1. Run: npm run link-all"
