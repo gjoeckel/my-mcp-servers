@@ -1,1 +1,1 @@
-{"name":"autonomous-assistant","version":"1.0.0","type":"module","scripts":{"start":"node src/index.js"},"dependencies":{"@anthropic-ai/sdk":"^0.30.0","@modelcontextprotocol/sdk":"^1.0.4","chokidar":"^3.6.0","dotenv":"^16.4.5"}}
+{"name":"autonomous-assistant","version":"1.0.0","type":"module","scripts":{"start":"node src/index.js"},"dependencies":{"@anthropic-ai/sdk":"^0.30.0","@modelcontextprotocol/sdk":"^1.0.4","chokidar":"^3.6.0","dotenv":"^16.4.5","puppeteer":"^24.24.0"}}
