@@ -1,0 +1,20 @@
+{
+  "name": "apps-script-project",
+  "version": "1.0.0",
+  "description": "Google Apps Script project with clasp integration",
+  "main": "src/Code.gs",
+  "scripts": {
+    "login": "clasp login",
+    "clone": "clasp clone 13k7BOpOU3Pt3xCPi3rAldNS4orCq00pfb1TWg6h57ChFunyktDHj9hTh",
+    "push": "clasp push",
+    "pull": "clasp pull",
+    "deploy": "clasp deploy",
+    "open": "clasp open"
+  },
+  "keywords": ["google-apps-script", "clasp", "automation"],
+  "author": "g.joeckel@usu.edu",
+  "license": "MIT",
+  "devDependencies": {
+    "@google/clasp": "^3.0.6"
+  }
+}
