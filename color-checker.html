@@ -1,0 +1,54 @@
+I can see the Google Apps Script code in your screenshot. Let me extract it for you:
+
+```javascript
+/**
+ * Shows a sidebar in the Google Doc UI.
+ */
+function showSidebar() {
+  var html = HtmlService.createHtmlOutputFromFile('Sidebar')
+    .setTitle('Color Contrast Checker');
+  DocumentApp.getUi().showSidebar(html);
+}
+
+/**
+ * Gets the color attributes of the currently selected text.
+ * If there's no selection, it uses the text at the cursor's position.
+ *
+ * @returns {object} An object containing the foreground and background
+ * colors in hex format.
+ */
+function getSelectedColors() {
+  var doc = DocumentApp.getActiveDocument();
+  var selection = doc.getSelection();
+  var foreground = '#000000'; // Default to black
+  var background = '#ffffff'; // Default to white
+  
+  if (selection) {
+    var elements = selection.getRangeElements();
+    if (elements.length > 0) {
+      var element = elements[0].getElement();
+      
+      // Check if the element is a Text element and not a partial selection
+      if (element.asText) {
+        var text = element.asText();
+        var startOffset = elements[0].getStartOffset();
+        
+        // Ensure we check a valid character index
+        var checkOffset = startOffset === -1 ? 0 : startOffset;
+        
+        var attrs = text.getAttributes(checkOffset);
+        
+        if (attrs[DocumentApp.Attribute.FOREGROUND_COLOR]) {
+          foreground = attrs[DocumentApp.Attribute.FOREGROUND_COLOR];
+        }
+        
+        if (attrs[DocumentApp.Attribute.BACKGROUND_COLOR]) {
+          background = attrs[DocumentApp.Attribute.BACKGROUND_COLOR];
+        }
+      }
+    }
+  }
+  
+  return { foreground: foreground, background: background };
+}
+```
