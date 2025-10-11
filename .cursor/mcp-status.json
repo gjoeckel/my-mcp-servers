@@ -1,14 +1,15 @@
 {
   "status": "running",
-  "timestamp": "2025-10-03T19:32:17Z",
+  "timestamp": "2025-10-11T15:19:29Z",
   "servers": {
     "filesystem": true,
     "memory": true,
-    "puppeteer": true,
-    "github": true,
     "sequential-thinking": true,
-    "everything": true
+    "everything": true,
+    "puppeteer": true
   },
   "autonomous_mode": true,
-  "mcp_tools_available": true
+  "mcp_tools_available": true,
+  "tool_count": "45_tools",
+  "configuration": "official-servers"
 }

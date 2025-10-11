@@ -1,13 +1,11 @@
 #!/usr/bin/env node
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_js_1 = require("@modelcontextprotocol/sdk/server/index.js");
-const stdio_js_1 = require("@modelcontextprotocol/sdk/server/stdio.js");
-const types_js_1 = require("@modelcontextprotocol/sdk/types.js");
-const util_1 = require("util");
-const child_process_1 = require("child_process");
-const execAsync = (0, util_1.promisify)(child_process_1.exec);
-const server = new index_js_1.Server({
+import { Server } from '@modelcontextprotocol/sdk/server/index.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { CallToolRequestSchema, ListToolsRequestSchema, } from '@modelcontextprotocol/sdk/types.js';
+import { promisify } from 'util';
+import { exec } from 'child_process';
+const execAsync = promisify(exec);
+const server = new Server({
     name: 'shell-minimal',
     version: '1.0.0',
 }, {
@@ -28,7 +26,7 @@ const getWorkingDirectory = () => {
     return process.env.WORKING_DIRECTORY || process.cwd();
 };
 // List available tools
-server.setRequestHandler(types_js_1.ListToolsRequestSchema, async () => {
+server.setRequestHandler(ListToolsRequestSchema, async () => {
     return {
         tools: [
             {
@@ -103,7 +101,7 @@ server.setRequestHandler(types_js_1.ListToolsRequestSchema, async () => {
     };
 });
 // Handle tool calls
-server.setRequestHandler(types_js_1.CallToolRequestSchema, async (request) => {
+server.setRequestHandler(CallToolRequestSchema, async (request) => {
     const { name, arguments: args } = request.params;
     try {
         switch (name) {
@@ -220,7 +218,7 @@ server.setRequestHandler(types_js_1.CallToolRequestSchema, async (request) => {
     }
 });
 async function main() {
-    const transport = new stdio_js_1.StdioServerTransport();
+    const transport = new StdioServerTransport();
     await server.connect(transport);
     console.error('Shell minimal MCP server running');
 }
