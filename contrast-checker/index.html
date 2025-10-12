@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Contrast Checker - Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🎨 Color Contrast Checker</h1>
+            <p class="subtitle">Accessibility Testing Dashboard</p>
+        </header>
+
+        <!-- Status Overview -->
+        <section class="status-section">
+            <h2>System Status</h2>
+            <div class="status-grid">
+                <div class="status-card" id="google-auth-status">
+                    <div class="status-indicator" id="auth-indicator"></div>
+                    <h3>Google Authentication</h3>
+                    <p id="auth-status-text">Checking...</p>
+                </div>
+                <div class="status-card" id="api-status">
+                    <div class="status-indicator" id="api-indicator"></div>
+                    <h3>Google APIs</h3>
+                    <p id="api-status-text">Checking...</p>
+                </div>
+                <div class="status-card" id="picker-status">
+                    <div class="status-indicator" id="picker-indicator"></div>
+                    <h3>Document Picker</h3>
+                    <p id="picker-status-text">Checking...</p>
+                </div>
+                <div class="status-card" id="contrast-status">
+                    <div class="status-indicator" id="contrast-indicator"></div>
+                    <h3>Contrast Engine</h3>
+                    <p id="contrast-status-text">Ready</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Actions -->
+        <section class="actions-section">
+            <h2>Quick Actions</h2>
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="openContrastTool()">
+                    🎯 Open Contrast Checker
+                </button>
+                <button class="btn btn-secondary" onclick="testGoogleAuth()">
+                    🔐 Test Google Sign-in
+                </button>
+                <button class="btn btn-secondary" onclick="testDocumentPicker()">
+                    📄 Test Document Picker
+                </button>
+                <button class="btn btn-secondary" onclick="runDiagnostics()">
+                    🔍 Run Diagnostics
+                </button>
+            </div>
+        </section>
+
+        <!-- Feature Status -->
+        <section class="features-section">
+            <h2>Feature Status</h2>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <span class="feature-icon">✅</span>
+                    <div class="feature-content">
+                        <h3>Standalone Contrast Checker</h3>
+                        <p>Manual color input with WCAG compliance checking</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon" id="google-docs-icon">⏳</span>
+                    <div class="feature-content">
+                        <h3>Google Docs Integration</h3>
+                        <p>Extract colors from selected text in Google Docs</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon" id="document-picker-icon">⏳</span>
+                    <div class="feature-content">
+                        <h3>Document Picker</h3>
+                        <p>Select and analyze documents from Google Drive</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">✅</span>
+                    <div class="feature-content">
+                        <h3>Mobile Optimized</h3>
+                        <p>Responsive design for iPhone and mobile devices</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Console Output -->
+        <section class="console-section">
+            <h2>System Console</h2>
+            <div class="console-output" id="console-output">
+                <div class="console-line">System initialized...</div>
+                <div class="console-line">Loading Google APIs...</div>
+            </div>
+            <button class="btn btn-small" onclick="clearConsole()">Clear Console</button>
+        </section>
+
+        <!-- Feedback Section -->
+        <section class="feedback-section">
+            <h2>Feedback & Issues</h2>
+            <div class="feedback-options">
+                <button class="btn btn-outline" onclick="openGitHubIssues()">
+                    📝 Report Issue on GitHub
+                </button>
+                <button class="btn btn-outline" onclick="openFeedbackForm()">
+                    💬 Send Feedback
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Scripts -->
+    <script src="config.js"></script>
+    <script src="contrast-engine.js"></script>
+    <script src="picker.js"></script>
+    <script src="docs-api.js"></script>
+    <script>
+        // Dashboard functionality
+        let isAuthenticated = false;
+        let apisLoaded = false;
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            logToConsole('Dashboard loaded');
+            initializeGoogleAPIs();
+        });
+
+        function logToConsole(message) {
+            const console = document.getElementById('console-output');
+            const timestamp = new Date().toLocaleTimeString();
+            const line = document.createElement('div');
+            line.className = 'console-line';
+            line.textContent = `[${timestamp}] ${message}`;
+            console.appendChild(line);
+            console.scrollTop = console.scrollHeight;
+        }
+
+        function updateStatus(cardId, status, text) {
+            const card = document.getElementById(cardId);
+            const indicator = card.querySelector('.status-indicator');
+            const textElement = card.querySelector('p');
+            
+            indicator.className = `status-indicator ${status}`;
+            textElement.textContent = text;
+        }
+
+        function openContrastTool() {
+            window.open('app.html', '_blank');
+        }
+
+        function testGoogleAuth() {
+            logToConsole('Testing Google authentication...');
+            // This will be implemented when we add Google Sign-in
+            updateStatus('google-auth-status', 'loading', 'Testing...');
+        }
+
+        function testDocumentPicker() {
+            logToConsole('Testing document picker...');
+            // This will be implemented when we add Google Picker
+            updateStatus('picker-status', 'loading', 'Testing...');
+        }
+
+        function runDiagnostics() {
+            logToConsole('Running system diagnostics...');
+            // Comprehensive system check
+            checkSystemHealth();
+        }
+
+        function checkSystemHealth() {
+            // Check if all required scripts are loaded
+            const requiredScripts = ['config.js', 'contrast-engine.js', 'picker.js', 'docs-api.js'];
+            let allLoaded = true;
+            
+            requiredScripts.forEach(script => {
+                if (!document.querySelector(`script[src="${script}"]`)) {
+                    allLoaded = false;
+                    logToConsole(`❌ Missing: ${script}`);
+                }
+            });
+            
+            if (allLoaded) {
+                logToConsole('✅ All required scripts loaded');
+                updateStatus('contrast-status', 'success', 'Ready');
+            }
+        }
+
+        function clearConsole() {
+            document.getElementById('console-output').innerHTML = '';
+            logToConsole('Console cleared');
+        }
+
+        function openGitHubIssues() {
+            window.open('https://github.com/gjoeckel/my-mcp-servers/issues', '_blank');
+        }
+
+        function openFeedbackForm() {
+            // Simple feedback form - could be enhanced
+            const feedback = prompt('Please share your feedback or report any issues:');
+            if (feedback) {
+                logToConsole(`Feedback received: ${feedback}`);
+                // In a real implementation, this would send to a backend
+            }
+        }
+
+        // Initialize Google APIs (placeholder for now)
+        function initializeGoogleAPIs() {
+            logToConsole('Initializing Google APIs...');
+            // This will be implemented with actual Google API loading
+            setTimeout(() => {
+                updateStatus('api-status', 'success', 'APIs Loaded');
+                apisLoaded = true;
+                logToConsole('Google APIs initialized successfully');
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

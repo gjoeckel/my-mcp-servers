@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Contrast Checker - Tool</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🎨 Color Contrast Checker</h1>
+            <div class="header-actions">
+                <button class="btn btn-small" onclick="window.location.href='index.html'">← Dashboard</button>
+                <button class="btn btn-small" onclick="toggleAdvancedMode()" id="advanced-toggle">Advanced</button>
+            </div>
+        </header>
+
+        <!-- Authentication Section -->
+        <section class="auth-section" id="auth-section">
+            <div class="auth-card">
+                <h2>🔐 Google Sign-in Required</h2>
+                <p>Sign in to access Google Docs and analyze document colors</p>
+                <button class="btn btn-primary" id="signin-btn" onclick="signIn()">
+                    Sign in with Google
+                </button>
+                <div class="auth-alternative">
+                    <p>Or continue with manual color input:</p>
+                    <button class="btn btn-secondary" onclick="skipAuth()">
+                        Skip Authentication
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Tool Interface -->
+        <section class="tool-section" id="tool-section" style="display: none;">
+            <!-- Document Selection -->
+            <div class="document-section">
+                <h2>📄 Document Selection</h2>
+                <div class="document-actions">
+                    <button class="btn btn-primary" id="picker-btn" onclick="openDocumentPicker()">
+                        📁 Select Document
+                    </button>
+                    <button class="btn btn-secondary" onclick="getSelectedTextColors()">
+                        🎯 Get Selected Text Colors
+                    </button>
+                </div>
+                <div class="document-info" id="document-info" style="display: none;">
+                    <h3>Current Document</h3>
+                    <p id="document-name">No document selected</p>
+                    <p id="document-url">No URL available</p>
+                </div>
+            </div>
+
+            <!-- Color Selection -->
+            <div class="color-section">
+                <h2>🎨 Color Selection</h2>
+                <div class="color-inputs">
+                    <div class="color-input-group">
+                        <label for="foregroundColor">Foreground Color</label>
+                        <div class="color-input-container">
+                            <input type="color" id="foregroundColor" value="#000000" class="color-picker">
+                            <input type="text" id="foregroundColorHex" value="#000000" class="color-hex-input" placeholder="#000000">
+                        </div>
+                    </div>
+                    <div class="color-input-group">
+                        <label for="backgroundColor">Background Color</label>
+                        <div class="color-input-container">
+                            <input type="color" id="backgroundColor" value="#ffffff" class="color-picker">
+                            <input type="text" id="backgroundColorHex" value="#ffffff" class="color-hex-input" placeholder="#ffffff">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Display -->
+            <div class="results-section">
+                <h2>📊 Contrast Analysis</h2>
+                <div class="results-card">
+                    <div class="contrast-ratio">
+                        <span class="ratio-label">Contrast Ratio:</span>
+                        <span class="ratio-value" id="contrastRatio">--</span>
+                    </div>
+                    
+                    <div class="wcag-results">
+                        <div class="wcag-group">
+                            <h3>Normal Text (12pt+)</h3>
+                            <div class="wcag-badges">
+                                <span class="wcag-badge" id="wcag-aa-normal">AA: --</span>
+                                <span class="wcag-badge" id="wcag-aaa-normal">AAA: --</span>
+                            </div>
+                        </div>
+                        <div class="wcag-group">
+                            <h3>Large Text (18pt+)</h3>
+                            <div class="wcag-badges">
+                                <span class="wcag-badge" id="wcag-aa-large">AA: --</span>
+                                <span class="wcag-badge" id="wcag-aaa-large">AAA: --</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advanced Features -->
+            <div class="advanced-section" id="advanced-section" style="display: none;">
+                <h2>⚙️ Advanced Features</h2>
+                <div class="advanced-options">
+                    <div class="option-group">
+                        <label>
+                            <input type="checkbox" id="auto-detect-colors"> Auto-detect colors from selection
+                        </label>
+                    </div>
+                    <div class="option-group">
+                        <label>
+                            <input type="checkbox" id="show-luminance"> Show luminance values
+                        </label>
+                    </div>
+                    <div class="option-group">
+                        <label>
+                            <input type="checkbox" id="export-results"> Export results to Google Sheets
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Console Output -->
+        <div class="console-section">
+            <h3>Console Output</h3>
+            <div class="console-output" id="console-output">
+                <div class="console-line">Contrast checker initialized...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="config.js"></script>
+    <script src="contrast-engine.js"></script>
+    <script src="picker.js"></script>
+    <script src="docs-api.js"></script>
+    <script>
+        // Main application functionality
+        let isAuthenticated = false;
+        let currentDocument = null;
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            logToConsole('Application loaded');
+            initializeColorInputs();
+            updateContrastCheck();
+        });
+
+        function logToConsole(message) {
+            const console = document.getElementById('console-output');
+            const timestamp = new Date().toLocaleTimeString();
+            const line = document.createElement('div');
+            line.className = 'console-line';
+            line.textContent = `[${timestamp}] ${message}`;
+            console.appendChild(line);
+            console.scrollTop = console.scrollHeight;
+        }
+
+        function initializeColorInputs() {
+            const fgColorPicker = document.getElementById('foregroundColor');
+            const bgColorPicker = document.getElementById('backgroundColor');
+            const fgHexInput = document.getElementById('foregroundColorHex');
+            const bgHexInput = document.getElementById('backgroundColorHex');
+
+            // Sync color picker with hex input
+            fgColorPicker.addEventListener('input', function() {
+                fgHexInput.value = fgColorPicker.value;
+                updateContrastCheck();
+            });
+
+            fgHexInput.addEventListener('input', function() {
+                if (isValidHex(fgHexInput.value)) {
+                    fgColorPicker.value = fgHexInput.value;
+                    updateContrastCheck();
+                }
+            });
+
+            bgColorPicker.addEventListener('input', function() {
+                bgHexInput.value = bgColorPicker.value;
+                updateContrastCheck();
+            });
+
+            bgHexInput.addEventListener('input', function() {
+                if (isValidHex(bgHexInput.value)) {
+                    bgColorPicker.value = bgHexInput.value;
+                    updateContrastCheck();
+                }
+            });
+        }
+
+        function isValidHex(hex) {
+            return /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(hex);
+        }
+
+        function updateContrastCheck() {
+            const fgColor = document.getElementById('foregroundColor').value;
+            const bgColor = document.getElementById('backgroundColor').value;
+            
+            if (typeof calculateContrast === 'function') {
+                const ratio = calculateContrast(fgColor, bgColor);
+                displayResults(ratio);
+            } else {
+                logToConsole('Contrast engine not loaded');
+            }
+        }
+
+        function displayResults(ratio) {
+            // Update contrast ratio display
+            document.getElementById('contrastRatio').textContent = ratio.toFixed(2);
+
+            // Update WCAG badges
+            updateWCAGBadge('wcag-aa-normal', ratio >= 4.5, ratio >= 7);
+            updateWCAGBadge('wcag-aaa-normal', ratio >= 7, false);
+            updateWCAGBadge('wcag-aa-large', ratio >= 3, ratio >= 4.5);
+            updateWCAGBadge('wcag-aaa-large', ratio >= 4.5, false);
+        }
+
+        function updateWCAGBadge(elementId, aaPass, aaaPass) {
+            const element = document.getElementById(elementId);
+            const isAA = elementId.includes('aa-');
+            const pass = isAA ? aaPass : aaaPass;
+            
+            element.className = `wcag-badge ${pass ? 'pass' : 'fail'}`;
+            element.textContent = `${isAA ? 'AA' : 'AAA'}: ${pass ? 'Pass' : 'Fail'}`;
+        }
+
+        function signIn() {
+            logToConsole('Initiating Google Sign-in...');
+            // This will be implemented with actual Google Sign-in
+            document.getElementById('signin-btn').textContent = 'Signing in...';
+            document.getElementById('signin-btn').disabled = true;
+            
+            // Simulate sign-in process
+            setTimeout(() => {
+                isAuthenticated = true;
+                document.getElementById('auth-section').style.display = 'none';
+                document.getElementById('tool-section').style.display = 'block';
+                logToConsole('Successfully signed in to Google');
+            }, 2000);
+        }
+
+        function skipAuth() {
+            logToConsole('Skipping authentication - using manual mode');
+            document.getElementById('auth-section').style.display = 'none';
+            document.getElementById('tool-section').style.display = 'block';
+        }
+
+        function openDocumentPicker() {
+            logToConsole('Opening document picker...');
+            // This will be implemented with Google Picker
+            logToConsole('Document picker not yet implemented');
+        }
+
+        function getSelectedTextColors() {
+            logToConsole('Getting selected text colors...');
+            // This will be implemented with Google Docs API
+            logToConsole('Text color extraction not yet implemented');
+        }
+
+        function toggleAdvancedMode() {
+            const advancedSection = document.getElementById('advanced-section');
+            const toggle = document.getElementById('advanced-toggle');
+            
+            if (advancedSection.style.display === 'none') {
+                advancedSection.style.display = 'block';
+                toggle.textContent = 'Hide Advanced';
+            } else {
+                advancedSection.style.display = 'none';
+                toggle.textContent = 'Advanced';
+            }
+        }
+    </script>
+</body>
+</html>
