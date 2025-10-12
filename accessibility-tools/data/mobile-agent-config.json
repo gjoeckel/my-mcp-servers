@@ -1,0 +1,53 @@
+{
+  "agent": {
+    "name": "Accessibility Testing Agent",
+    "version": "1.0.0",
+    "description": "Mobile agent for automated accessibility testing",
+    "capabilities": [
+      "color_contrast_checking",
+      "readability_analysis", 
+      "structure_validation",
+      "alt_text_verification",
+      "keyboard_navigation_testing"
+    ]
+  },
+  "testing": {
+    "defaultTools": ["contrast"],
+    "timeout": 30000,
+    "retryAttempts": 3,
+    "parallelExecution": true
+  },
+  "documentTypes": {
+    "google_docs": {
+      "supported": true,
+      "apiRequired": true,
+      "extractionMethods": ["api", "scraping"]
+    },
+    "google_sheets": {
+      "supported": true,
+      "apiRequired": true,
+      "extractionMethods": ["api"]
+    },
+    "google_slides": {
+      "supported": true,
+      "apiRequired": true,
+      "extractionMethods": ["api"]
+    },
+    "web_page": {
+      "supported": true,
+      "apiRequired": false,
+      "extractionMethods": ["scraping", "dom_analysis"]
+    }
+  },
+  "notifications": {
+    "enabled": true,
+    "channels": ["browser", "mobile_app"],
+    "levels": ["info", "warning", "error", "success"]
+  },
+  "storage": {
+    "localStorage": true,
+    "sessionStorage": true,
+    "indexedDB": false,
+    "maxHistoryItems": 50
+  }
+}

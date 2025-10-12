@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Contrast Checker - WCAG Compliance Tool</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🔍 Color Contrast Checker</h1>
+            <p>Test color contrast ratios and ensure WCAG accessibility compliance</p>
+        </header>
+        
+        <main class="main-content">
+            <section class="color-inputs">
+                <h2 class="section-title">🎨 Color Selection</h2>
+                
+                <div class="color-group">
+                    <label for="foreground-color" class="color-label">Foreground Color</label>
+                    <div class="color-input-container">
+                        <input type="color" id="foreground-color" class="color-picker" value="#000000" aria-label="Foreground color picker">
+                        <input type="text" id="foreground-hex" class="hex-input" placeholder="#000000" aria-label="Foreground color hex value">
+                    </div>
+                </div>
+                
+                <div class="color-group">
+                    <label for="background-color" class="color-label">Background Color</label>
+                    <div class="color-input-container">
+                        <input type="color" id="background-color" class="color-picker" value="#ffffff" aria-label="Background color picker">
+                        <input type="text" id="background-hex" class="hex-input" placeholder="#ffffff" aria-label="Background color hex value">
+                    </div>
+                </div>
+                
+                <div class="actions">
+                    <button id="swap-colors" class="btn btn-secondary" title="Swap foreground and background colors">
+                        🔄 Swap Colors
+                    </button>
+                    <button id="random-colors" class="btn btn-secondary" title="Generate random color combination">
+                        🎲 Random Colors
+                    </button>
+                    <button id="save-test" class="btn btn-success" title="Save current test (Ctrl+S)">
+                        💾 Save Test
+                    </button>
+                    <button id="load-test" class="btn btn-primary" title="Load saved test (Ctrl+L)">
+                        📁 Load Test
+                    </button>
+                </div>
+            </section>
+            
+            <section class="results">
+                <h2 class="section-title">📊 Results</h2>
+                
+                <div id="result-container" class="result-container">
+                    <div class="contrast-ratio">
+                        <div id="contrast-ratio" class="ratio-value">21.00</div>
+                        <div class="ratio-label">Contrast Ratio</div>
+                    </div>
+                    
+                    <div class="wcag-results">
+                        <div id="wcag-aa" class="wcag-status pass">
+                            <span class="status-icon">✅</span>
+                            <span class="threshold">4.5:1</span>
+                        </div>
+                        <div id="wcag-aaa" class="wcag-status fail">
+                            <span class="status-icon">❌</span>
+                            <span class="threshold">7:1</span>
+                        </div>
+                        <div id="large-text-aa" class="wcag-status pass">
+                            <span class="status-icon">✅</span>
+                            <span class="threshold">3:1</span>
+                        </div>
+                        <div id="large-text-aaa" class="wcag-status pass">
+                            <span class="status-icon">✅</span>
+                            <span class="threshold">4.5:1</span>
+                        </div>
+                    </div>
+                    
+                    <div id="color-preview" class="color-preview" style="color: #000000; background-color: #ffffff;">
+                    </div>
+                </div>
+                
+                <div class="keyboard-shortcuts">
+                    <h4>⌨️ Keyboard Shortcuts</h4>
+                    <ul>
+                        <li><kbd>Ctrl</kbd> + <kbd>S</kbd> - Save test</li>
+                        <li><kbd>Ctrl</kbd> + <kbd>L</kbd> - Load test</li>
+                        <li><kbd>Ctrl</kbd> + <kbd>R</kbd> - Random colors</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <!-- Load the contrast engine and app -->
+    <script src="engine.js"></script>
+    <script src="app.js"></script>
+    
+    <!-- Google Analytics or other tracking (optional) -->
+    <script>
+        // Initialize any additional features
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add any initialization code here
+            console.log('Color Contrast Checker loaded successfully');
+        });
+    </script>
+</body>
+</html>

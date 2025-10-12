@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accessibility Tools - Desktop Launcher</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .tool-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-color: #667eea;
+        }
+        
+        .tool-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .tool-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        
+        .tool-description {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .mobile-link {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #e3f2fd;
+            border-radius: 10px;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .mobile-link a {
+            color: #1976d2;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .mobile-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Accessibility Tools</h1>
+        <p class="subtitle">Professional accessibility testing and compliance tools</p>
+        
+        <div class="tools-grid">
+            <a href="contrast/" class="tool-card">
+                <div class="tool-icon">🔍</div>
+                <div class="tool-title">Color Contrast Checker</div>
+                <div class="tool-description">
+                    Test color contrast ratios and ensure WCAG compliance for text and background colors.
+                </div>
+            </a>
+            
+            <a href="#" class="tool-card">
+                <div class="tool-icon">📱</div>
+                <div class="tool-title">Mobile Testing</div>
+                <div class="tool-description">
+                    Test accessibility on mobile devices and responsive designs.
+                </div>
+            </a>
+            
+            <a href="#" class="tool-card">
+                <div class="tool-icon">♿</div>
+                <div class="tool-title">Screen Reader Test</div>
+                <div class="tool-description">
+                    Simulate screen reader experience and test ARIA implementations.
+                </div>
+            </a>
+            
+            <a href="#" class="tool-card">
+                <div class="tool-icon">⌨️</div>
+                <div class="tool-title">Keyboard Navigation</div>
+                <div class="tool-description">
+                    Test keyboard-only navigation and focus management.
+                </div>
+            </a>
+        </div>
+        
+        <div class="mobile-link">
+            <strong>📱 Mobile Development Mode:</strong>
+            <a href="dev-ui.html">Open Mobile Agent Interface</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+{
+  "testId": "test_001",
+  "timestamp": "2024-01-15T10:30:00Z",
+  "document": {
+    "url": "https://docs.google.com/document/d/example",
+    "type": "google_docs",
+    "title": "Sample Document"
+  },
+  "tools": {
+    "contrast": {
+      "enabled": true,
+      "results": {
+        "totalChecks": 5,
+        "passed": 3,
+        "failed": 2,
+        "issues": [
+          {
+            "type": "low_contrast",
+            "severity": "high",
+            "description": "Text color #CCCCCC on background #FFFFFF has contrast ratio 1.2:1",
+            "location": "Page 1, Paragraph 2",
+            "suggestion": "Use darker text color for better readability"
+          },
+          {
+            "type": "low_contrast",
+            "severity": "medium", 
+            "description": "Link color #666666 on background #F0F0F0 has contrast ratio 2.8:1",
+            "location": "Page 2, Link 'Learn More'",
+            "suggestion": "Increase link color contrast to meet WCAG AA standards"
+          }
+        ]
+      }
+    },
+    "readability": {
+      "enabled": false,
+      "results": null
+    },
+    "structure": {
+      "enabled": false,
+      "results": null
+    },
+    "alt_text": {
+      "enabled": false,
+      "results": null
+    }
+  },
+  "overall": {
+    "score": 60,
+    "status": "needs_improvement",
+    "recommendations": [
+      "Fix low contrast text issues",
+      "Improve link visibility",
+      "Consider running additional accessibility checks"
+    ]
+  }
+}
