@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contrast Checker - Accessibility Tools</title>
+    <link rel="stylesheet" href="../../shared/common.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="card mb-8">
+            <div class="card-header">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1>🎨 Contrast Checker</h1>
+                        <p class="mt-2">WCAG AA/AAA compliance checking for Google Workspace documents</p>
+                    </div>
+                    <div class="flex gap-4">
+                        <button id="authBtn" class="btn btn-outline">Sign In with Google</button>
+                        <button id="selectDocBtn" class="btn btn-primary" disabled>Select Document</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Document Selection Panel -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>Document Selection</h2>
+                </div>
+                <div class="card-body">
+                    <div id="documentInfo" class="hidden">
+                        <div class="document-preview">
+                            <h3 id="documentName"></h3>
+                            <p id="documentType" class="text-sm text-gray-600"></p>
+                            <p id="documentId" class="text-xs text-gray-500"></p>
+                        </div>
+                        <div class="mt-4">
+                            <button id="analyzeBtn" class="btn btn-primary btn-lg w-full">🔍 Analyze Document</button>
+                        </div>
+                    </div>
+                    <div id="noDocument" class="text-center py-8">
+                        <div class="text-6xl mb-4">📄</div>
+                        <h3>No Document Selected</h3>
+                        <p class="text-gray-600">Select a Google Docs or Slides document to begin analysis</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analysis Controls -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>Analysis Settings</h2>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="form-label">WCAG Standard</label>
+                        <select id="wcagStandard" class="form-control form-select">
+                            <option value="AA">WCAG AA (4.5:1 for normal text, 3:1 for large text)</option>
+                            <option value="AAA">WCAG AAA (7:1 for normal text, 4.5:1 for large text)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Text Size Threshold</label>
+                        <select id="textSizeThreshold" class="form-control form-select">
+                            <option value="18">Large text: 18px+ or 14px+ bold</option>
+                            <option value="24">Large text: 24px+ or 18px+ bold</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Include Backgrounds</label>
+                        <div class="flex gap-4">
+                            <label class="flex items-center">
+                                <input type="checkbox" id="includeGradients" class="mr-2" checked>
+                                Gradients
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" id="includeImages" class="mr-2">
+                                Images
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button id="exportBtn" class="btn btn-outline w-full" disabled>📊 Export Report</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Panel -->
+        <div class="card mt-8">
+            <div class="card-header">
+                <div class="flex items-center justify-between">
+                    <h2>Analysis Results</h2>
+                    <div class="flex gap-4">
+                        <button id="filterBtn" class="btn btn-outline btn-sm">🔍 Filter</button>
+                        <button id="sortBtn" class="btn btn-outline btn-sm">📊 Sort</button>
+                        <button id="clearBtn" class="btn btn-outline btn-sm">🗑️ Clear</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="resultsContainer">
+                    <div id="noResults" class="text-center py-12">
+                        <div class="text-6xl mb-4">🔍</div>
+                        <h3>No Analysis Results</h3>
+                        <p class="text-gray-600">Select a document and click "Analyze Document" to begin</p>
+                    </div>
+                    <div id="loadingResults" class="loading hidden">
+                        <div class="spinner"></div>
+                        Analyzing document for contrast issues...
+                    </div>
+                    <div id="resultsList" class="hidden"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Statistics -->
+        <div id="summaryStats" class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-8 hidden">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="text-3xl font-bold text-blue-600" id="totalChecks">0</div>
+                    <div class="text-sm text-gray-600">Total Checks</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="text-3xl font-bold text-green-600" id="passedChecks">0</div>
+                    <div class="text-sm text-gray-600">Passed</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="text-3xl font-bold text-yellow-600" id="warningChecks">0</div>
+                    <div class="text-sm text-gray-600">Warnings</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="text-3xl font-bold text-red-600" id="failedChecks">0</div>
+                    <div class="text-sm text-gray-600">Failed</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Modal -->
+    <div id="filterModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Filter Results</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Severity</label>
+                    <div class="flex gap-4">
+                        <label class="flex items-center">
+                            <input type="checkbox" id="filterFailed" class="mr-2" checked>
+                            Failed
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" id="filterWarning" class="mr-2" checked>
+                            Warning
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" id="filterPassed" class="mr-2">
+                            Passed
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Contrast Ratio Range</label>
+                    <div class="flex gap-4">
+                        <input type="number" id="minRatio" class="form-control" placeholder="Min" step="0.1" min="0" max="21">
+                        <span class="flex items-center">to</span>
+                        <input type="number" id="maxRatio" class="form-control" placeholder="Max" step="0.1" min="0" max="21">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="applyFilter" class="btn btn-primary">Apply Filter</button>
+                <button id="clearFilter" class="btn btn-outline">Clear Filter</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Google APIs -->
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script src="https://apis.google.com/js/picker.js"></script>
+    
+    <!-- Shared Libraries -->
+    <script src="../../shared/google-auth.js"></script>
+    <script src="../../shared/google-picker.js"></script>
+    <script src="../../shared/docs-api.js"></script>
+    <script src="../../shared/slides-api.js"></script>
+    
+    <!-- App Scripts -->
+    <script src="engine.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "agent": {
+    "last_heartbeat": "2025-01-11T21:30:00Z",
+    "status": "active",
+    "current_task": "Monitoring for instructions",
+    "pending_instructions": 0,
+    "completed_today": 0
+  },
+  "deployment": {
+    "last_deploy": "2025-01-11T21:30:00Z",
+    "github_pages_status": "live",
+    "version": "0.1.0"
+  }
+}

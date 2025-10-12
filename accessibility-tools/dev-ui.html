@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accessibility Tools - Dev Interface</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f7;
+            color: #1d1d1f;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1d1d1f;
+        }
+
+        .header p {
+            color: #6e6e73;
+            font-size: 16px;
+        }
+
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #1d1d1f;
+        }
+
+        .btn {
+            background: #007AFF;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 10px;
+            min-height: 44px;
+            transition: background-color 0.2s;
+        }
+
+        .btn:hover {
+            background: #0056CC;
+        }
+
+        .btn:disabled {
+            background: #8E8E93;
+            cursor: not-allowed;
+        }
+
+        .btn.secondary {
+            background: #8E8E93;
+        }
+
+        .btn.secondary:hover {
+            background: #6D6D70;
+        }
+
+        .btn.success {
+            background: #34C759;
+        }
+
+        .btn.success:hover {
+            background: #28A745;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #1d1d1f;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #D1D1D6;
+            border-radius: 8px;
+            font-size: 16px;
+            min-height: 44px;
+            background: white;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #007AFF;
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        .status-active {
+            background: #D4F4DD;
+            color: #1F7A1F;
+        }
+
+        .status-idle {
+            background: #FFF3CD;
+            color: #856404;
+        }
+
+        .status-offline {
+            background: #F8D7DA;
+            color: #721C24;
+        }
+
+        .results-area {
+            background: #F2F2F7;
+            border: 1px solid #D1D1D6;
+            border-radius: 8px;
+            padding: 15px;
+            min-height: 200px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .result-item {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 4px solid #007AFF;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .result-tool {
+            font-weight: 600;
+            color: #1d1d1f;
+        }
+
+        .result-time {
+            color: #6e6e73;
+            font-size: 12px;
+        }
+
+        .result-summary {
+            color: #1d1d1f;
+            margin-bottom: 10px;
+        }
+
+        .result-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+            min-height: 32px;
+            width: auto;
+        }
+
+        .document-info {
+            background: #F2F2F7;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .document-name {
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 5px;
+        }
+
+        .document-meta {
+            color: #6e6e73;
+            font-size: 14px;
+        }
+
+        .loading {
+            text-align: center;
+            color: #6e6e73;
+            padding: 20px;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #D1D1D6;
+            border-radius: 50%;
+            border-top-color: #007AFF;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .links {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .link-btn {
+            background: #F2F2F7;
+            color: #007AFF;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+            border: 1px solid #D1D1D6;
+            transition: background-color 0.2s;
+        }
+
+        .link-btn:hover {
+            background: #E5E5EA;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 20px;
+            }
+            
+            .section {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔧 Accessibility Tools</h1>
+            <p>Development Interface - Mobile Control Panel</p>
+        </div>
+
+        <!-- Status Monitor -->
+        <div class="section">
+            <h2>Agent Status</h2>
+            <div id="statusIndicator" class="status-indicator status-offline">
+                <span id="statusText">Checking status...</span>
+            </div>
+            <div id="statusDetails">
+                <div id="currentTask">No current task</div>
+                <div id="lastActivity">Last activity: Unknown</div>
+            </div>
+        </div>
+
+        <!-- Document Selection -->
+        <div class="section">
+            <h2>Test Document</h2>
+            <div id="documentInfo" class="document-info hidden">
+                <div class="document-name" id="documentName"></div>
+                <div class="document-meta" id="documentMeta"></div>
+            </div>
+            <button id="selectDocumentBtn" class="btn">📄 Select Test Document</button>
+        </div>
+
+        <!-- Tool Selection -->
+        <div class="section">
+            <h2>Run Tool</h2>
+            <div class="form-group">
+                <label for="toolSelect">Select Tool:</label>
+                <select id="toolSelect" class="form-control">
+                    <option value="contrast">Contrast Checker</option>
+                    <option value="headings">Heading Analyzer</option>
+                    <option value="alt-text">Alt Text Validator</option>
+                </select>
+            </div>
+            <button id="runToolBtn" class="btn" disabled>🚀 Run Tool on Selected Document</button>
+        </div>
+
+        <!-- Free-form Instructions -->
+        <div class="section">
+            <h2>Send Instruction</h2>
+            <div class="form-group">
+                <label for="instructionInput">Free-form instruction:</label>
+                <textarea id="instructionInput" class="form-control" rows="3" placeholder="e.g., 'Add gradient background support to contrast checker'"></textarea>
+            </div>
+            <button id="sendInstructionBtn" class="btn secondary">📤 Send Instruction</button>
+        </div>
+
+        <!-- Results Display -->
+        <div class="section">
+            <h2>Results</h2>
+            <div class="form-group">
+                <button id="refreshResultsBtn" class="btn secondary">🔄 Refresh Results</button>
+                <button id="clearResultsBtn" class="btn secondary">🗑️ Clear Display</button>
+            </div>
+            <div id="resultsArea" class="results-area">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Loading results...
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="section">
+            <h2>Quick Links</h2>
+            <div class="links">
+                <a href="https://github.com/gjoeckel/my-mcp-servers/issues" target="_blank" class="link-btn">GitHub Issues</a>
+                <a href="https://gjoeckel.github.io/my-mcp-servers/accessibility-tools/" target="_blank" class="link-btn">Desktop Tools</a>
+                <a href="https://github.com/gjoeckel/my-mcp-servers" target="_blank" class="link-btn">Repository</a>
+                <a href="https://script.google.com/d/13k7BOpOU3Pt3xCPi3rAldNS4orCq00pfb1TWg6h57ChFunyktDHj9hTh/edit" target="_blank" class="link-btn">Apps Script</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Google Picker API -->
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script src="https://apis.google.com/js/picker.js"></script>
+
+    <script>
+        // Global variables
+        let selectedDocument = null;
+        let isAuthenticated = false;
+        let pollingInterval = null;
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+
+        async function initializeApp() {
+            try {
+                await loadGoogleAPI();
+                await checkAuthentication();
+                setupEventListeners();
+                startPolling();
+                loadInitialData();
+            } catch (error) {
+                console.error('Initialization error:', error);
+                showError('Failed to initialize app. Please refresh and try again.');
+            }
+        }
+
+        async function loadGoogleAPI() {
+            return new Promise((resolve, reject) => {
+                gapi.load('auth2', () => {
+                    gapi.auth2.init({
+                        client_id: 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com'
+                    }).then(() => {
+                        resolve();
+                    }).catch(reject);
+                });
+            });
+        }
+
+        async function checkAuthentication() {
+            const authInstance = gapi.auth2.getAuthInstance();
+            isAuthenticated = authInstance.isSignedIn.get();
+            
+            if (!isAuthenticated) {
+                await authenticate();
+            }
+        }
+
+        async function authenticate() {
+            const authInstance = gapi.auth2.getAuthInstance();
+            try {
+                await authInstance.signIn();
+                isAuthenticated = true;
+                updateUI();
+            } catch (error) {
+                console.error('Authentication failed:', error);
+                showError('Authentication failed. Please try again.');
+            }
+        }
+
+        function setupEventListeners() {
+            document.getElementById('selectDocumentBtn').addEventListener('click', selectDocument);
+            document.getElementById('runToolBtn').addEventListener('click', runTool);
+            document.getElementById('sendInstructionBtn').addEventListener('click', sendInstruction);
+            document.getElementById('refreshResultsBtn').addEventListener('click', refreshResults);
+            document.getElementById('clearResultsBtn').addEventListener('click', clearResults);
+        }
+
+        function selectDocument() {
+            if (!isAuthenticated) {
+                showError('Please authenticate first.');
+                return;
+            }
+
+            const picker = new google.picker.PickerBuilder()
+                .addView(google.picker.ViewId.DOCS)
+                .addView(google.picker.ViewId.PRESENTATIONS)
+                .setOAuthToken(gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token)
+                .setCallback(handleDocumentSelection)
+                .build();
+            
+            picker.setVisible(true);
+        }
+
+        function handleDocumentSelection(data) {
+            if (data[google.picker.Response.ACTION] === google.picker.Action.PICKED) {
+                const doc = data[google.picker.Response.DOCUMENTS][0];
+                selectedDocument = {
+                    id: doc.id,
+                    name: doc.name,
+                    type: doc.mimeType.includes('presentation') ? 'presentation' : 'document',
+                    url: doc.url
+                };
+                
+                updateDocumentInfo();
+                updateUI();
+            }
+        }
+
+        function updateDocumentInfo() {
+            if (selectedDocument) {
+                document.getElementById('documentName').textContent = selectedDocument.name;
+                document.getElementById('documentMeta').textContent = 
+                    `Type: ${selectedDocument.type} | ID: ${selectedDocument.id}`;
+                document.getElementById('documentInfo').classList.remove('hidden');
+            }
+        }
+
+        function updateUI() {
+            const runToolBtn = document.getElementById('runToolBtn');
+            runToolBtn.disabled = !selectedDocument || !isAuthenticated;
+        }
+
+        async function runTool() {
+            if (!selectedDocument) {
+                showError('Please select a document first.');
+                return;
+            }
+
+            const tool = document.getElementById('toolSelect').value;
+            
+            try {
+                const instruction = {
+                    id: 'inst_' + Date.now(),
+                    timestamp: new Date().toISOString(),
+                    type: 'run_tool',
+                    tool: tool,
+                    document_id: selectedDocument.id,
+                    document_name: selectedDocument.name,
+                    parameters: {},
+                    status: 'pending',
+                    processed_by_agent: false
+                };
+
+                await addInstruction(instruction);
+                showSuccess(`Tool "${tool}" queued for document "${selectedDocument.name}"`);
+                
+                // Update test documents
+                await updateTestDocuments(selectedDocument);
+                
+            } catch (error) {
+                console.error('Error running tool:', error);
+                showError('Failed to queue tool. Please try again.');
+            }
+        }
+
+        async function sendInstruction() {
+            const message = document.getElementById('instructionInput').value.trim();
+            if (!message) {
+                showError('Please enter an instruction.');
+                return;
+            }
+
+            try {
+                const instruction = {
+                    id: 'inst_' + Date.now(),
+                    timestamp: new Date().toISOString(),
+                    type: 'freeform',
+                    message: message,
+                    status: 'pending',
+                    processed_by_agent: false
+                };
+
+                await addInstruction(instruction);
+                showSuccess('Instruction sent successfully');
+                document.getElementById('instructionInput').value = '';
+                
+            } catch (error) {
+                console.error('Error sending instruction:', error);
+                showError('Failed to send instruction. Please try again.');
+            }
+        }
+
+        async function addInstruction(instruction) {
+            // In a real implementation, this would write to the JSON file
+            // For now, we'll simulate it
+            console.log('Adding instruction:', instruction);
+            
+            // Simulate API call delay
+            await new Promise(resolve => setTimeout(resolve, 500));
+        }
+
+        async function updateTestDocuments(document) {
+            // In a real implementation, this would update test-documents.json
+            console.log('Updating test documents:', document);
+        }
+
+        async function refreshResults() {
+            try {
+                await loadResults();
+                showSuccess('Results refreshed');
+            } catch (error) {
+                console.error('Error refreshing results:', error);
+                showError('Failed to refresh results. Please try again.');
+            }
+        }
+
+        async function loadResults() {
+            // In a real implementation, this would read from results.json
+            // For now, we'll show sample data
+            const resultsArea = document.getElementById('resultsArea');
+            resultsArea.innerHTML = `
+                <div class="result-item">
+                    <div class="result-header">
+                        <span class="result-tool">Contrast Checker</span>
+                        <span class="result-time">2 minutes ago</span>
+                    </div>
+                    <div class="result-summary">
+                        Document: Sample Document.docx<br>
+                        Status: Complete<br>
+                        Results: 15 contrast violations found<br>
+                        - 8 AA-level failures<br>
+                        - 7 AAA-level failures
+                    </div>
+                    <div class="result-actions">
+                        <button class="btn btn-small secondary">View Details</button>
+                        <button class="btn btn-small secondary">Copy</button>
+                        <button class="btn btn-small secondary">Download JSON</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function clearResults() {
+            document.getElementById('resultsArea').innerHTML = '<div class="loading"><div class="spinner"></div>No results to display</div>';
+        }
+
+        async function loadInitialData() {
+            await loadStatus();
+            await loadResults();
+        }
+
+        async function loadStatus() {
+            // In a real implementation, this would read from status.json
+            // For now, we'll simulate active status
+            updateStatusIndicator('active', 'Agent is active', 'Monitoring for instructions', '2 minutes ago');
+        }
+
+        function updateStatusIndicator(status, text, task, lastActivity) {
+            const indicator = document.getElementById('statusIndicator');
+            const statusText = document.getElementById('statusText');
+            const currentTask = document.getElementById('currentTask');
+            const lastActivityEl = document.getElementById('lastActivity');
+
+            indicator.className = `status-indicator status-${status}`;
+            statusText.textContent = text;
+            currentTask.textContent = task;
+            lastActivityEl.textContent = `Last activity: ${lastActivity}`;
+        }
+
+        function startPolling() {
+            // Poll every 10 seconds
+            pollingInterval = setInterval(async () => {
+                try {
+                    await loadStatus();
+                    await loadResults();
+                } catch (error) {
+                    console.error('Polling error:', error);
+                }
+            }, 10000);
+        }
+
+        function showSuccess(message) {
+            // Simple success notification
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: #34C759;
+                color: white;
+                padding: 12px 24px;
+                border-radius: 8px;
+                z-index: 1000;
+                font-weight: 500;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 3000);
+        }
+
+        function showError(message) {
+            // Simple error notification
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: #FF3B30;
+                color: white;
+                padding: 12px 24px;
+                border-radius: 8px;
+                z-index: 1000;
+                font-weight: 500;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 5000);
+        }
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', function() {
+            if (pollingInterval) {
+                clearInterval(pollingInterval);
+            }
+        });
+    </script>
+</body>
+</html>

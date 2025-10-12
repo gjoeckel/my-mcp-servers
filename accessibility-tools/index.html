@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accessibility Tools - Desktop Suite</title>
+    <link rel="stylesheet" href="shared/common.css">
+    <style>
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .tool-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid #e5e5ea;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .tool-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .tool-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1d1d1f;
+        }
+
+        .tool-description {
+            color: #6e6e73;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .tool-features {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .tool-features li {
+            padding: 0.25rem 0;
+            color: #6e6e73;
+            font-size: 0.875rem;
+        }
+
+        .tool-features li:before {
+            content: "✓ ";
+            color: #34C759;
+            font-weight: bold;
+        }
+
+        .tool-status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .status-available {
+            background: #D4F4DD;
+            color: #1F7A1F;
+        }
+
+        .status-coming-soon {
+            background: #FFF3CD;
+            color: #856404;
+        }
+
+        .status-beta {
+            background: #D1ECF1;
+            color: #0C5460;
+        }
+
+        .dev-section {
+            background: #f8f9fa;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-top: 3rem;
+            border: 1px solid #e5e5ea;
+        }
+
+        .dev-section h2 {
+            color: #1d1d1f;
+            margin-bottom: 1rem;
+        }
+
+        .dev-section p {
+            color: #6e6e73;
+            margin-bottom: 1.5rem;
+        }
+
+        .dev-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .dev-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: #007AFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+        }
+
+        .dev-link:hover {
+            background: #0056CC;
+        }
+
+        .dev-link.secondary {
+            background: #8E8E93;
+        }
+
+        .dev-link.secondary:hover {
+            background: #6D6D70;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .dev-links {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1>🔧 Accessibility Tools</h1>
+            <p>Comprehensive accessibility analysis tools for Google Workspace documents. Ensure WCAG compliance and improve document accessibility for all users.</p>
+        </div>
+
+        <!-- Tools Grid -->
+        <div class="tools-grid">
+            <!-- Contrast Checker -->
+            <div class="tool-card">
+                <div class="tool-icon">🎨</div>
+                <div class="tool-status status-available">Available</div>
+                <h3 class="tool-title">Contrast Checker</h3>
+                <p class="tool-description">
+                    Analyze color contrast ratios in Google Docs and Slides to ensure WCAG AA/AAA compliance. 
+                    Detect insufficient contrast and get suggestions for improvement.
+                </p>
+                <ul class="tool-features">
+                    <li>WCAG AA/AAA compliance checking</li>
+                    <li>Gradient background support</li>
+                    <li>Large text detection</li>
+                    <li>Color suggestion engine</li>
+                    <li>Batch document processing</li>
+                    <li>Export detailed reports</li>
+                </ul>
+                <a href="tools/contrast/" class="btn btn-primary">Open Tool</a>
+            </div>
+
+            <!-- Heading Analyzer -->
+            <div class="tool-card">
+                <div class="tool-icon">📋</div>
+                <div class="tool-status status-coming-soon">Coming Soon</div>
+                <h3 class="tool-title">Heading Analyzer</h3>
+                <p class="tool-description">
+                    Validate heading structure and hierarchy in Google Docs. Ensure proper heading levels, 
+                    detect missing headings, and generate document outlines.
+                </p>
+                <ul class="tool-features">
+                    <li>Heading hierarchy validation</li>
+                    <li>Missing heading detection</li>
+                    <li>Document outline generation</li>
+                    <li>Heading level suggestions</li>
+                    <li>Navigation structure analysis</li>
+                </ul>
+                <button class="btn btn-outline" disabled>Coming Soon</button>
+            </div>
+
+            <!-- Alt Text Validator -->
+            <div class="tool-card">
+                <div class="tool-icon">🖼️</div>
+                <div class="tool-status status-coming-soon">Coming Soon</div>
+                <h3 class="tool-title">Alt Text Validator</h3>
+                <p class="tool-description">
+                    Check image alt text quality and completeness in Google Docs and Slides. 
+                    Identify missing alt text and suggest improvements for better accessibility.
+                </p>
+                <ul class="tool-features">
+                    <li>Missing alt text detection</li>
+                    <li>Alt text quality analysis</li>
+                    <li>Image context analysis</li>
+                    <li>Alt text suggestions</li>
+                    <li>Bulk alt text management</li>
+                </ul>
+                <button class="btn btn-outline" disabled>Coming Soon</button>
+            </div>
+
+            <!-- Link Checker -->
+            <div class="tool-card">
+                <div class="tool-icon">🔗</div>
+                <div class="tool-status status-coming-soon">Coming Soon</div>
+                <h3 class="tool-title">Link Checker</h3>
+                <p class="tool-description">
+                    Validate links in Google Docs and Slides for accessibility and functionality. 
+                    Check link text quality, detect broken links, and ensure proper link descriptions.
+                </p>
+                <ul class="tool-features">
+                    <li>Link text quality analysis</li>
+                    <li>Broken link detection</li>
+                    <li>Link context validation</li>
+                    <li>Link description suggestions</li>
+                    <li>External link warnings</li>
+                </ul>
+                <button class="btn btn-outline" disabled>Coming Soon</button>
+            </div>
+
+            <!-- Table Analyzer -->
+            <div class="tool-card">
+                <div class="tool-icon">📊</div>
+                <div class="tool-status status-coming-soon">Coming Soon</div>
+                <h3 class="tool-title">Table Analyzer</h3>
+                <p class="tool-description">
+                    Analyze table structure and accessibility in Google Docs and Slides. 
+                    Check for proper headers, captions, and table organization.
+                </p>
+                <ul class="tool-features">
+                    <li>Table header validation</li>
+                    <li>Caption detection</li>
+                    <li>Table structure analysis</li>
+                    <li>Complex table handling</li>
+                    <li>Screen reader compatibility</li>
+                </ul>
+                <button class="btn btn-outline" disabled>Coming Soon</button>
+            </div>
+
+            <!-- Document Scanner -->
+            <div class="tool-card">
+                <div class="tool-icon">🔍</div>
+                <div class="tool-status status-beta">Beta</div>
+                <h3 class="tool-title">Document Scanner</h3>
+                <p class="tool-description">
+                    Comprehensive accessibility scan of entire Google Docs and Slides. 
+                    Run all available checks and generate a complete accessibility report.
+                </p>
+                <ul class="tool-features">
+                    <li>Full document analysis</li>
+                    <li>Multiple tool integration</li>
+                    <li>Priority issue ranking</li>
+                    <li>Comprehensive reporting</li>
+                    <li>Progress tracking</li>
+                </ul>
+                <button class="btn btn-outline" disabled>Beta Testing</button>
+            </div>
+        </div>
+
+        <!-- Development Section -->
+        <div class="dev-section">
+            <h2>🛠️ Development Interface</h2>
+            <p>
+                For developers and testers: Access the mobile-friendly development interface to manage 
+                testing, review results, and provide feedback to the development team.
+            </p>
+            <div class="dev-links">
+                <a href="dev-ui.html" class="dev-link">
+                    📱 Mobile Dev Interface
+                </a>
+                <a href="https://github.com/gjoeckel/my-mcp-servers" class="dev-link secondary" target="_blank">
+                    📁 GitHub Repository
+                </a>
+                <a href="https://github.com/gjoeckel/my-mcp-servers/issues" class="dev-link secondary" target="_blank">
+                    🐛 Report Issues
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-center py-8 text-gray-600">
+            <p>&copy; 2025 Accessibility Tools. Built for Google Workspace accessibility compliance.</p>
+        </footer>
+    </div>
+</body>
+</html>
