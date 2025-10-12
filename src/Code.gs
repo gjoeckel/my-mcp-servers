@@ -4,7 +4,7 @@
  * Shows a sidebar in the Google Doc UI.
  */
 function showSidebar() {
-  var html = HtmlService.createHtmlOutputFromFile('Sidebar')
+  var html = HtmlService.createHtmlOutputFromFile('ui/Sidebar')
     .setTitle('Color Contrast Checker');
   DocumentApp.getUi().showSidebar(html);
 }

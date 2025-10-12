@@ -15,8 +15,9 @@ A Google Apps Script project that provides a sidebar tool for checking color con
 ```
 src/
 ├── Code.gs           # Main Apps Script functions
-├── Sidebar.html      # HTML interface for the sidebar
-└── appsscript.json   # Project configuration
+├── appsscript.json   # Project configuration
+└── ui/
+    └── Sidebar.html  # HTML interface for the sidebar
 ```
 
 ## Setup
