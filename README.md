@@ -12,6 +12,22 @@ This branch contains **Antigravity IDE-specific documentation** for setting up M
 
 ---
 
+
+## ⚠️ Editing Guidelines
+
+**DO EDIT in this branch**:
+- Antigravity-specific setup guides
+- Antigravity-specific configuration examples
+- Antigravity-specific workflows
+
+**DO NOT EDIT in this branch** (edit in `main` branch instead):
+- IDE-agnostic configuration files
+- Shared documentation
+- Package information
+
+**For IDE-agnostic information**, always edit in the `main` branch to ensure consistency across all IDEs.
+
+
 ## Instructions for AI Agents
 
 ### Step 1: Review Cursor Branch
