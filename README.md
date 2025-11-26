@@ -12,6 +12,22 @@ This branch contains **Claude Code IDE-specific documentation** for setting up M
 
 ---
 
+
+## ⚠️ Editing Guidelines
+
+**DO EDIT in this branch**:
+- Claude Code-specific setup guides
+- Claude Code-specific configuration examples
+- Claude Code-specific workflows
+
+**DO NOT EDIT in this branch** (edit in `main` branch instead):
+- IDE-agnostic configuration files
+- Shared documentation
+- Package information
+
+**For IDE-agnostic information**, always edit in the `main` branch to ensure consistency across all IDEs.
+
+
 ## Instructions for AI Agents
 
 ### Step 1: Review Cursor Branch
