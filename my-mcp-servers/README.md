@@ -15,7 +15,7 @@ This repository contains custom forks of official MCP servers, reduced to only e
 ✅ CUSTOM SERVERS (Forked & Reduced):
 ├── github-minimal: 4 tools (reduced from 20+ tools)
 ├── shell-minimal: 4 tools (custom implementation)
-├── puppeteer-minimal: 4 tools (reduced from 12+ tools)
+├── playwright-minimal: 4 tools (reduced from 12+ tools)
 └── agent-autonomy: 4 tools (custom workflow automation)
 
 ✅ OFFICIAL SERVERS (Unchanged):
@@ -62,8 +62,8 @@ TOTAL: 4 + 4 + 4 + 4 + 15 + 8 = 39 tools ✅
 - `backup_files`, `restore_files`, `schedule_task`
 - And more...
 
-### **Puppeteer Minimal** (`packages/puppeteer-minimal/`)
-**Original**: `@modelcontextprotocol/server-puppeteer` (12+ tools)
+### **Playwright Minimal** (`packages/playwright-minimal/`)
+**Original**: Browser automation server (12+ tools)
 **Custom**: 4 essential tools only
 
 **Tools Included**:
@@ -142,9 +142,9 @@ Update your `.cursor/mcp.json`:
         "ALLOWED_COMMANDS": "npm,git,node,php,composer,curl,wget,ls,cat,grep,find,chmod,chown,mkdir,rm,cp,mv"
       }
     },
-    "puppeteer-minimal": {
-      "command": "node",
-      "args": ["/path/to/my-mcp-servers/packages/puppeteer-minimal/build/index.js"]
+    "playwright-minimal": {
+      "command": "npx",
+      "args": ["-y", "mcp-playwright-minimal"]
     },
     "agent-autonomy": {
       "command": "node",
@@ -189,9 +189,9 @@ All packages are now published to npm:
         "ALLOWED_COMMANDS": "npm,git,node,php,composer,curl,wget,ls,cat,grep,find,chmod,chown,mkdir,rm,cp,mv"
       }
     },
-    "puppeteer-minimal": {
+    "playwright-minimal": {
       "command": "npx",
-      "args": ["-y", "@gjoeckel/mcp-puppeteer-minimal"]
+      "args": ["-y", "mcp-playwright-minimal"]
     },
     "agent-autonomy": {
       "command": "npx",
@@ -222,7 +222,7 @@ my-mcp-servers/
 ├── packages/
 │   ├── github-minimal/          # Forked GitHub server (4 tools)
 │   ├── shell-minimal/           # Custom shell server (4 tools)
-│   └── puppeteer-minimal/       # Forked Puppeteer server (4 tools)
+│   └── playwright-minimal/      # Playwright server (4 tools)
 ├── scripts/
 │   ├── build-all.sh            # Build all packages
 │   ├── link-all.sh             # Link all packages globally
@@ -242,7 +242,7 @@ npm run clean-all              # Clean all build directories
 # Individual package commands
 cd packages/github-minimal && npm run build
 cd packages/shell-minimal && npm run build
-cd packages/puppeteer-minimal && npm run build
+cd packages/playwright-minimal && npm run build
 ```
 
 ### **Adding New Tools**
@@ -253,7 +253,7 @@ cd packages/puppeteer-minimal && npm run build
 
 ### **Updating from Upstream**
 ```bash
-# For forked packages (github-minimal, puppeteer-minimal)
+# For forked packages (github-minimal)
 cd packages/github-minimal
 git remote add upstream https://github.com/modelcontextprotocol/servers.git
 git fetch upstream
@@ -272,7 +272,7 @@ git merge upstream/main
 |--------|----------------|--------------|-----------|---------|
 | GitHub | 20+ | 4 | 80% | ✅ Complete |
 | Shell | Custom | 4 | N/A | ✅ Complete |
-| Puppeteer | 12+ | 4 | 67% | ✅ Complete |
+| Playwright | 12+ | 4 | 67% | ✅ Complete |
 | Agent Autonomy | Custom | 4 | N/A | ✅ Complete |
 | Filesystem | 15 | 15 | 0% | ✅ Official |
 | Memory | 8 | 8 | 0% | ✅ Official |

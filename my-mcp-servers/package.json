@@ -7,7 +7,7 @@
     "build-all": "./scripts/build-all.sh",
     "link-all": "./scripts/link-all.sh",
     "test-all": "./scripts/test-all.sh",
-    "install-all": "npm install && cd packages/shell-minimal && npm install && cd ../puppeteer-minimal && npm install && cd ../github-minimal && npm install",
+    "install-all": "npm install && cd packages/shell-minimal && npm install && cd ../playwright-minimal && npm install && cd ../github-minimal && npm install",
     "clean-all": "rm -rf packages/*/node_modules packages/*/build packages/*/dist",
     "test": "npm run test-all"
   },
