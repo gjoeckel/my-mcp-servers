@@ -1,125 +1,184 @@
-# My Custom MCP Servers
+# Claude Code IDE Setup Guide
 
-**Repository**: https://github.com/gjoeckel/my-mcp-servers
-**Purpose**: Custom MCP servers with minimal tool sets for 40-tool limit compliance
-**Target**: Exactly 39 tools across 6 servers for optimal AI autonomous operation
+**Template for Claude Code IDE (Claude Desktop) specific documentation**
 
 ---
 
-## 🎯 Quick Start
+## Overview
 
-### **Recommended Configuration (39 Tools)**
+This branch contains **Claude Code IDE-specific documentation** for setting up MCP servers with Claude Desktop.
 
-See [OPTIMIZED-CONFIG.md](./OPTIMIZED-CONFIG.md) for the complete IDE-agnostic configuration.
-
-### **IDE-Specific Setup Guides**
-
-This repository uses **branch-based organization** for IDE-specific documentation:
-
-| IDE | Branch | Setup Guide |
-|-----|--------|-------------|
-| **Cursor IDE** | [`cursor`](https://github.com/gjoeckel/my-mcp-servers/tree/cursor) | Complete Cursor setup with autonomous mode |
-| **Antigravity IDE** | [`antigravity`](https://github.com/gjoeckel/my-mcp-servers/tree/antigravity) | Antigravity-specific setup |
-| **Claude Code IDE** | [`claude-code`](https://github.com/gjoeckel/my-mcp-servers/tree/claude-code) | Claude Desktop setup |
-
-**See [IDE Branches Guide](./docs/IDE-BRANCHES.md) for details.**
+**Status**: This branch is a template. Please review the [cursor branch](https://github.com/gjoeckel/my-mcp-servers/tree/cursor) and use its structure as a template to populate this branch with Claude Code IDE-specific information.
 
 ---
 
-## 📦 Available Packages
+## Instructions for AI Agents
 
-All packages are published to npm and can be installed via `npx`:
+### Step 1: Review Cursor Branch
 
-| Package                         | npm | Tools | Description                    |
-| ------------------------------- | --- | ----- | ------------------------------ |
-| mcp-agent-autonomy              | ✅   | 4     | Workflow automation            |
-| mcp-github-minimal              | ✅   | 4     | Essential GitHub operations    |
-| mcp-shell-minimal               | ✅   | 4     | Shell command execution        |
-| mcp-playwright-minimal          | ✅   | 4     | Browser automation             |
-| mcp-sequential-thinking-minimal | ✅   | ~5    | Problem-solving workflows      |
-| mcp-everything-minimal          | ✅   | ~25   | Protocol validation (optional) |
+1. **Switch to cursor branch**
+   ```bash
+   git checkout cursor
+   ```
 
-### **Official Servers** (used alongside custom servers):
+2. **Review documentation structure**
+   - README.md - Overview and navigation
+   - CURSOR-SETUP-GUIDE.md - Detailed setup instructions
+   - CURSOR-AUTONOMOUS-SETUP.md - Autonomous operation setup
+   - YOLO-FULL-WORKFLOW.md - Workflow documentation
+   - config/ - Configuration files
 
-* `@modelcontextprotocol/server-filesystem` - 15 tools
-* `@modelcontextprotocol/server-memory` - 8 tools
+3. **Understand the pattern**
+   - How Cursor-specific setup is documented
+   - How configuration files are structured
+   - How workflows are explained
+
+### Step 2: Adapt for Claude Code IDE
+
+1. **Create Claude Code-specific documentation**
+   - CLAUDE-CODE-SETUP-GUIDE.md - Claude Desktop setup instructions
+   - CLAUDE-CODE-CONFIG.md - Claude Desktop configuration
+   - Claude Desktop workflows and features
+
+2. **Adapt configuration examples**
+   - Claude Desktop config file locations:
+     - macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+     - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+     - Linux: `~/.config/Claude/claude_desktop_config.json`
+   - Claude Desktop-specific settings
+   - Claude Desktop MCP server configuration
+
+3. **Document Claude Desktop-specific features**
+   - Claude Desktop workflows
+   - Claude Desktop settings
+   - Claude Desktop troubleshooting
+
+### Step 3: Maintain Consistency
+
+- Use same documentation structure as cursor branch
+- Link back to main branch for shared information
+- Include Claude Desktop-specific details
+- Provide working examples
 
 ---
 
-## 🚀 Installation
+## General MCP Information
 
-### **Via npm (Recommended)**
+For general MCP server information (IDE-agnostic), see the [main branch](https://github.com/gjoeckel/my-mcp-servers):
 
-No installation needed - packages auto-install via `npx`:
+- [Main README](https://github.com/gjoeckel/my-mcp-servers)
+- [OPTIMIZED-CONFIG.md](https://github.com/gjoeckel/my-mcp-servers/blob/main/OPTIMIZED-CONFIG.md) - 39-tool configuration
+- [MCP-SERVERS-IMPLEMENTATION.md](https://github.com/gjoeckel/my-mcp-servers/blob/main/docs/MCP-SERVERS-IMPLEMENTATION.md) - Implementation guide
+
+---
+
+## Claude Desktop Information Needed
+
+To complete this branch, gather:
+
+1. **Configuration Location**
+   - macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+   - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+   - Linux: `~/.config/Claude/claude_desktop_config.json`
+   - Config file format and structure
+
+2. **Settings Location**
+   - Where are Claude Desktop settings stored?
+   - Settings file format
+
+3. **MCP Integration**
+   - How does Claude Desktop integrate with MCP?
+   - Claude Desktop-specific MCP features
+   - MCP server startup process
+
+4. **Workflows**
+   - Claude Desktop-specific workflows
+   - Claude Desktop automation features
+
+5. **Troubleshooting**
+   - Claude Desktop-specific issues
+   - Common Claude Desktop setup problems
+
+---
+
+## Template Structure
+
+Based on cursor branch, this branch should include:
+
+```
+claude-code/
+├── README.md                          # This file (update with Claude Desktop info)
+├── CLAUDE-CODE-SETUP-GUIDE.md        # Detailed Claude Desktop setup
+├── CLAUDE-CODE-CONFIG.md             # Claude Desktop configuration guide
+└── config/                            # Claude Desktop config examples
+    ├── claude_desktop_config.json    # Claude Desktop MCP config
+    └── settings.json                 # Claude Desktop settings (if applicable)
+```
+
+---
+
+## Known Claude Desktop Configuration
+
+### Config File Location
+
+**macOS**:
+```
+~/Library/Application Support/Claude/claude_desktop_config.json
+```
+
+**Windows**:
+```
+%APPDATA%\Claude\claude_desktop_config.json
+```
+
+**Linux**:
+```
+~/.config/Claude/claude_desktop_config.json
+```
+
+### MCP Configuration Format
+
+Claude Desktop uses a similar MCP configuration format:
 
 ```json
 {
   "mcpServers": {
-    "agent-autonomy": {
+    "server-name": {
       "command": "npx",
-      "args": ["-y", "mcp-agent-autonomy"]
+      "args": ["-y", "package-name"],
+      "env": {
+        "ENV_VAR": "value"
+      }
     }
   }
 }
 ```
 
-### **Local Development**
-
-```bash
-git clone https://github.com/gjoeckel/my-mcp-servers.git
-cd my-mcp-servers/my-mcp-servers
-npm run install-all
-npm run build-all
-```
+**Note**: Replace `${HOME}` with actual paths (Claude Desktop may not expand variables).
 
 ---
 
-## 📚 Documentation
+## Next Steps
 
-### **Main Branch (This Branch)**
-
-* **[OPTIMIZED-CONFIG.md](./OPTIMIZED-CONFIG.md)** - Recommended 39-tool configuration (IDE-agnostic)
-* **[docs/MCP-SERVERS-IMPLEMENTATION.md](./docs/MCP-SERVERS-IMPLEMENTATION.md)** - Complete implementation guide (IDE-agnostic)
-* **[docs/IDE-BRANCHES.md](./docs/IDE-BRANCHES.md)** - Guide to IDE-specific branches
-
-### **IDE-Specific Branches**
-
-* **[cursor branch](https://github.com/gjoeckel/my-mcp-servers/tree/cursor)** - Complete Cursor IDE setup
-* **[antigravity branch](https://github.com/gjoeckel/my-mcp-servers/tree/antigravity)** - Antigravity IDE setup
-* **[claude-code branch](https://github.com/gjoeckel/my-mcp-servers/tree/claude-code)** - Claude Code IDE setup
+1. **Review cursor branch structure**
+2. **Research Claude Desktop**
+   - Configuration locations (see above)
+   - MCP integration details
+   - Settings format
+3. **Create Claude Desktop-specific documentation**
+4. **Test configuration examples**
+5. **Update this README with actual information**
 
 ---
 
-## 🎯 Recommended Configuration
+## Related Branches
 
-**39-Tool Setup** (Under 40-tool limit):
-
-* `filesystem` (15 tools) - Official
-* `memory` (8 tools) - Official
-* `agent-autonomy` (4 tools) - Custom
-* `github-minimal` (4 tools) - Custom
-* `shell-minimal` (4 tools) - Custom
-* `playwright-minimal` (4 tools) - Custom
-
-**Total: 39 tools** ✅
-
-See [OPTIMIZED-CONFIG.md](./OPTIMIZED-CONFIG.md) for complete configuration details.
+- [Main Branch](https://github.com/gjoeckel/my-mcp-servers) - Shared documentation
+- [Cursor Branch](https://github.com/gjoeckel/my-mcp-servers/tree/cursor) - Template reference
+- [Antigravity Branch](https://github.com/gjoeckel/my-mcp-servers/tree/antigravity) - Antigravity IDE setup
 
 ---
 
-## 📝 License
-
-ISC License - See individual package licenses for details.
-
----
-
-## 🔗 Links
-
-* **Repository**: https://github.com/gjoeckel/my-mcp-servers
-* **npm Packages**: https://www.npmjs.com/~gjoeckel
-* **MCP Documentation**: https://modelcontextprotocol.io
-
----
-
-_Optimized MCP servers for AI autonomous operation within the 40-tool limit._
+**Status**: Template - Awaiting Claude Desktop-specific documentation
+**Last Updated**: November 26, 2025
 
