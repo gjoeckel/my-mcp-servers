@@ -12,6 +12,23 @@ For general MCP server information, see the [main branch](https://github.com/gjo
 
 ---
 
+## ⚠️ Editing Guidelines
+
+**DO EDIT in this branch**:
+- Cursor-specific setup guides
+- Cursor-specific configuration examples
+- Cursor-specific workflows
+- Cursor settings and config files
+
+**DO NOT EDIT in this branch** (edit in `main` branch instead):
+- IDE-agnostic configuration files
+- Shared documentation (OPTIMIZED-CONFIG.md, MCP-SERVERS-IMPLEMENTATION.md)
+- Package information
+
+**For IDE-agnostic information**, always edit in the `main` branch to ensure consistency across all IDEs.
+
+---
+
 ## Quick Start
 
 1. **Review Main Branch**
